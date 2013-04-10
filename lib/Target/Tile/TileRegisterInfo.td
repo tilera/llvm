@@ -165,7 +165,7 @@ let Namespace = "Tile" in {
 // Register Classes.
 //===----------------------------------------------------------------------===//
 
-def CPU32Regs : RegisterClass<"Tile", [i32], 32, (add
+def CPU32Regs : RegisterClass<"Tile", [i32, f32], 32, (add
   // Return Values and Arguments, caller saved.
   (sequence "R%u_32", 0, 9),
   // Other caller saved.
@@ -179,7 +179,7 @@ def CPU32Regs : RegisterClass<"Tile", [i32], 32, (add
   // Reserved, non alloctable.
   TP_32, SP_32, LR_32, ZERO_32)>;
 
-def CPURegs : RegisterClass<"Tile", [i64], 64, (add
+def CPURegs : RegisterClass<"Tile", [i64, f64], 64, (add
   (sequence "R%u", 0, 51),
   FP,
   TP, SP, LR, ZERO)>;

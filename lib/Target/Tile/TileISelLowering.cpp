@@ -114,6 +114,8 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   // Set up the register classes.
   addRegisterClass(MVT::i64, &Tile::CPURegsRegClass);
   addRegisterClass(MVT::i32, &Tile::CPU32RegsRegClass);
+  addRegisterClass(MVT::f64, &Tile::CPURegsRegClass);
+  addRegisterClass(MVT::f32, &Tile::CPU32RegsRegClass);
 
   // Load extented operations for i1 types must be promoted.
   setLoadExtAction(ISD::EXTLOAD, MVT::i1, Promote);
