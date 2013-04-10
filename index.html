@@ -54,21 +54,102 @@ $ make -j40 (for cross build on X86, -j4...)
 
 <p>Clang/LLVM will generate huge binary, so the linking stage is very long. One tip to fast the linking is uing GOLD linker, it's 3x faster than GNU ld, and supported on TILE-Gx already.</p>
 
+<h3>Usagee</h3>
+<p>On TILE-Gx native environment, is's simple, just as what has been documented on llvm manual.</p>
+<p>Compile .c directly into executable:</p>
+<pre><code>
+$ clang -o hello.tilegx hello.c
+</code></pre>
+<p>Compile .c into llvm IR:</p>
+<pre><code>
+$ clang -S -emit-llvm -o hello.ll hello.c 
+</code></pre>
+<p>Compile .ll into .s or JIT .ll:</p>
+<pre><code>
+$ llc/lli hello.ll
+</code></pre>
+<p>For cross compile on X86, you need to specify target options.</p>
+<p>Clang:</p>
+<pre><code>
+$ clang -target tilegx -o hello.tilegx hello.c
+</code></pre>
+<p>llc/lli:</p>
+<pre><code>
+$ llc/lli -march=tilegx hello.ll
+</code></pre>
+
+<p>You can use --help and --help-hidden for more options.</p>
+
 <h3>Backend Status</h3>
 <table border="1" cellspacing="0">
-<tr></span>
-<th>Unknown</th></span>
-<th>No support</th></span>
-<th>Partial Support</th></span>
-<th>Complete Support</th></span>
+<tr>
+<th>Unknown</th>
+<th>No support</th>
+<th>Partial Support</th>
+<th>Complete Support</th>
 </tr>
 <tr>
-<td>?</td>
-<td>N</td>
-<td>P</td>
-<td>Y</td>
+<td align=center>?</td>
+<td align=center>N</td>
+<td align=center>P</td>
+<td align=center>Y</td>
 </tr>
 </table>
+
+<p>Here is the status table:</p>
+
+<table border="1" cellspacing="0">
+<tr>
+<th>Feature</th>
+<th>Status</th>
+</tr>
+<tr>
+<td align=center>is generally reliable</td>
+<td align=center>Y</td>
+</tr>
+<tr>
+<td align=center>pic/tls</td>
+<td align=center>Y</td>
+</tr>
+<tr>
+<td align=center>assembly parser</td>
+<td align=center>P</td>
+</tr>
+<tr>
+<td align=center>disassembler</td>
+<td align=center>N</td>
+</tr>
+<tr>
+<td align=center>inline asm</td>
+<td align=center>P</td>
+</tr>
+<tr>
+<td align=center>mc layer</td>
+<td align=center>Y</td>
+</tr>
+<tr>
+<td align=center>mc jit</td>
+<td align=center>Y</td>
+</tr>
+<tr>
+<td align=center>tail calls</td>
+<td align=center>N</td>
+</tr>
+<tr>
+<td align=center>hard float</td>
+<td align=center>N</td>
+</tr>
+<tr>
+<td align=center>simd</td>
+<td align=center>N</td>
+</tr>
+</table>
+
+<p> We are trying hard to implement all those left features. The recent work is focused on:</p>
+<li>hard float.</li>
+<li>simd intrinsics and auto-generation.</li>
+<li>tail call optimization.</li>
+<li>scheduler improvements.</li>
 
 <h3>Support or Contact</h3>
 
