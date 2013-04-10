@@ -216,7 +216,26 @@ public:
     VK_Mips_GOT_HI16,
     VK_Mips_GOT_LO16,
     VK_Mips_CALL_HI16,
-    VK_Mips_CALL_LO16
+    VK_Mips_CALL_LO16,
+
+    VK_Tile_PLT_CALL,
+    VK_Tile_HW0,
+    VK_Tile_HW0_GOT,
+    VK_Tile_HW0_LAST,
+    VK_Tile_HW1,
+    VK_Tile_HW1_LAST,
+    VK_Tile_HW1_LAST_GOT,
+    VK_Tile_HW2_LAST,
+    VK_Tile_TLS_ADD,
+    VK_Tile_TLS_GD_ADD,
+    VK_Tile_TLS_GD_CALL,
+    VK_Tile_TLS_IE_LOAD,
+    VK_Tile_HW0_TLS_GD,
+    VK_Tile_HW0_TLS_IE,
+    VK_Tile_HW0_TLS_LE,
+    VK_Tile_HW1_LAST_TLS_GD,
+    VK_Tile_HW1_LAST_TLS_IE,
+    VK_Tile_HW1_LAST_TLS_LE
   };
 
 private:

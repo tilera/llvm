@@ -312,6 +312,7 @@ AC_CACHE_CHECK([target architecture],[llvm_cv_target_arch],
   hexagon-*)              llvm_cv_target_arch="Hexagon" ;;
   mblaze-*)               llvm_cv_target_arch="MBlaze" ;;
   nvptx-*)                llvm_cv_target_arch="NVPTX" ;;
+  tilegx-*)               llvm_cv_target_arch="Tile" ;;
   *)                      llvm_cv_target_arch="Unknown" ;;
 esac])
 
@@ -592,7 +593,7 @@ TARGETS_TO_BUILD=""
 AC_ARG_ENABLE([targets],AS_HELP_STRING([--enable-targets],
     [Build specific host targets: all or target1,target2,... Valid targets are:
      host, x86, x86_64, sparc, powerpc, arm, mips, spu, hexagon,
-     xcore, msp430, nvptx, cbe, and cpp (default=all)]),,
+     xcore, msp430, nvptx, tilegx, cbe, and cpp (default=all, but tilegx)]),,
     enableval=all)
 if test "$enableval" = host-only ; then
   enableval=host
@@ -614,6 +615,7 @@ case "$enableval" in
         cpp)      TARGETS_TO_BUILD="CppBackend $TARGETS_TO_BUILD" ;;
         mblaze)   TARGETS_TO_BUILD="MBlaze $TARGETS_TO_BUILD" ;;
         nvptx)    TARGETS_TO_BUILD="NVPTX $TARGETS_TO_BUILD" ;;
+        tilegx)   TARGETS_TO_BUILD="Tile $TARGETS_TO_BUILD" ;;
         host) case "$llvm_cv_target_arch" in
             x86)         TARGETS_TO_BUILD="X86 $TARGETS_TO_BUILD" ;;
             x86_64)      TARGETS_TO_BUILD="X86 $TARGETS_TO_BUILD" ;;

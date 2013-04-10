@@ -2565,6 +2565,8 @@ StringRef ELFObjectFile<ELFT>::getFileFormatName() const {
       return "ELF64-aarch64";
     case ELF::EM_PPC64:
       return "ELF64-ppc64";
+    case ELF::EM_TILEGX:
+      return "ELF64-tilegx";
     default:
       return "ELF64-unknown";
     }
@@ -2592,6 +2594,8 @@ unsigned ELFObjectFile<ELFT>::getArch() const {
            Triple::mipsel : Triple::mips;
   case ELF::EM_PPC64:
     return Triple::ppc64;
+  case ELF::EM_TILEGX:
+    return Triple::tilegx;
   default:
     return Triple::UnknownArch;
   }

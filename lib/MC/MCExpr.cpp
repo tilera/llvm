@@ -250,6 +250,24 @@ StringRef MCSymbolRefExpr::getVariantKindName(VariantKind Kind) {
   case VK_Mips_GOT_LO16: return "GOT_LO16";
   case VK_Mips_CALL_HI16: return "CALL_HI16";
   case VK_Mips_CALL_LO16: return "CALL_LO16";
+  case VK_Tile_PLT_CALL: return "PLT_CALL";
+  case VK_Tile_HW0: return "HW0";
+  case VK_Tile_HW1: return "HW1";
+  case VK_Tile_HW0_GOT:  return "HW0_GOT";
+  case VK_Tile_HW0_LAST: return "HW0_LAST";
+  case VK_Tile_HW1_LAST: return "HW1_LAST";
+  case VK_Tile_HW1_LAST_GOT: return "HW1_LAST_GOT";
+  case VK_Tile_HW2_LAST: return "HW2_LAST";
+  case VK_Tile_TLS_ADD: return "TLS_ADD";
+  case VK_Tile_TLS_GD_ADD: return "TLS_GD_ADD";
+  case VK_Tile_TLS_GD_CALL: return "TLS_GD_CALL";
+  case VK_Tile_TLS_IE_LOAD: return "TLS_IE_LOAD";
+  case VK_Tile_HW0_TLS_GD: return "HW0_TLS_GD";
+  case VK_Tile_HW0_TLS_IE: return "HW0_TLS_IE";
+  case VK_Tile_HW0_TLS_LE: return "HW0_TLS_LE";
+  case VK_Tile_HW1_LAST_TLS_GD: return "HW1_LAST_TLS_GD";
+  case VK_Tile_HW1_LAST_TLS_IE: return "HW1_LAST_TLS_IE";
+  case VK_Tile_HW1_LAST_TLS_LE: return "HW1_LAST_TLS_LE";
   }
   llvm_unreachable("Invalid variant kind");
 }
