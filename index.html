@@ -54,7 +54,7 @@ $ make -j40 (for cross build on X86, -j4...)
 
 <p>Clang/LLVM will generate huge binary, so the linking stage is very long. One tip to fast the linking is uing GOLD linker, it's 3x faster than GNU ld, and supported on TILE-Gx already.</p>
 
-<h3>Usagee</h3>
+<h3>Usage</h3>
 <p>On TILE-Gx native environment, is's simple, just as what has been documented on llvm manual.</p>
 <p>Compile .c directly into executable:</p>
 <pre><code>
@@ -145,11 +145,13 @@ $ llc/lli -march=tilegx hello.ll
 </tr>
 </table>
 
-<p> We are trying hard to implement all those left features. The recent work is focused on:</p>
+<p>We are trying hard to implement all those left features. The recent work is focused on:</p>
+<ul>
 <li>hard float.</li>
 <li>simd intrinsics and auto-generation.</li>
 <li>tail call optimization.</li>
 <li>scheduler improvements.</li>
+</ul>
 
 <h3>Support or Contact</h3>
 
