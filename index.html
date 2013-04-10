@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/tilera/llvm">View on GitHub</a>
 
           <h1 id="project_title">llvm-for-tilera</h1>
-          <h2 id="project_tagline">Mirror of official llvm git repository located at http://llvm.org/git/llvm.  Updated hourly.</h2>
+          <h2 id="project_tagline">Bring manycore to llvm.</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/tilera/llvm/zipball/master">Download this project as a .zip file</a>
@@ -31,24 +31,28 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h3>Introduction.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>TILE-Gx is Tilera's second generation high performance manycore(36/72/100 core) processor. It's with VLIW architecture, up to 3 issues each cycle, 64 64-bit general purpose registers, 64-bit address space and 64-bit instructions. TILE-Gx has load-store architecture ISAs. You find more hardware details here <a href="http://www.tilera.com/scm/docs/index.html">http://www.tilera.com/scm/docs/index.html</a>.</p>
+<p>Clang/LLVM support for Tilera TILE-Gx architecture has reached a quite stable status. Now it's open for anyone's access, please have a try. We appreicate all your feedbacks.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<h3>Getting Source Code</h3>
+<pre><code>
+$ git clone https://github.com/tilera/llvm.git
+$ cd llvm/tools/
+$ git checkout https://github.com/tilera/clang.git
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>Build From Source</h3>
 
-<h3>Designer Templates</h3>
+<pre><code>
+$ mkdir BUILD_ROOT
+$ cd BUILD_ROOT
+$ SOURCE_ROOT/configure --enable-targets=tilegx
+$ make -j40 (for cross build on X86, -j4...)
+</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Clang/LLVM will generate huge binary, so the linking stage is very long. One tip to fast the linking is uing GOLD linker, it's 3x faster than GNU ld, and supported on TILE-Gx already.</p>
 
 <h3>Support or Contact</h3>
 
@@ -59,7 +63,7 @@ $ git checkout gh-pages
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">llvm-for-tilera maintained by <a href="https://github.com/tilera">tilera</a></p>
+        <p class="copyright">llvm-for-tilera maintained by <a href="https://github.com/tilera">Tilera Corporation</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
