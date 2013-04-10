@@ -52,7 +52,10 @@ $ SOURCE_ROOT/configure --enable-targets=tilegx
 $ make -j40 (for cross build on X86, -j4...)
 </code></pre>
 
-<p>Clang/LLVM will generate huge binary, so the linking stage is very long. One tip to fast the linking is uing GOLD linker, it's 3x faster than GNU ld, and supported on TILE-Gx already.</p>
+<p>Clang/LLVM will generate huge binary, so the linking stage is very long. One tip to fast the linking is uing GOLD linker, it's 3x faster than GNU ld, and supported on TILE-Gx already. To build llvm using GOLD linker, you need to specify the extra -B option to relocate the linker used:</p>
+<pre><code>
+$ make CFLAGS+="-B/PATH_TO_GOLD_BIN/" CXXFLAGS+="-B/PATH_TO_GOLD_BIN/" -j40
+</code></pre>
 
 <h3>Usage</h3>
 <p>On TILE-Gx native environment, is's simple, just as what has been documented on llvm manual.</p>
