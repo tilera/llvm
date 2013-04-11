@@ -2575,7 +2575,7 @@ multiclass TileST4 {
          [],
          IIC_MM, FrmMM, S_X1_Y2>;
 
-  let isCodeGenOnly = 1 in
+  let isCodeGenOnly = 1 in {
   def #32#
       : TileSTOREY2
         <0x2,
@@ -2585,7 +2585,15 @@ multiclass TileST4 {
          [(store (i32 CPU32Regs:$rs), CPURegs:$addr)],
          IIC_MM, FrmMM, S_X1_Y2>;
 
-  let isCodeGenOnly = 1 in
+  def #1_F32#
+      : TileSTOREY2
+        <0x2,
+         (outs),
+         (ins CPURegs:$addr, CPU32Regs:$rs),
+         "st4 $addr, $rs",
+         [(store (f32 CPU32Regs:$rs), CPURegs:$addr)],
+         IIC_MM, FrmMM, S_X1_Y2>;
+
   def #64#
       : TileSTOREY2
         <0x2,
@@ -2594,6 +2602,7 @@ multiclass TileST4 {
          "st4 $addr, $rs",
          [(truncstorei32 (i64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
+  }
 }
 
 multiclass TileLD {
@@ -2824,7 +2833,7 @@ multiclass TileLD4S {
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
-  let isCodeGenOnly = 1 in
+  let isCodeGenOnly = 1 in {
   def #32#
       : TileLOADY2
         <0x2, 0x1,
@@ -2833,6 +2842,16 @@ multiclass TileLD4S {
          "ld4s $rd, $addr",
          [(set (i32 CPU32Regs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
+
+  def #1_F32#
+      : TileLOADY2
+        <0x2, 0x1,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$addr),
+         "ld4s $rd, $addr",
+         [(set (f32 CPU32Regs:$rd), (load CPURegs:$addr))],
+         IIC_MM, FrmUnary, S_X1_Y2>;
+  }
 }
 
 multiclass TileLD4U {

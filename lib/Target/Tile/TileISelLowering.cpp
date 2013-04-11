@@ -130,6 +130,24 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   // we need to sign extend i32 to i64.
   setOperationAction(ISD::SETCC, MVT::i32, Promote);
 
+  // TILE-Gx has partial hardware float point support.
+  //   1. No dedicated float regs, reuse integer regs.
+  //   2. Only support parts of float operations, mul/add etc,
+  //      no support of type conversions, for example, fp->dp etc.
+  //
+  // So our implementation for float support is:
+  //
+  //   1. We pretend to have complete hardware float support.
+  //      reuse integer regs as float regs.
+  //
+  //   2. Lower invalid float op into lib call in ISelLowering pass.
+  //
+  //   3. Split valid float op into corresponding inst sequences in
+  //      ISelDAGToDAG pass. Because even for those valid ops, they
+  //      can not be finished by a single instructions, we need a
+  //      instruction combination to finish the work.
+  setOperationAction(ISD::FP_EXTEND, MVT::f64, Custom);
+
   setLoadExtAction(ISD::EXTLOAD, MVT::f32, Expand);
   setTruncStoreAction(MVT::f64, MVT::f32, Expand);
 
@@ -312,6 +330,8 @@ TileTargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
     return lowerRETURNADDR(Op, DAG);
   case ISD::DYNAMIC_STACKALLOC:
     return lowerDYNAMIC_STACKALLOC(Op, DAG);
+  case ISD::FP_EXTEND:
+    return lowerFP_EXTEND(Op, DAG);
   }
   return SDValue();
 }
@@ -804,6 +824,23 @@ SDValue TileTargetLowering::lowerDYNAMIC_STACKALLOC(SDValue Op,
   return DAG.getMergeValues(Ops, 2, dl);
 }
 
+//===----------------------------------------------------------------------===//
+//                      Soft Float Implementation
+//===----------------------------------------------------------------------===//
+SDValue
+TileTargetLowering::lowerFP_EXTEND(SDValue Op, SelectionDAG &DAG) const {
+  if (Op.getOperand(0).getValueType() != MVT::f32) {
+    // It's legal except when f32 is involved
+    return Op;
+  }
+
+  RTLIB::Libcall LC;
+  LC  = RTLIB::getFPEXT(Op.getOperand(0).getValueType(), Op.getValueType());
+
+  SDValue SrcVal = Op.getOperand(0);
+  return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1,
+                     /*isSigned*/ false, Op.getDebugLoc());
+}
 //===----------------------------------------------------------------------===//
 //                      Calling Convention Implementation
 //===----------------------------------------------------------------------===//

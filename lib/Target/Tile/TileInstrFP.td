@@ -106,6 +106,15 @@ multiclass TileFSINGLE_PACK2 {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
+def FSINGLE_MUL
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_mul",
+       [(set (f32 CPU32Regs:$rd),
+          (fmul CPU32Regs:$rsa, CPU32Regs:$rsb))],
+       IIC_MUL>;
+
 defm FSINGLE_MUL1  : TileFSINGLE_MUL1;
 defm FSINGLE_MUL2  : TileFSINGLE_MUL2;
 defm FSINGLE_PACK1 : TileFSINGLE_PACK1;

@@ -86,15 +86,36 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
           .addImm(TFI->getMaxCallFrameSize() + (MFI->hasCalls() ? 16 : 0));
       break;
 
-    case Tile::ALLOCA_SP:
-      unsigned src_sp = Tile::SP;
+    case Tile::ALLOCA_SP: {
+      unsigned SrcSP = Tile::SP;
       if (MFI->hasCalls())
-        src_sp = I->getOperand(2).getReg();
+        SrcSP = I->getOperand(2).getReg();
 
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ADD),
-              I->getOperand(0).getReg()).addReg(Tile::ZERO).addReg(src_sp);
+              I->getOperand(0).getReg()).addReg(Tile::ZERO).addReg(SrcSP);
       break;
+    }
 
+    case Tile::FSINGLE_MUL: {
+      // f32 a * f32 b
+      //   fsingle_mul1  a, a, b
+      //   fsingle_mul2  b, a, b
+      //   fsingle_pack1 a, b
+      //   fsingle_pack1 b, b, a
+      unsigned DestReg = I->getOperand(0).getReg();
+      unsigned SraReg = I->getOperand(1).getReg();
+      unsigned SrbReg = I->getOperand(2).getReg();
+
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL1),
+              SraReg).addReg(SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL2),
+              SrbReg).addReg(SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK1),
+              SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK2),
+              DestReg).addReg(SrbReg).addReg(SraReg);
+      break;
+    }
     }
 
     // Delete original instr.
