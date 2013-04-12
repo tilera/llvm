@@ -90,6 +90,7 @@ public:
   EVT getSetCCResultType(EVT VT) const;
 
   virtual SDValue PerformDAGCombine(SDNode *N, DAGCombinerInfo &DCI) const;
+
 private:
   // Subtarget Info.
   const TileSubtarget *Subtarget;

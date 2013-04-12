@@ -42,8 +42,8 @@ struct TileExpandPseudo : public MachineFunctionPass {
 
 private:
   void ExpandBuildPairF64(MachineBasicBlock &, MachineBasicBlock::iterator);
-  void ExpandExtractElementF64(MachineBasicBlock &,
-                               MachineBasicBlock::iterator);
+  void
+  ExpandExtractElementF64(MachineBasicBlock &, MachineBasicBlock::iterator);
 };
 char TileExpandPseudo::ID = 0;
 } // end of anonymous namespace
@@ -77,7 +77,7 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
           .addImm(MFI->getStackSize() + MFI->getOffsetAdjustment());
       break;
 
-      // The addr alloca returned should by adjusted by the size
+    // The addr alloca returned should by adjusted by the size
     // of Tile 16bytes zone and arg outgoing zone.
     case Tile::ALLOCA_ADDR:
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ADDLI),
@@ -106,14 +106,14 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       unsigned SraReg = I->getOperand(1).getReg();
       unsigned SrbReg = I->getOperand(2).getReg();
 
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL1),
-              SraReg).addReg(SraReg).addReg(SrbReg);
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL2),
-              SrbReg).addReg(SraReg).addReg(SrbReg);
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK1),
-              SraReg).addReg(SrbReg);
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK2),
-              DestReg).addReg(SrbReg).addReg(SraReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL1), SraReg)
+          .addReg(SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL2), SrbReg)
+          .addReg(SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK1), SraReg)
+          .addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK2), DestReg)
+          .addReg(SrbReg).addReg(SraReg);
       break;
     }
     }

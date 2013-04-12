@@ -343,8 +343,8 @@ TileTargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
 // This helper function adds the specified physical register to the
 // MachineFunction as a live in value.  It also creates a corresponding
 // virtual register for it.
-static unsigned AddLiveIn(MachineFunction &MF, unsigned PReg,
-                          const TargetRegisterClass *RC) {
+static unsigned
+AddLiveIn(MachineFunction &MF, unsigned PReg, const TargetRegisterClass *RC) {
   assert(RC->contains(PReg) && "Not the correct regclass!");
   unsigned VReg = MF.getRegInfo().createVirtualRegister(RC);
   MF.getRegInfo().addLiveIn(PReg, VReg);
@@ -835,11 +835,11 @@ TileTargetLowering::lowerFP_EXTEND(SDValue Op, SelectionDAG &DAG) const {
   }
 
   RTLIB::Libcall LC;
-  LC  = RTLIB::getFPEXT(Op.getOperand(0).getValueType(), Op.getValueType());
+  LC = RTLIB::getFPEXT(Op.getOperand(0).getValueType(), Op.getValueType());
 
   SDValue SrcVal = Op.getOperand(0);
-  return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1,
-                     /*isSigned*/ false, Op.getDebugLoc());
+  return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1, /*isSigned*/ false,
+                     Op.getDebugLoc());
 }
 //===----------------------------------------------------------------------===//
 //                      Calling Convention Implementation
@@ -849,9 +849,9 @@ static const uint16_t TileIntRegs[TILEGX_AREG_NUM] = {
   Tile::R7, Tile::R8, Tile::R9
 };
 
-static bool CC_TileByval(unsigned ValNo, MVT ValVT, MVT LocVT,
-                         CCValAssign::LocInfo LocInfo, ISD::ArgFlagsTy ArgFlags,
-                         CCState &State) {
+static bool
+CC_TileByval(unsigned ValNo, MVT ValVT, MVT LocVT, CCValAssign::LocInfo LocInfo,
+             ISD::ArgFlagsTy ArgFlags, CCState &State) {
   unsigned Align = std::max(ArgFlags.getByValAlign(), (unsigned) 8);
   unsigned Size = RoundUpToAlignment(ArgFlags.getByValSize(), Align);
   unsigned FirstIdx = State.getFirstUnallocated(TileIntRegs, TILEGX_AREG_NUM);
@@ -1580,8 +1580,8 @@ bool TileTargetLowering::isFPImmLegal(const APFloat &Imm, EVT VT) const {
   return Imm.isZero();
 }
 
-bool TileTargetLowering::isOffsetFoldingLegal(
-    const GlobalAddressSDNode *GA) const {
+bool
+TileTargetLowering::isOffsetFoldingLegal(const GlobalAddressSDNode *GA) const {
   // The Tile target isn't yet aware of offsets.
   return false;
 }

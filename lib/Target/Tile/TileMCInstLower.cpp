@@ -123,9 +123,9 @@ static MCOperand GetSymbolRef(const MachineOperand &MO, const MCSymbol *Symbol,
   return MCOperand::CreateExpr(Expr);
 }
 
-static unsigned mapToOpcodeWithIssueSlot(
-    unsigned Op, const unsigned IssueSlot,
-    const TileII::TileIssueType IssueType) {
+static unsigned
+mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
+                         const TileII::TileIssueType IssueType) {
 
   // Adjust some pseudo opcode to their actual opcode
   switch (Op) {
@@ -199,12 +199,10 @@ static unsigned mapToOpcodeWithIssueSlot(
 
   switch (IssueType) {
   case TileII::IT_X0:
-    assert(IssueSlot == TileII::ST_X0 &&
-           "mismatch IssueSlot and IssueType!");
+    assert(IssueSlot == TileII::ST_X0 && "mismatch IssueSlot and IssueType!");
     return Op + 1;
   case TileII::IT_X1:
-    assert(IssueSlot == TileII::ST_X1 &&
-           "mismatch IssueSlot and IssueType!");
+    assert(IssueSlot == TileII::ST_X1 && "mismatch IssueSlot and IssueType!");
     return Op + 1;
   case TileII::IT_X0X1:
     assert((IssueSlot == TileII::ST_X0 || IssueSlot == TileII::ST_X1) &&
