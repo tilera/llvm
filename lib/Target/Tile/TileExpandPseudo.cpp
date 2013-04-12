@@ -96,27 +96,6 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       break;
     }
 
-    case Tile::FSINGLE_MUL: {
-      // f32 a * f32 b
-      //   fsingle_mul1  a, a, b
-      //   fsingle_mul2  b, a, b
-      //   fsingle_pack1 a, b
-      //   fsingle_pack1 b, b, a
-      unsigned DestReg = I->getOperand(0).getReg();
-      unsigned SraReg = I->getOperand(1).getReg();
-      unsigned SrbReg = I->getOperand(2).getReg();
-
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL1), SraReg)
-          .addReg(SraReg).addReg(SrbReg);
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_MUL2), SrbReg)
-          .addReg(SraReg).addReg(SrbReg);
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK1), SraReg)
-          .addReg(SrbReg);
-      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::FSINGLE_PACK2), DestReg)
-          .addReg(SrbReg).addReg(SraReg);
-      break;
-    }
-
     case Tile::FSINGLE_CMP_LT:
     case Tile::FSINGLE_CMP_LE:
     case Tile::FSINGLE_CMP_GT:

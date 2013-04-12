@@ -233,15 +233,6 @@ multiclass TileFDOUBLE_UNPACK_MAX {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
-def FSINGLE_MUL
-    : TilePseudo
-      <(outs CPU32Regs:$rd),
-       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_mul",
-       [(set (f32 CPU32Regs:$rd),
-          (fmul CPU32Regs:$rsa, CPU32Regs:$rsb))],
-       IIC_MUL>;
-
 def FSINGLE_CMP_LT
     : TilePseudo
       <(outs CPU32Regs:$rd),
