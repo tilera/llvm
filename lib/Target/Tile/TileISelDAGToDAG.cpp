@@ -283,6 +283,65 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
                                   Node->getOperand(0));
   }
 
+  case ISD::FMUL: {
+
+    if (NodeTy == MVT::f32)
+      break;
+
+    // for f64 multiply, TILE-Gx need to use
+    // instruction sequences to finish the work.
+    //
+    // this sequences is copied from TILE-Gx gcc.
+    SDNode *Temp0 =
+        CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64,
+                               Node->getOperand(0), CurDAG->getRegister(Tile::ZERO, MVT::f64));
+    SDNode *Temp1 =
+        CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64,
+                               Node->getOperand(1), CurDAG->getRegister(Tile::ZERO, MVT::f64));
+    SDNode *Temp2 =
+        CurDAG->getMachineNode(Tile::FDOUBLE_MUL_FLAGS, dl, MVT::f64,
+                               Node->getOperand(0), Node->getOperand(1));
+    SDNode *Temp3 =
+        CurDAG->getMachineNode(Tile::MUL_LU_LU, dl, MVT::f64,
+                               SDValue(Temp0, 0), SDValue(Temp1, 0));
+    SDNode *Temp4 =
+        CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::f64,
+                               SDValue(Temp0, 0), SDValue(Temp1, 0));
+    SDNode *Temp5 =
+        CurDAG->getMachineNode(Tile::MULA_HU_LU, dl, MVT::f64, SDValue(Temp4, 0),
+                               SDValue(Temp1, 0), SDValue(Temp0, 0));
+    SDNode *Temp6 =
+        CurDAG->getMachineNode(Tile::MUL_HU_HU, dl, MVT::f64,
+                               SDValue(Temp0, 0), SDValue(Temp1, 0));
+    SDNode *Temp7 =
+        CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64,
+                               SDValue(Temp5, 0), CurDAG->getTargetConstant(32, MVT::i64));
+    SDNode *Temp8 =
+        CurDAG->getMachineNode(Tile::SHRUI, dl, MVT::i64,
+                               SDValue(Temp5, 0), CurDAG->getTargetConstant(32, MVT::i64));
+    SDNode *Temp9 =
+        CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64,
+                               SDValue(Temp6, 0), SDValue(Temp8, 0));
+    SDNode *Temp10 =
+        CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64,
+                               SDValue(Temp3, 0), SDValue(Temp7, 0));
+
+    SDNode *Temp11 =
+        CurDAG->getMachineNode(Tile::CMPLTU, dl, MVT::i64,
+                               SDValue(Temp10, 0), SDValue(Temp7, 0));
+
+    SDNode *Temp12 =
+        CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64,
+                               SDValue(Temp9, 0), SDValue(Temp11, 0));
+
+    SDNode *Temp13 =
+        CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64,
+                               SDValue(Temp12, 0), SDValue(Temp2, 0));
+
+   return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64,
+                               SDValue(Temp12, 0), SDValue(Temp10, 0), SDValue(Temp13, 0));
+  }
+
   // Get target GOT address.
   case ISD::GLOBAL_OFFSET_TABLE:
     return getGlobalBaseReg();

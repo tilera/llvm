@@ -3350,6 +3350,68 @@ multiclass TileMUL_HU_LU {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
+let isCommutable = 1 in
+multiclass TileMUL_LU_LU {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x3E,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_lu_lu $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x3E,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_lu_lu $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0xD, 0x3,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_lu_lu $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+}
+
+let isCommutable = 1 in
+multiclass TileMUL_HU_HU {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x39,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hu_hu $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x39,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hu_hu $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0xD, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hu_hu $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+}
+
 let Constraints = "$rd0 = $rd" in
 multiclass TileMULA_HU_LU {
 
@@ -3706,6 +3768,8 @@ defm BRINDJT: TileBRINDJT;
 // MUL
 defm MULX   : TileMULX;
 defm MUL_HU_LU   : TileMUL_HU_LU;
+defm MUL_LU_LU   : TileMUL_LU_LU;
+defm MUL_HU_HU   : TileMUL_HU_HU;
 defm MULA_HU_LU  : TileMULA_HU_LU;
 defm MULA_LU_LU  : TileMULA_LU_LU;
 

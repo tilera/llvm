@@ -148,9 +148,11 @@ static unsigned mapToOpcodeWithIssueSlot(
   case Tile::LD2S32:
   case Tile::LD2U32:
   case Tile::LD4S32:
+  case Tile::ST41_F32:
   case Tile::MOVELI32:
   case Tile::V4INT_L32:
   case Tile::CMOVNEZ32:
+  case Tile::LD4S1_F32:
   case Tile::SHLXI32_64:
   case Tile::CMPLTUI32_64:
   case Tile::SHL16INSLI32:
@@ -181,9 +183,15 @@ static unsigned mapToOpcodeWithIssueSlot(
   case Tile::CMPLTU32_64:
     Op = Op - 6;
     break;
+  case Tile::ST1_F64:
+    Op = Op - 7;
+    break;
   case Tile::SHL64_32:
     // Alphabetic overlapped with SHL16INSLI
     Op = Op - 9;
+    break;
+  case Tile::LD1_F64:
+    Op = Op - 11;
     break;
   default:
     break;

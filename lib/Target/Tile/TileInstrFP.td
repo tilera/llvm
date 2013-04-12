@@ -106,6 +106,91 @@ multiclass TileFSINGLE_PACK2 {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
+multiclass TileFDOUBLE_PACK1 {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x1D,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_pack1 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x1D,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_pack1 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
+let Constraints = "$rd = $rsc" in
+multiclass TileFDOUBLE_PACK2 {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x1E,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
+         "fdouble_pack2 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x1E,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
+         "fdouble_pack2 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
+multiclass TileFDOUBLE_MUL_FLAGS {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x1C,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_mul_flags $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x1C,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_mul_flags $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
+multiclass TileFDOUBLE_UNPACK_MAX {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x20,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_unpack_max $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x20,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_unpack_max $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
 def FSINGLE_MUL
     : TilePseudo
       <(outs CPU32Regs:$rd),
@@ -119,3 +204,7 @@ defm FSINGLE_MUL1  : TileFSINGLE_MUL1;
 defm FSINGLE_MUL2  : TileFSINGLE_MUL2;
 defm FSINGLE_PACK1 : TileFSINGLE_PACK1;
 defm FSINGLE_PACK2 : TileFSINGLE_PACK2;
+defm FDOUBLE_PACK1 : TileFDOUBLE_PACK1;
+defm FDOUBLE_PACK2 : TileFDOUBLE_PACK2;
+defm FDOUBLE_MUL_FLAGS  : TileFDOUBLE_MUL_FLAGS;
+defm FDOUBLE_UNPACK_MAX : TileFDOUBLE_UNPACK_MAX;
