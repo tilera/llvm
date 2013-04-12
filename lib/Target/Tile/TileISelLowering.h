@@ -42,12 +42,6 @@ enum NodeType {
   // Unary operand move
   MOVE,
 
-  // Floating Point Branch Conditional
-  FPBrcond,
-
-  // Floating Point Compare
-  FPCmp,
-
   // Floating Point Conditional Moves
   CMovFP_T,
   CMovFP_F,

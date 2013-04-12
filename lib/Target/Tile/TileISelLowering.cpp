@@ -66,14 +66,6 @@ const char *TileTargetLowering::getTargetNodeName(unsigned Opcode) const {
     return "TileISD::JmpLink";
   case TileISD::Ret:
     return "TileISD::Ret";
-  case TileISD::FPBrcond:
-    return "TileISD::FPBrcond";
-  case TileISD::FPCmp:
-    return "TileISD::FPCmp";
-  case TileISD::CMovFP_T:
-    return "TileISD::CMovFP_T";
-  case TileISD::CMovFP_F:
-    return "TileISD::CMovFP_F";
   case TileISD::MF:
     return "TileISD::MF";
   case TileISD::BRINDJT:
