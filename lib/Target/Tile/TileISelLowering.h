@@ -113,6 +113,7 @@ private:
   SDValue lowerMEMBARRIER(SDValue Op, SelectionDAG &DAG) const;
   SDValue lowerATOMIC_FENCE(SDValue Op, SelectionDAG &DAG) const;
   SDValue lowerFP_EXTEND(SDValue Op, SelectionDAG &DAG) const;
+  SDValue lowerFpIntConv(SDValue Op, SelectionDAG &DAG) const;
 
   virtual SDValue LowerFormalArguments(
       SDValue Chain, CallingConv::ID CallConv, bool isVarArg,

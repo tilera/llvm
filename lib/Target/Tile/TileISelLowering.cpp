@@ -154,6 +154,12 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::VAARG, MVT::Other, Custom);
 
   // Float.
+  setOperationAction(ISD::SINT_TO_FP, MVT::i64, Custom);
+  setOperationAction(ISD::UINT_TO_FP, MVT::i64, Custom);
+  setOperationAction(ISD::FP_TO_SINT, MVT::i32, Custom);
+  setOperationAction(ISD::FP_TO_SINT, MVT::i64, Custom);
+  setOperationAction(ISD::FP_TO_UINT, MVT::i32, Custom);
+  setOperationAction(ISD::FP_TO_UINT, MVT::i64, Custom);
   setOperationAction(ISD::FDIV, MVT::f32, Expand);
   setOperationAction(ISD::FDIV, MVT::f64, Expand);
   setOperationAction(ISD::FCOPYSIGN, MVT::f32, Custom);
@@ -326,6 +332,11 @@ TileTargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
     return lowerDYNAMIC_STACKALLOC(Op, DAG);
   case ISD::FP_EXTEND:
     return lowerFP_EXTEND(Op, DAG);
+  case ISD::SINT_TO_FP:
+  case ISD::UINT_TO_FP:
+  case ISD::FP_TO_SINT:
+  case ISD::FP_TO_UINT:
+    return lowerFpIntConv(Op, DAG);
   }
   return SDValue();
 }
@@ -832,9 +843,39 @@ TileTargetLowering::lowerFP_EXTEND(SDValue Op, SelectionDAG &DAG) const {
   LC = RTLIB::getFPEXT(Op.getOperand(0).getValueType(), Op.getValueType());
 
   SDValue SrcVal = Op.getOperand(0);
-  return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1, /*isSigned*/ false,
+  return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1, false,
                      Op.getDebugLoc());
 }
+
+SDValue
+TileTargetLowering::lowerFpIntConv(SDValue Op, SelectionDAG &DAG) const {
+  RTLIB::Libcall LC;
+  switch (Op.getOpcode()) {
+  case ISD::FP_TO_SINT:
+    LC = RTLIB::getFPTOSINT(Op.getOperand(0).getValueType(), Op.getValueType());
+    break;
+  case ISD::FP_TO_UINT:
+    LC = RTLIB::getFPTOUINT(Op.getOperand(0).getValueType(), Op.getValueType());
+    break;
+  case ISD::SINT_TO_FP:
+    if (Op.getOperand(0).getValueType() == MVT::i32)
+      return Op;
+    LC = RTLIB::getSINTTOFP(Op.getOperand(0).getValueType(), Op.getValueType());
+    break;
+  case ISD::UINT_TO_FP:
+    if (Op.getOperand(0).getValueType() == MVT::i32)
+      return Op;
+    LC = RTLIB::getUINTTOFP(Op.getOperand(0).getValueType(), Op.getValueType());
+    break;
+  default:
+    llvm_unreachable("lowerFpIntConv: unexpected type met!");
+  }
+
+  SDValue SrcVal = Op.getOperand(0);
+  return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1, false,
+                     Op.getDebugLoc());
+}
+
 //===----------------------------------------------------------------------===//
 //                      Calling Convention Implementation
 //===----------------------------------------------------------------------===//
