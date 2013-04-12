@@ -34,6 +34,49 @@ multiclass TileFSINGLE_ADD1 {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
+multiclass TileFSINGLE_SUB1 {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x27,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "fsingle_sub1 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x27,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "fsingle_sub1 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
+let Constraints = "$rd = $rsc" in
+multiclass TileFSINGLE_ADDSUB2 {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x23,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rsc),
+         "fsingle_addsub2 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x23,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rsc),
+         "fsingle_addsub2 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
 multiclass TileFSINGLE_MUL1 {
 
   def #NAME#
@@ -170,6 +213,28 @@ multiclass TileFDOUBLE_PACK2 {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
+let Constraints = "$rd = $rsc" in
+multiclass TileFDOUBLE_ADDSUB {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x1A,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
+         "fdouble_addsub $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x1A,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
+         "fdouble_addsub $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
 multiclass TileFDOUBLE_MUL_FLAGS {
 
   def #NAME#
@@ -212,6 +277,27 @@ multiclass TileFDOUBLE_ADD_FLAGS {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
+multiclass TileFDOUBLE_SUB_FLAGS {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x1F,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_sub_flags $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x1F,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_sub_flags $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
 multiclass TileFDOUBLE_UNPACK_MAX {
 
   def #NAME#
@@ -229,6 +315,27 @@ multiclass TileFDOUBLE_UNPACK_MAX {
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
          "fdouble_unpack_max $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
+multiclass TileFDOUBLE_UNPACK_MIN {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x21,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_unpack_min $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x21,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "fdouble_unpack_min $rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -342,12 +449,17 @@ def FDOUBLE_CMP_NE
        IIC_MUL>;
 
 defm FSINGLE_ADD1  : TileFSINGLE_ADD1;
+defm FSINGLE_SUB1  : TileFSINGLE_SUB1;
 defm FSINGLE_MUL1  : TileFSINGLE_MUL1;
 defm FSINGLE_MUL2  : TileFSINGLE_MUL2;
 defm FSINGLE_PACK1 : TileFSINGLE_PACK1;
 defm FSINGLE_PACK2 : TileFSINGLE_PACK2;
+defm FSINGLE_ADDSUB2 : TileFSINGLE_ADDSUB2;
 defm FDOUBLE_PACK1 : TileFDOUBLE_PACK1;
 defm FDOUBLE_PACK2 : TileFDOUBLE_PACK2;
+defm FDOUBLE_ADDSUB  : TileFDOUBLE_ADDSUB;
 defm FDOUBLE_MUL_FLAGS  : TileFDOUBLE_MUL_FLAGS;
 defm FDOUBLE_ADD_FLAGS  : TileFDOUBLE_ADD_FLAGS;
+defm FDOUBLE_SUB_FLAGS  : TileFDOUBLE_SUB_FLAGS;
+defm FDOUBLE_UNPACK_MIN : TileFDOUBLE_UNPACK_MIN;
 defm FDOUBLE_UNPACK_MAX : TileFDOUBLE_UNPACK_MAX;

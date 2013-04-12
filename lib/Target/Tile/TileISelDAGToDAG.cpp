@@ -84,6 +84,10 @@ private:
   // Select instructions not customized.
   SDNode *Select(SDNode *N);
 
+  // Select Float Operations.
+  SDNode *SelectSingleFloatBinOp(SDNode *N);
+  SDNode *SelectDoubleFloatBinOp(SDNode *N);
+
   // Complex Pattern.
   bool SelectFI(SDValue N, SDValue &R1);
 
@@ -204,6 +208,70 @@ bool TileDAGToDAGISel::SelectFI(SDValue N, SDValue &R1) {
   return false;
 }
 
+SDNode *TileDAGToDAGISel::SelectDoubleFloatBinOp(SDNode *Node) {
+
+  unsigned Opcode = Node->getOpcode();
+  DebugLoc dl = Node->getDebugLoc();
+  unsigned FlagOpcode = Tile::FDOUBLE_ADD_FLAGS;
+  SDNode *Min, *Max, *Mid, *Flag, *Result;
+
+  if (Opcode == ISD::FSUB)
+    FlagOpcode = Tile::FDOUBLE_SUB_FLAGS;
+
+  Min = CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MIN, dl, MVT::f64,
+                               Node->getOperand(0), Node->getOperand(1));
+  Max = CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64,
+                               Node->getOperand(0), Node->getOperand(1));
+  Flag = CurDAG->getMachineNode(FlagOpcode, dl, MVT::f64, Node->getOperand(0),
+                                Node->getOperand(1));
+
+  Mid = CurDAG->getMachineNode(Tile::FDOUBLE_ADDSUB, dl, MVT::f64,
+                               SDValue(Min, 0), SDValue(Flag, 0),
+                               SDValue(Max, 0));
+
+  Result = CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64,
+                                  SDValue(Mid, 0), SDValue(Flag, 0));
+  return CurDAG->getMachineNode(
+      Tile::FDOUBLE_PACK2, dl, MVT::f64, SDValue(Mid, 0),
+      CurDAG->getRegister(Tile::ZERO, MVT::f64), SDValue(Result, 0));
+}
+
+SDNode *TileDAGToDAGISel::SelectSingleFloatBinOp(SDNode *Node) {
+
+  unsigned Opcode = Node->getOpcode();
+  DebugLoc dl = Node->getDebugLoc();
+  unsigned Part1Opcode, Part2Opcode = Tile::FSINGLE_ADDSUB2;
+  SDNode *Temp0, *Temp1, *Flag;
+  switch (Opcode) {
+  case ISD::FADD:
+    Part1Opcode = Tile::FSINGLE_ADD1;
+    break;
+  case ISD::FSUB:
+    Part1Opcode = Tile::FSINGLE_SUB1;
+    break;
+  case ISD::FMUL:
+    Part1Opcode = Tile::FSINGLE_MUL1;
+    Part2Opcode = Tile::FSINGLE_MUL2;
+    break;
+  default:
+    llvm_unreachable("SelectSingleFloatBinOp: unexpected Opcode.\n");
+  }
+  Temp0 = CurDAG->getMachineNode(Part1Opcode, dl, MVT::f32, Node->getOperand(0),
+                                 Node->getOperand(1));
+  if (Opcode == ISD::FMUL)
+    Temp1 = CurDAG->getMachineNode(Part2Opcode, dl, MVT::f32, SDValue(Temp0, 0),
+                                   Node->getOperand(1));
+  else
+
+    Temp1 =
+        CurDAG->getMachineNode(Part2Opcode, dl, MVT::f32, Node->getOperand(0),
+                               Node->getOperand(1), SDValue(Temp0, 0));
+  Flag = CurDAG->getMachineNode(Tile::FSINGLE_PACK1, dl, MVT::f32,
+                                SDValue(Temp1, 0));
+  return CurDAG->getMachineNode(Tile::FSINGLE_PACK2, dl, MVT::f32,
+                                SDValue(Temp1, 0), SDValue(Flag, 0));
+}
+
 SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
   unsigned Opcode = Node->getOpcode();
   DebugLoc dl = Node->getDebugLoc();
@@ -282,6 +350,17 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
                                   Node->getOperand(0));
   }
 
+  case ISD::FADD:
+  case ISD::FSUB:
+
+    if (NodeTy == MVT::f32)
+      return SelectSingleFloatBinOp(Node);
+
+    assert(NodeTy == MVT::f64 &&
+           "FADD: no support for other types except f32/f64");
+    return SelectDoubleFloatBinOp(Node);
+    break;
+
   case ISD::FMUL: {
 
     // for float multiply, TILE-Gx need to use
@@ -289,18 +368,11 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
     //
     // these sequences are copied from TILE-Gx gcc md files.
 
-    if (NodeTy == MVT::f32) {
-      SDNode *Temp0 =
-          CurDAG->getMachineNode(Tile::FSINGLE_MUL1, dl, MVT::f32,
-                                 Node->getOperand(0), Node->getOperand(1));
-      SDNode *Temp1 =
-          CurDAG->getMachineNode(Tile::FSINGLE_MUL2, dl, MVT::f32,
-                                 SDValue(Temp0, 0), Node->getOperand(1));
-      SDNode *Flag = CurDAG->getMachineNode(Tile::FSINGLE_PACK1, dl, MVT::f32,
-                                            SDValue(Temp1, 0));
-      return CurDAG->getMachineNode(Tile::FSINGLE_PACK2, dl, MVT::f32,
-                                    SDValue(Temp1, 0), SDValue(Flag, 0));
-    }
+    if (NodeTy == MVT::f32)
+      return SelectSingleFloatBinOp(Node);
+
+    assert(NodeTy == MVT::f64 &&
+           "FMUL: no support for other types except f32/f64");
 
     SDNode *UnpackedA = CurDAG->getMachineNode(
         Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64, Node->getOperand(0),
