@@ -1323,7 +1323,7 @@ SDValue TileTargetLowering::LowerFormalArguments(
       unsigned ArgReg = VA.getLocReg();
       const TargetRegisterClass *RC;
 
-      if (RegVT == MVT::i32)
+      if (RegVT == MVT::i32 || RegVT == MVT::f32)
         RC = &Tile::CPU32RegsRegClass;
       else
         RC = &Tile::CPURegsRegClass;
