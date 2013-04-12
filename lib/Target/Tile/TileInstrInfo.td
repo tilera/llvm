@@ -3120,6 +3120,27 @@ multiclass TileV4INT_L {
          IIC_SIMD, FrmRRR, S_X0_X1>;
 }
 
+multiclass TileBFEXTU {
+
+  def #NAME#
+      : TileInstX0MM
+        <0x3, 0x5,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
+         "bfextu $rd, $rs, $bfstart, $bfend",
+         [],
+         IIC_BIT_P0, FrmRRR, S_X0_X1>;
+
+  def #0_X0#
+      : TileBundleX0MM
+        <0x3, 0x5,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
+         "bfextu $rd, $rs, $bfstart, $bfend",
+         [],
+         IIC_BIT_P0, FrmRRR, S_X0_X1>;
+}
+
 let isCodeGenOnly = 1 in
 multiclass TileLNK {
 
@@ -3714,6 +3735,7 @@ defm ROTLI: TileROTLI;
 defm PCNT : TilePCNT;
 defm REVBYTES: TileREVBYTES;
 defm V4INT_L : TileV4INT_L;
+defm BFEXTU  : TileBFEXTU;
 
 
 // CMP

@@ -119,6 +119,26 @@ class TileInstX0Unary<bits<3> op, bits<10> sub_op, bits<6> u_op,
   let Inst{5-0} = rd;
 }
 
+class TileInstX0MM<bits<3> op, bits<4> sub_op,
+                   dag outs, dag ins,
+                   string asmstr, list<dag> pattern, InstrItinClass itin,
+                   TileFormat f, TileValidSlot s>
+      : TileInst<outs, ins, asmstr, pattern, itin, f, s> {
+  bits<6>  rs;
+  bits<6>  rd;
+  bits<6>  bfstart;
+  bits<6>  bfend;
+
+  let Inst{63-62} = 0x0;
+  let Inst{61-31} = 0x50d46000;
+  let Inst{30-28} = op;
+  let Inst{27-24} = sub_op;
+  let Inst{23-18} = bfstart;
+  let Inst{17-12} = bfend;
+  let Inst{11-6} = rs;
+  let Inst{5-0} = rd;
+}
+
 // A solo instruction issued from X1 slot, packed with FNOP.
 // {
 // FNOP
@@ -934,6 +954,24 @@ class TileBundleX1JR<bits<3> op, bits<10> sub_op, bits<6> u_op,
   let Inst{48-43} = u_op;
   let Inst{42-37} = rs;
   let Inst{36-31} = 0x0;
+}
+
+class TileBundleX0MM<bits<3> op, bits<4> sub_op,
+                     dag outs, dag ins,
+                     string asmstr, list<dag> pattern, InstrItinClass itin,
+                     TileFormat f, TileValidSlot s>
+      : TileInst<outs, ins, asmstr, pattern, itin, f, s> {
+  bits<6>  rs;
+  bits<6>  rd;
+  bits<6>  bfstart;
+  bits<6>  bfend;
+
+  let Inst{30-28} = op;
+  let Inst{27-24} = sub_op;
+  let Inst{23-18} = bfstart;
+  let Inst{17-12} = bfend;
+  let Inst{11-6} = rs;
+  let Inst{5-0} = rd;
 }
 
 class TilePseudo<dag outs,
