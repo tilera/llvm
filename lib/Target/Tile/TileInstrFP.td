@@ -358,110 +358,200 @@ multiclass TileFDOUBLE_UNPACK_MIN {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
-def FSINGLE_CMP_LT
+def FSINGLE_CMP_OLT
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_cmp_lt",
+       "#fsingle_cmp_olt",
        [(set (i32 CPU32Regs:$rd),
           (setolt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
        IIC_MUL>;
 
-def FDOUBLE_CMP_LT
+def FSINGLE_CMP_ULT
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_cmp_ult",
+       [(set (i32 CPU32Regs:$rd),
+          (setult (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
+def FDOUBLE_CMP_OLT
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
-       "#fdouble_cmp_lt",
+       "#fdouble_cmp_olt",
        [(set (i32 CPU32Regs:$rd),
           (setolt (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
-def FSINGLE_CMP_LE
+def FDOUBLE_CMP_ULT
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_ult",
+       [(set (i32 CPU32Regs:$rd),
+          (setult (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+def FSINGLE_CMP_OLE
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_cmp_le",
+       "#fsingle_cmp_ole",
        [(set (i32 CPU32Regs:$rd),
           (setole (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
        IIC_MUL>;
 
-def FDOUBLE_CMP_LE
+def FSINGLE_CMP_ULE
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_cmp_ule",
+       [(set (i32 CPU32Regs:$rd),
+          (setule (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
+def FDOUBLE_CMP_OLE
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
-       "#fdouble_cmp_le",
+       "#fdouble_cmp_ole",
        [(set (i32 CPU32Regs:$rd),
           (setole (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
-def FSINGLE_CMP_GT
+def FDOUBLE_CMP_ULE
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_ule",
+       [(set (i32 CPU32Regs:$rd),
+          (setule (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+def FSINGLE_CMP_OGT
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_cmp_gt",
+       "#fsingle_cmp_ogt",
        [(set (i32 CPU32Regs:$rd),
           (setogt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
        IIC_MUL>;
 
-def FDOUBLE_CMP_GT
+def FSINGLE_CMP_UGT
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_cmp_ugt",
+       [(set (i32 CPU32Regs:$rd),
+          (setugt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
+def FDOUBLE_CMP_OGT
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
-       "#fdouble_cmp_gt",
+       "#fdouble_cmp_ogt",
        [(set (i32 CPU32Regs:$rd),
           (setogt (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
-def FSINGLE_CMP_GE
+def FDOUBLE_CMP_UGT
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_ugt",
+       [(set (i32 CPU32Regs:$rd),
+          (setugt (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+def FSINGLE_CMP_OGE
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_cmp_ge",
+       "#fsingle_cmp_oge",
        [(set (i32 CPU32Regs:$rd),
           (setoge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
        IIC_MUL>;
 
-def FDOUBLE_CMP_GE
+def FSINGLE_CMP_UGE
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_cmp_uge",
+       [(set (i32 CPU32Regs:$rd),
+          (setuge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
+def FDOUBLE_CMP_OGE
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
-       "#fdouble_cmp_ge",
+       "#fdouble_cmp_oge",
        [(set (i32 CPU32Regs:$rd),
           (setoge (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
-def FSINGLE_CMP_EQ
+def FDOUBLE_CMP_UGE
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_uge",
+       [(set (i32 CPU32Regs:$rd),
+          (setuge (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+def FSINGLE_CMP_OEQ
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_cmp_eq",
+       "#fsingle_cmp_oeq",
        [(set (i32 CPU32Regs:$rd),
           (setoeq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
        IIC_MUL>;
 
-def FDOUBLE_CMP_EQ
+def FSINGLE_CMP_UEQ
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_cmp_ueq",
+       [(set (i32 CPU32Regs:$rd),
+          (setueq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
+def FDOUBLE_CMP_OEQ
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
-       "#fdouble_cmp_eq",
+       "#fdouble_cmp_oeq",
        [(set (i32 CPU32Regs:$rd),
           (setoeq (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
-def FSINGLE_CMP_NE
+def FDOUBLE_CMP_UEQ
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_ueq",
+       [(set (i32 CPU32Regs:$rd),
+          (setueq (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+def FSINGLE_CMP_UNE
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-       "#fsingle_cmp_ne",
+       "#fsingle_cmp_une",
        [(set (i32 CPU32Regs:$rd),
           (setune (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
        IIC_MUL>;
 
-def FDOUBLE_CMP_NE
+def FDOUBLE_CMP_UNE
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
-       "#fdouble_cmp_ne",
+       "#fdouble_cmp_une",
        [(set (i32 CPU32Regs:$rd),
           (setune (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;

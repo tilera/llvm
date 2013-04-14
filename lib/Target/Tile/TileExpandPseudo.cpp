@@ -96,18 +96,28 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       break;
     }
 
-    case Tile::FSINGLE_CMP_LT:
-    case Tile::FSINGLE_CMP_LE:
-    case Tile::FSINGLE_CMP_GT:
-    case Tile::FSINGLE_CMP_GE:
-    case Tile::FSINGLE_CMP_EQ:
-    case Tile::FSINGLE_CMP_NE:
-    case Tile::FDOUBLE_CMP_LT:
-    case Tile::FDOUBLE_CMP_LE:
-    case Tile::FDOUBLE_CMP_GT:
-    case Tile::FDOUBLE_CMP_GE:
-    case Tile::FDOUBLE_CMP_EQ:
-    case Tile::FDOUBLE_CMP_NE: {
+    case Tile::FSINGLE_CMP_OLT:
+    case Tile::FSINGLE_CMP_OLE:
+    case Tile::FSINGLE_CMP_OGT:
+    case Tile::FSINGLE_CMP_OGE:
+    case Tile::FSINGLE_CMP_OEQ:
+    case Tile::FSINGLE_CMP_ULT:
+    case Tile::FSINGLE_CMP_ULE:
+    case Tile::FSINGLE_CMP_UGT:
+    case Tile::FSINGLE_CMP_UGE:
+    case Tile::FSINGLE_CMP_UEQ:
+    case Tile::FSINGLE_CMP_UNE:
+    case Tile::FDOUBLE_CMP_OLT:
+    case Tile::FDOUBLE_CMP_OLE:
+    case Tile::FDOUBLE_CMP_OGT:
+    case Tile::FDOUBLE_CMP_OGE:
+    case Tile::FDOUBLE_CMP_OEQ:
+    case Tile::FDOUBLE_CMP_ULT:
+    case Tile::FDOUBLE_CMP_ULE:
+    case Tile::FDOUBLE_CMP_UGT:
+    case Tile::FDOUBLE_CMP_UGE:
+    case Tile::FDOUBLE_CMP_UEQ:
+    case Tile::FDOUBLE_CMP_UNE: {
       unsigned DestReg = I->getOperand(0).getReg();
       unsigned SraReg = I->getOperand(1).getReg();
       unsigned SrbReg = I->getOperand(2).getReg();
@@ -122,11 +132,16 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       // 31  ne
       int64_t FPResOff[6] = { 30, 29, 28, 27, 26, 31 };
       int64_t BitOff;
-      if (OldOpcode >= Tile::FSINGLE_CMP_EQ) {
+      if (OldOpcode >= Tile::FSINGLE_CMP_OEQ) {
         NewOpcode = Tile::FSINGLE_ADD1;
-        BitOff = FPResOff[OldOpcode - Tile::FSINGLE_CMP_EQ];
-      } else
-        BitOff = FPResOff[OldOpcode - Tile::FDOUBLE_CMP_EQ];
+        if (OldOpcode >= Tile::FSINGLE_CMP_UEQ)
+          BitOff = FPResOff[OldOpcode - Tile::FSINGLE_CMP_UEQ];
+        else
+          BitOff = FPResOff[OldOpcode - Tile::FSINGLE_CMP_OEQ];
+      } else if (OldOpcode >= Tile::FDOUBLE_CMP_UEQ)
+        BitOff = FPResOff[OldOpcode - Tile::FDOUBLE_CMP_UEQ];
+      else
+        BitOff = FPResOff[OldOpcode - Tile::FDOUBLE_CMP_OEQ];
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode), DestReg)
           .addReg(SraReg).addReg(SrbReg);
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::BFEXTU), DestReg)
