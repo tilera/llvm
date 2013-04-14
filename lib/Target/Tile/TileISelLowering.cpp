@@ -139,6 +139,7 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   //      can not be finished by a single instructions, we need a
   //      instruction combination to finish the work.
   setOperationAction(ISD::FP_EXTEND, MVT::f64, Custom);
+  setOperationAction(ISD::FP_ROUND, MVT::f32, Custom);
 
   setLoadExtAction(ISD::EXTLOAD, MVT::f32, Expand);
   setTruncStoreAction(MVT::f64, MVT::f32, Expand);
@@ -330,8 +331,9 @@ TileTargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
     return lowerRETURNADDR(Op, DAG);
   case ISD::DYNAMIC_STACKALLOC:
     return lowerDYNAMIC_STACKALLOC(Op, DAG);
+  case ISD::FP_ROUND:
   case ISD::FP_EXTEND:
-    return lowerFP_EXTEND(Op, DAG);
+    return lowerFpFpConv(Op, DAG);
   case ISD::SINT_TO_FP:
   case ISD::UINT_TO_FP:
   case ISD::FP_TO_SINT:
@@ -832,15 +834,12 @@ SDValue TileTargetLowering::lowerDYNAMIC_STACKALLOC(SDValue Op,
 //===----------------------------------------------------------------------===//
 //                      Soft Float Implementation
 //===----------------------------------------------------------------------===//
-SDValue
-TileTargetLowering::lowerFP_EXTEND(SDValue Op, SelectionDAG &DAG) const {
-  if (Op.getOperand(0).getValueType() != MVT::f32) {
-    // It's legal except when f32 is involved
-    return Op;
-  }
-
+SDValue TileTargetLowering::lowerFpFpConv(SDValue Op, SelectionDAG &DAG) const {
   RTLIB::Libcall LC;
-  LC = RTLIB::getFPEXT(Op.getOperand(0).getValueType(), Op.getValueType());
+  if (Op.getOpcode() == ISD::FP_ROUND)
+    LC = RTLIB::getFPROUND(Op.getOperand(0).getValueType(), Op.getValueType());
+  else
+    LC = RTLIB::getFPEXT(Op.getOperand(0).getValueType(), Op.getValueType());
 
   SDValue SrcVal = Op.getOperand(0);
   return makeLibCall(DAG, LC, Op.getValueType(), &SrcVal, 1, false,

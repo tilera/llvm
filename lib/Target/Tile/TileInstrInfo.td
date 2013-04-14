@@ -3129,7 +3129,7 @@ multiclass TileBFEXTU {
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
          "bfextu $rd, $rs, $bfstart, $bfend",
          [],
-         IIC_BIT_P0, FrmRRR, S_X0_X1>;
+         IIC_BIT_P0, FrmRRR, S_X0>;
 
   def #0_X0#
       : TileBundleX0MM
@@ -3138,7 +3138,29 @@ multiclass TileBFEXTU {
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
          "bfextu $rd, $rs, $bfstart, $bfend",
          [],
-         IIC_BIT_P0, FrmRRR, S_X0_X1>;
+         IIC_BIT_P0, FrmRRR, S_X0>;
+}
+
+let Constraints = "$rd = $rf" in
+multiclass TileBFINS {
+
+  def #NAME#
+      : TileInstX0MM
+        <0x3, 0x6,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend, CPURegs:$rf),
+         "bfins $rd, $rs, $bfstart, $bfend",
+         [],
+         IIC_BIT_P0, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0MM
+        <0x3, 0x6,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend, CPURegs:$rf),
+         "bfins $rd, $rs, $bfstart, $bfend",
+         [],
+         IIC_BIT_P0, FrmRRR, S_X0>;
 }
 
 let isCodeGenOnly = 1 in
@@ -3736,6 +3758,7 @@ defm PCNT : TilePCNT;
 defm REVBYTES: TileREVBYTES;
 defm V4INT_L : TileV4INT_L;
 defm BFEXTU  : TileBFEXTU;
+defm BFINS   : TileBFINS;
 
 
 // CMP

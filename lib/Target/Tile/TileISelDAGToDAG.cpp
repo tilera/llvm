@@ -87,6 +87,9 @@ private:
   // Select Float Operations.
   SDNode *SelectSingleFloatBinOp(SDNode *N);
   SDNode *SelectDoubleFloatBinOp(SDNode *N);
+  // INT/UNSIGNED to F32/F64 has hardware support.
+  // All other type conversion should use softfloat.
+  SDNode *SelectIntToFloatConv(SDNode *N);
 
   // Complex Pattern.
   bool SelectFI(SDValue N, SDValue &R1);
@@ -208,32 +211,119 @@ bool TileDAGToDAGISel::SelectFI(SDValue N, SDValue &R1) {
   return false;
 }
 
+SDNode *TileDAGToDAGISel::SelectIntToFloatConv(SDNode *Node) {
+  unsigned Opcode = Node->getOpcode();
+  DebugLoc dl = Node->getDebugLoc();
+  EVT NodeTy = Node->getValueType(0);
+  SDVTList VTs = CurDAG->getVTList(MVT::i64);
+  SDNode *SrcExtend, *Exp, *Neg, *Sign, *Abs, *Tmp1, *Tmp2, *Tmp3;
+  SDValue Src32 = Node->getOperand(0);
+  SDValue ZeroV = CurDAG->getRegister(Tile::ZERO, MVT::i64);
+  SrcExtend = CurDAG->getMachineNode(Tile::ADD_EXTEND, dl, MVT::i64, Src32);
+  SDValue Src64 = SDValue(SrcExtend, 0);
+  if (NodeTy == MVT::f64) {
+    Exp = CurDAG->getMachineNode(Tile::MOVELI, dl, MVT::i64,
+                                 CurDAG->getTargetConstant(539, MVT::i64));
+    Exp = CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(Exp, 0),
+                                 CurDAG->getTargetConstant(8, MVT::i64));
+  } else
+    Exp = CurDAG->getMachineNode(Tile::MOVELI, dl, MVT::i64,
+                                 CurDAG->getTargetConstant(158, MVT::i64));
+
+  if (Opcode == ISD::UINT_TO_FP) {
+    if (NodeTy == MVT::f64) {
+      Tmp1 = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, ZeroV, ZeroV);
+      SDValue Ops[] = { Src64, CurDAG->getTargetConstant(4, MVT::i64),
+                        CurDAG->getTargetConstant(35, MVT::i64),
+                        SDValue(Tmp1, 0) };
+      Tmp2 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops,
+                                    array_lengthof(Ops));
+
+      SDValue Tmp2V = SDValue(Tmp2, 0);
+
+      Tmp3 = CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64, Tmp2V,
+                                    SDValue(Exp, 0));
+      return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64, Tmp2V,
+                                    ZeroV, SDValue(Tmp3, 0));
+    }
+
+    SDValue Ops[] = { Src64, CurDAG->getTargetConstant(32, MVT::i64),
+                      CurDAG->getTargetConstant(63, MVT::i64),
+                      SDValue(Exp, 0) };
+    Tmp1 =
+        CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+    Tmp2 = CurDAG->getMachineNode(Tile::FSINGLE_PACK164, dl, MVT::f64,
+                                  SDValue(Tmp1, 0));
+    return CurDAG->getMachineNode(Tile::FSINGLE_PACK232_64, dl, MVT::f32,
+                                  SDValue(Tmp1, 0), SDValue(Tmp2, 0));
+  }
+
+  assert(Opcode == ISD::SINT_TO_FP && "ISD::SINT_TO_FP expected here!\n");
+
+  Neg = CurDAG->getMachineNode(Tile::SUB, dl, MVT::i64, ZeroV, Src64);
+
+  Sign = CurDAG->getMachineNode(Tile::CMPLTSI, dl, MVT::i64, Src64,
+                                CurDAG->getTargetConstant(0, MVT::i64));
+  SDValue SignV = SDValue(Sign, 0);
+  Abs = CurDAG->getMachineNode(Tile::CMOVNEZ, dl, MVT::i64, SignV,
+                               SDValue(Neg, 0), Src64);
+  if (NodeTy == MVT::f64) {
+    Tmp1 = CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(Abs, 0),
+                                  CurDAG->getTargetConstant(4, MVT::i64));
+    SDValue Tmp1V = SDValue(Tmp1, 0);
+    SDValue Ops[] = { SignV, CurDAG->getTargetConstant(20, MVT::i64),
+                      CurDAG->getTargetConstant(20, MVT::i64),
+                      SDValue(Exp, 0) };
+    Tmp2 =
+        CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+    Tmp3 = CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64, Tmp1V,
+                                  SDValue(Tmp2, 0));
+    return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64, Tmp1V,
+                                  ZeroV, SDValue(Tmp3, 0));
+  }
+
+  SDValue Ops[] = { SignV, CurDAG->getTargetConstant(10, MVT::i64),
+                    CurDAG->getTargetConstant(10, MVT::i64), SDValue(Exp, 0) };
+  Tmp1 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+  Ops[0] = SDValue(Abs, 0);
+  Ops[1] = CurDAG->getTargetConstant(32, MVT::i64);
+  Ops[2] = CurDAG->getTargetConstant(63, MVT::i64);
+  Ops[3] = SDValue(Tmp1, 0);
+  Tmp2 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+  Tmp3 = CurDAG->getMachineNode(Tile::FSINGLE_PACK164, dl, MVT::f64,
+                                SDValue(Tmp2, 0));
+  return CurDAG->getMachineNode(Tile::FSINGLE_PACK232_64, dl, MVT::f32,
+                                SDValue(Tmp2, 0), SDValue(Tmp3, 0));
+}
+
 SDNode *TileDAGToDAGISel::SelectDoubleFloatBinOp(SDNode *Node) {
 
   unsigned Opcode = Node->getOpcode();
   DebugLoc dl = Node->getDebugLoc();
   unsigned FlagOpcode = Tile::FDOUBLE_ADD_FLAGS;
   SDNode *Min, *Max, *Mid, *Flag, *Result;
+  SDValue SrcA = Node->getOperand(0);
+  SDValue SrcB = Node->getOperand(1);
 
   if (Opcode == ISD::FSUB)
     FlagOpcode = Tile::FDOUBLE_SUB_FLAGS;
 
-  Min = CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MIN, dl, MVT::f64,
-                               Node->getOperand(0), Node->getOperand(1));
-  Max = CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64,
-                               Node->getOperand(0), Node->getOperand(1));
-  Flag = CurDAG->getMachineNode(FlagOpcode, dl, MVT::f64, Node->getOperand(0),
-                                Node->getOperand(1));
+  Min = CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MIN, dl, MVT::f64, SrcA,
+                               SrcB);
+  Max = CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64, SrcA,
+                               SrcB);
+  Flag = CurDAG->getMachineNode(FlagOpcode, dl, MVT::f64, SrcA, SrcB);
+  SDValue FlagV = SDValue(Flag, 0);
 
   Mid = CurDAG->getMachineNode(Tile::FDOUBLE_ADDSUB, dl, MVT::f64,
-                               SDValue(Min, 0), SDValue(Flag, 0),
-                               SDValue(Max, 0));
+                               SDValue(Min, 0), FlagV, SDValue(Max, 0));
+  SDValue MidV = SDValue(Mid, 0);
 
-  Result = CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64,
-                                  SDValue(Mid, 0), SDValue(Flag, 0));
-  return CurDAG->getMachineNode(
-      Tile::FDOUBLE_PACK2, dl, MVT::f64, SDValue(Mid, 0),
-      CurDAG->getRegister(Tile::ZERO, MVT::f64), SDValue(Result, 0));
+  Result =
+      CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64, MidV, FlagV);
+  return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64, MidV,
+                                CurDAG->getRegister(Tile::ZERO, MVT::f64),
+                                SDValue(Result, 0));
 }
 
 SDNode *TileDAGToDAGISel::SelectSingleFloatBinOp(SDNode *Node) {
@@ -241,7 +331,10 @@ SDNode *TileDAGToDAGISel::SelectSingleFloatBinOp(SDNode *Node) {
   unsigned Opcode = Node->getOpcode();
   DebugLoc dl = Node->getDebugLoc();
   unsigned Part1Opcode, Part2Opcode = Tile::FSINGLE_ADDSUB2;
-  SDNode *Temp0, *Temp1, *Flag;
+  SDNode *Tmp0, *Tmp1, *Flag;
+  SDValue SrcA = Node->getOperand(0);
+  SDValue SrcB = Node->getOperand(1);
+
   switch (Opcode) {
   case ISD::FADD:
     Part1Opcode = Tile::FSINGLE_ADD1;
@@ -256,20 +349,19 @@ SDNode *TileDAGToDAGISel::SelectSingleFloatBinOp(SDNode *Node) {
   default:
     llvm_unreachable("SelectSingleFloatBinOp: unexpected Opcode.\n");
   }
-  Temp0 = CurDAG->getMachineNode(Part1Opcode, dl, MVT::f32, Node->getOperand(0),
-                                 Node->getOperand(1));
+  Tmp0 = CurDAG->getMachineNode(Part1Opcode, dl, MVT::f32, SrcA, SrcB);
   if (Opcode == ISD::FMUL)
-    Temp1 = CurDAG->getMachineNode(Part2Opcode, dl, MVT::f32, SDValue(Temp0, 0),
-                                   Node->getOperand(1));
+    Tmp1 = CurDAG->getMachineNode(Part2Opcode, dl, MVT::f32, SDValue(Tmp0, 0),
+                                  SrcB);
   else
 
-    Temp1 =
-        CurDAG->getMachineNode(Part2Opcode, dl, MVT::f32, Node->getOperand(0),
-                               Node->getOperand(1), SDValue(Temp0, 0));
-  Flag = CurDAG->getMachineNode(Tile::FSINGLE_PACK1, dl, MVT::f32,
-                                SDValue(Temp1, 0));
-  return CurDAG->getMachineNode(Tile::FSINGLE_PACK2, dl, MVT::f32,
-                                SDValue(Temp1, 0), SDValue(Flag, 0));
+    Tmp1 = CurDAG->getMachineNode(Part2Opcode, dl, MVT::f32, SrcA, SrcB,
+                                  SDValue(Tmp0, 0));
+
+  SDValue Tmp1V = SDValue(Tmp1, 0);
+  Flag = CurDAG->getMachineNode(Tile::FSINGLE_PACK1, dl, MVT::f32, Tmp1V);
+  return CurDAG->getMachineNode(Tile::FSINGLE_PACK2, dl, MVT::f32, Tmp1V,
+                                SDValue(Flag, 0));
 }
 
 SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
@@ -334,22 +426,26 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
     if (NodeTy == MVT::i32)
       break;
 
-    SDNode *Temp =
-        CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::i64,
-                               Node->getOperand(0), Node->getOperand(1));
+    SDValue SrcA = Node->getOperand(0);
+    SDValue SrcB = Node->getOperand(1);
+    SDNode *Tmp =
+        CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::i64, SrcA, SrcB);
 
-    Temp =
-        CurDAG->getMachineNode(Tile::MULA_HU_LU, dl, MVT::i64, SDValue(Temp, 0),
-                               Node->getOperand(1), Node->getOperand(0));
+    Tmp = CurDAG->getMachineNode(Tile::MULA_HU_LU, dl, MVT::i64,
+                                 SDValue(Tmp, 0), SrcB, SrcA);
 
-    Temp = CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(Temp, 0),
-                                  CurDAG->getTargetConstant(32, MVT::i64));
+    Tmp = CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(Tmp, 0),
+                                 CurDAG->getTargetConstant(32, MVT::i64));
 
     return CurDAG->getMachineNode(Tile::MULA_LU_LU, dl, MVT::i64,
-                                  SDValue(Temp, 0), Node->getOperand(1),
-                                  Node->getOperand(0));
+                                  SDValue(Tmp, 0), SrcB, SrcA);
   }
 
+  case ISD::SINT_TO_FP:
+  case ISD::UINT_TO_FP:
+    assert(Node->getOperand(0).getValueType() == MVT::i32 &&
+           "SINT_TO_FP: i64 to float should be expanded into libcall.");
+    return SelectIntToFloatConv(Node);
   case ISD::FADD:
   case ISD::FSUB:
 
@@ -359,7 +455,6 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
     assert(NodeTy == MVT::f64 &&
            "FADD: no support for other types except f32/f64");
     return SelectDoubleFloatBinOp(Node);
-    break;
 
   case ISD::FMUL: {
 
@@ -374,50 +469,52 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
     assert(NodeTy == MVT::f64 &&
            "FMUL: no support for other types except f32/f64");
 
-    SDNode *UnpackedA = CurDAG->getMachineNode(
-        Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64, Node->getOperand(0),
-        CurDAG->getRegister(Tile::ZERO, MVT::f64));
-    SDNode *UnpackedB = CurDAG->getMachineNode(
-        Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64, Node->getOperand(1),
-        CurDAG->getRegister(Tile::ZERO, MVT::f64));
-    SDNode *Flag =
-        CurDAG->getMachineNode(Tile::FDOUBLE_MUL_FLAGS, dl, MVT::f64,
-                               Node->getOperand(0), Node->getOperand(1));
-    SDNode *LowA =
-        CurDAG->getMachineNode(Tile::MUL_LU_LU, dl, MVT::f64,
-                               SDValue(UnpackedA, 0), SDValue(UnpackedB, 0));
-    SDNode *MidA =
-        CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::f64,
-                               SDValue(UnpackedA, 0), SDValue(UnpackedB, 0));
+    SDValue SrcA = Node->getOperand(0);
+    SDValue SrcB = Node->getOperand(1);
+    SDValue Const32 = CurDAG->getTargetConstant(32, MVT::i64);
+    SDNode *UnpackedA =
+        CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64, SrcA,
+                               CurDAG->getRegister(Tile::ZERO, MVT::f64));
+    SDNode *UnpackedB =
+        CurDAG->getMachineNode(Tile::FDOUBLE_UNPACK_MAX, dl, MVT::f64, SrcB,
+                               CurDAG->getRegister(Tile::ZERO, MVT::f64));
+    SDValue UnpackedAV = SDValue(UnpackedA, 0);
+    SDValue UnpackedBV = SDValue(UnpackedB, 0);
+    SDNode *Flag = CurDAG->getMachineNode(Tile::FDOUBLE_MUL_FLAGS, dl, MVT::f64,
+                                          SrcA, SrcB);
+    SDNode *LowA = CurDAG->getMachineNode(Tile::MUL_LU_LU, dl, MVT::f64,
+                                          UnpackedAV, UnpackedBV);
+    SDNode *MidA = CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::f64,
+                                          UnpackedAV, UnpackedBV);
     SDNode *MidB =
         CurDAG->getMachineNode(Tile::MULA_HU_LU, dl, MVT::f64, SDValue(MidA, 0),
-                               SDValue(UnpackedB, 0), SDValue(UnpackedA, 0));
-    SDNode *HighA =
-        CurDAG->getMachineNode(Tile::MUL_HU_HU, dl, MVT::f64,
-                               SDValue(UnpackedA, 0), SDValue(UnpackedB, 0));
+                               UnpackedBV, UnpackedAV);
+    SDValue MidBV = SDValue(MidB, 0);
+    SDNode *HighA = CurDAG->getMachineNode(Tile::MUL_HU_HU, dl, MVT::f64,
+                                           UnpackedAV, UnpackedBV);
     SDNode *MidC =
-        CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(MidB, 0),
-                               CurDAG->getTargetConstant(32, MVT::i64));
+        CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, MidBV, Const32);
+    SDValue MidCV = SDValue(MidC, 0);
     SDNode *MidD =
-        CurDAG->getMachineNode(Tile::SHRUI, dl, MVT::i64, SDValue(MidB, 0),
-                               CurDAG->getTargetConstant(32, MVT::i64));
+        CurDAG->getMachineNode(Tile::SHRUI, dl, MVT::i64, MidBV, Const32);
     SDNode *HighB = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64,
                                            SDValue(HighA, 0), SDValue(MidD, 0));
     SDNode *LowB = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64,
-                                          SDValue(LowA, 0), SDValue(MidC, 0));
+                                          SDValue(LowA, 0), MidCV);
+    SDValue LowBV = SDValue(LowB, 0);
 
-    SDNode *LowCarry = CurDAG->getMachineNode(
-        Tile::CMPLTU, dl, MVT::i64, SDValue(LowB, 0), SDValue(MidC, 0));
+    SDNode *LowCarry =
+        CurDAG->getMachineNode(Tile::CMPLTU, dl, MVT::i64, LowBV, MidCV);
 
     SDNode *HighC = CurDAG->getMachineNode(
         Tile::ADD, dl, MVT::i64, SDValue(HighB, 0), SDValue(LowCarry, 0));
+    SDValue HighCV = SDValue(HighC, 0);
 
-    SDNode *Result = CurDAG->getMachineNode(
-        Tile::FDOUBLE_PACK1, dl, MVT::f64, SDValue(HighC, 0), SDValue(Flag, 0));
+    SDNode *Result = CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64,
+                                            HighCV, SDValue(Flag, 0));
 
-    return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64,
-                                  SDValue(HighC, 0), SDValue(LowB, 0),
-                                  SDValue(Result, 0));
+    return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64, HighCV,
+                                  LowBV, SDValue(Result, 0));
   }
 
   // Get target GOT address.

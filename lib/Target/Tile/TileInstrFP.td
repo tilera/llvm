@@ -147,6 +147,15 @@ multiclass TileFSINGLE_PACK1 {
          "fsingle_pack1 $rd, $rs",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #64#
+      : TileInstX0Unary
+        <0x5, 0x52, 0x4,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs),
+         "fsingle_pack1 $rd, $rs",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
 }
 
 multiclass TileFSINGLE_PACK2 {
@@ -165,6 +174,15 @@ multiclass TileFSINGLE_PACK2 {
         <0x5, 0x26,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "fsingle_pack2 $rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #32_64#
+      : TileInstX0RRR
+        <0x5, 0x26,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
          "fsingle_pack2 $rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
