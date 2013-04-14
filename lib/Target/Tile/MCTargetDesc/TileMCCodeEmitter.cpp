@@ -100,7 +100,7 @@ void TileMCCodeEmitter::EncodeInstruction(
   static bool IsBundling = false;
   static unsigned InstBundleSize = 0;
   static unsigned InstBundledType[3] = { 0 };
-  TileMCInst &TileMI = (TileMCInst &)MI;
+  const TileMCInst &TileMI = (const TileMCInst &)MI;
   uint64_t Binary = getBinaryCodeForInstr(MI, Fixups);
   const MCInstrDesc &Desc = MCII.get(MI.getOpcode());
   uint64_t TSFlags =
@@ -200,7 +200,7 @@ unsigned TileMCCodeEmitter::getMachineOpValue(
     SmallVectorImpl<MCFixup> &Fixups) const {
   // FIXME:
   //   no consideration for Y mode relocation yet.
-  const unsigned IssueSlot = ((TileMCInst &)MI).getIssueSlot();
+  const unsigned IssueSlot = ((const TileMCInst &)MI).getIssueSlot();
   const unsigned RelocBias =
       (IssueSlot == TileII::ST_Solo) ? 1 : IssueSlot - 1;
 
