@@ -149,22 +149,24 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::LD2S32:
   case Tile::LD2U32:
   case Tile::LD4S32:
-  case Tile::ST41_F32:
   case Tile::MOVELI32:
   case Tile::V4INT_L32:
   case Tile::CMOVNEZ32:
-  case Tile::LD4S1_F32:
+  case Tile::LD0_Z64_F:
+  case Tile::ST0_Z64_F:
   case Tile::SHLXI32_64:
   case Tile::CMPLTUI32_64:
   case Tile::SHL16INSLI32:
   case Tile::FSINGLE_PACK164:
     Op = Op - 3;
     break;
-  case Tile::ST464:
+  case Tile::ST432_F:
+  case Tile::LD4S32_F:
   case Tile::CMOVNEZC32:
     Op = Op - 4;
     break;
   case Tile::OR32:
+  case Tile::ST464:
   case Tile::XOR32:
   case Tile::AND32:
   case Tile::NOR32:
@@ -187,15 +189,9 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::CMPLTU32_64:
     Op = Op - 6;
     break;
-  case Tile::ST1_F64:
-    Op = Op - 7;
-    break;
   case Tile::SHL64_32:
     // Alphabetic overlapped with SHL16INSLI
     Op = Op - 9;
-    break;
-  case Tile::LD1_F64:
-    Op = Op - 11;
     break;
   default:
     break;

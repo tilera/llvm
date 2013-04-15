@@ -436,7 +436,7 @@ multiclass TileADDX {
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
   def #0_X0#
-      : TileBundleY0RRR
+      : TileBundleX0RRR
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -2483,7 +2483,7 @@ multiclass TileST {
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
-  def #1_F64#
+  def #0_Z64_F#
       : TileSTOREY2
         <0x3,
          (outs),
@@ -2611,7 +2611,7 @@ multiclass TileST4 {
          [(store (i32 CPU32Regs:$rs), CPURegs:$addr)],
          IIC_MM, FrmMM, S_X1_Y2>;
 
-  def #1_F32#
+  def #32_F#
       : TileSTOREY2
         <0x2,
          (outs),
@@ -2660,7 +2660,7 @@ multiclass TileLD {
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
-  def #1_F64#
+  def #0_Z64_F#
       : TileLOADY2
         <0x2, 0x3,
          (outs CPURegs:$rd),
@@ -2869,7 +2869,7 @@ multiclass TileLD4S {
          [(set (i32 CPU32Regs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
-  def #1_F32#
+  def #32_F#
       : TileLOADY2
         <0x2, 0x1,
          (outs CPU32Regs:$rd),
