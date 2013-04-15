@@ -1,4 +1,4 @@
-; RUN: llc -march=tilegx < %s | FileCheck %s
+; RUN: llc -soft-float -march=tilegx < %s | FileCheck %s
 
 define i32 @f0(float %a) {
 ; CHECK: f0:
