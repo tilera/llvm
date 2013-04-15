@@ -2157,25 +2157,51 @@ multiclass TileCMOVNEZ {
          [],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
-  let isCodeGenOnly = 1 in
+  let isCodeGenOnly = 1 in {
   def #32# 
       : TileInstX0RRR
         <0x5, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
          "cmovnez $rd, $rsa, $rsb",
-         [(set (i32 CPU32Regs:$rd), (select (i32 CPU32Regs:$rsa), (i32 CPU32Regs:$rsb), (i32 CPU32Regs:$rf)))],
+         [(set (i32 CPU32Regs:$rd),
+           (select (i32 CPU32Regs:$rsa),
+             (i32 CPU32Regs:$rsb), (i32 CPU32Regs:$rf)))],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
-  let isCodeGenOnly = 1 in
   def #C32#
       : TileInstX0RRR
         <0x5, 0x6,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPURegs:$rsb, CPURegs:$rf),
          "cmovnez $rd, $rsa, $rsb",
-         [(set (i64 CPURegs:$rd), (select (i32 CPU32Regs:$rsa), (i64 CPURegs:$rsb), (i64 CPURegs:$rf)))],
+         [(set (i64 CPURegs:$rd),
+           (select (i32 CPU32Regs:$rsa),
+            (i64 CPURegs:$rsb), (i64 CPURegs:$rf)))],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
+
+  def #F32# 
+      : TileInstX0RRR
+        <0x5, 0x6,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
+         "cmovnez $rd, $rsa, $rsb",
+         [(set (f32 CPU32Regs:$rd),
+           (select (i32 CPU32Regs:$rsa),
+            (f32 CPU32Regs:$rsb), (f32 CPU32Regs:$rf)))],
+         IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
+
+  def #F64#
+      : TileInstX0RRR
+        <0x5, 0x6,
+         (outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPURegs:$rsb, CPURegs:$rf),
+         "cmovnez $rd, $rsa, $rsb",
+         [(set (f64 CPURegs:$rd),
+           (select (i32 CPU32Regs:$rsa),
+            (f64 CPURegs:$rsb), (f64 CPURegs:$rf)))],
+         IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
+  }
 }
 
 // Bit manipulationn instructions.

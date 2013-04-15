@@ -175,6 +175,7 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::CMPLTU32:
   case Tile::SHLI64_32:
   case Tile::SHRU64_32:
+  case Tile::CMOVNEZF32:
   case Tile::SHRUI64_32:
   case Tile::CMPLTS32_64:
   case Tile::CMPLTSI32_64:
@@ -182,6 +183,7 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
     break;
   case Tile::SHRS64_32:
   case Tile::SHRSI64_32:
+  case Tile::CMOVNEZF64:
   case Tile::CMPLTU32_64:
     Op = Op - 6;
     break;

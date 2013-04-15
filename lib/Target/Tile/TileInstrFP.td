@@ -556,6 +556,11 @@ def FDOUBLE_CMP_UNE
           (setune (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
+def : Pat<(i32 (bitconvert (f32 CPU32Regs:$src))),
+           (COPY_TO_REGCLASS CPU32Regs:$src, CPU32Regs)>;
+def : Pat<(i64 (bitconvert (f64 CPURegs:$src))),
+           (COPY_TO_REGCLASS CPURegs:$src, CPURegs)>;
+
 defm FSINGLE_ADD1  : TileFSINGLE_ADD1;
 defm FSINGLE_SUB1  : TileFSINGLE_SUB1;
 defm FSINGLE_MUL1  : TileFSINGLE_MUL1;

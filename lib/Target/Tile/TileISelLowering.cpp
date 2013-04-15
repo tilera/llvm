@@ -163,10 +163,24 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::FP_TO_UINT, MVT::i64, Custom);
   setOperationAction(ISD::FDIV, MVT::f32, Expand);
   setOperationAction(ISD::FDIV, MVT::f64, Expand);
+  setOperationAction(ISD::FSQRT, MVT::f32, Expand);
+  setOperationAction(ISD::FSQRT, MVT::f64, Expand);
+  setOperationAction(ISD::FSIN, MVT::f32, Expand);
+  setOperationAction(ISD::FSIN, MVT::f64, Expand);
+  setOperationAction(ISD::FCOS, MVT::f32, Expand);
+  setOperationAction(ISD::FCOS, MVT::f64, Expand);
+  setOperationAction(ISD::FNEG, MVT::f32, Expand);
+  setOperationAction(ISD::FNEG, MVT::f64, Expand);
   setOperationAction(ISD::FCOPYSIGN, MVT::f32, Custom);
   setOperationAction(ISD::FCOPYSIGN, MVT::f64, Custom);
   setOperationAction(ISD::FABS, MVT::f32, Custom);
   setOperationAction(ISD::FABS, MVT::f64, Custom);
+  setCondCodeAction(ISD::SETUO, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETUO, MVT::f64, Expand);
+  setCondCodeAction(ISD::SETO, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETO, MVT::f64, Expand);
+  setOperationAction(ISD::FREM , MVT::f32, Expand);
+  setOperationAction(ISD::FREM , MVT::f64, Expand);
 
   // Various Address Handling.
   setOperationAction(ISD::GlobalAddress, MVT::i64, Custom);
@@ -1604,14 +1618,6 @@ EVT TileTargetLowering::getSetCCResultType(EVT VT) const {
   if (!VT.isVector())
     return MVT::i32;
   return VT.changeVectorElementTypeToInteger();
-}
-
-bool TileTargetLowering::isFPImmLegal(const APFloat &Imm, EVT VT) const {
-  if (VT != MVT::f32 && VT != MVT::f64)
-    return false;
-  if (Imm.isNegZero())
-    return false;
-  return Imm.isZero();
 }
 
 bool

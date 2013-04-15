@@ -68,8 +68,6 @@ public:
 
   virtual bool isOffsetFoldingLegal(const GlobalAddressSDNode *GA) const;
 
-  virtual bool isFPImmLegal(const APFloat &Imm, EVT VT) const;
-
   virtual unsigned getJumpTableEncoding(void) const;
 
   virtual MVT getScalarShiftAmountTy(EVT LHSTy) const { return MVT::i32; }
