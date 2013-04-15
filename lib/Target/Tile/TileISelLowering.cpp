@@ -242,6 +242,8 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::ATOMIC_LOAD, MVT::i64, Expand);
   setOperationAction(ISD::ATOMIC_STORE, MVT::i32, Expand);
   setOperationAction(ISD::ATOMIC_STORE, MVT::i64, Expand);
+  setOperationAction(ISD::ATOMIC_LOAD_SUB, MVT::i32, Expand);
+  setOperationAction(ISD::ATOMIC_LOAD_SUB, MVT::i64, Expand);
 
   setInsertFencesForAtomic(true);
 
