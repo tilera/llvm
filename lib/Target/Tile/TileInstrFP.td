@@ -560,6 +560,10 @@ def : Pat<(i32 (bitconvert (f32 CPU32Regs:$src))),
            (COPY_TO_REGCLASS CPU32Regs:$src, CPU32Regs)>;
 def : Pat<(i64 (bitconvert (f64 CPURegs:$src))),
            (COPY_TO_REGCLASS CPURegs:$src, CPURegs)>;
+def : Pat<(f32 (bitconvert (i32 CPU32Regs:$src))),
+           (COPY_TO_REGCLASS CPU32Regs:$src, CPU32Regs)>;
+def : Pat<(f64 (bitconvert (i64 CPURegs:$src))),
+           (COPY_TO_REGCLASS CPURegs:$src, CPURegs)>;
 
 defm FSINGLE_ADD1  : TileFSINGLE_ADD1;
 defm FSINGLE_SUB1  : TileFSINGLE_SUB1;
