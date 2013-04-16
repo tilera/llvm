@@ -68,6 +68,8 @@ const char *TileTargetLowering::getTargetNodeName(unsigned Opcode) const {
     return "TileISD::Ret";
   case TileISD::MF:
     return "TileISD::MF";
+  case TileISD::BFINS:
+    return "TileISD::BFINS";
   case TileISD::BRINDJT:
     return "TileISD::BRINDJT";
   case TileISD::VAARG_SP:
@@ -182,8 +184,8 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setCondCodeAction(ISD::SETUO, MVT::f64, Expand);
   setCondCodeAction(ISD::SETO, MVT::f32, Expand);
   setCondCodeAction(ISD::SETO, MVT::f64, Expand);
-  setOperationAction(ISD::FREM , MVT::f32, Expand);
-  setOperationAction(ISD::FREM , MVT::f64, Expand);
+  setOperationAction(ISD::FREM, MVT::f32, Expand);
+  setOperationAction(ISD::FREM, MVT::f64, Expand);
 
   // Various Address Handling.
   setOperationAction(ISD::GlobalAddress, MVT::i64, Custom);
@@ -766,16 +768,22 @@ TileTargetLowering::lowerFCOPYSIGN(SDValue Op, SelectionDAG &DAG) const {
 }
 
 SDValue TileTargetLowering::lowerFABS(SDValue Op, SelectionDAG &DAG) const {
-  SDValue Res, Const1 = DAG.getConstant(1, MVT::i32);
+  SDValue Res;
+  EVT Ty = Op.getValueType();
+  EVT CastTy = (Ty == MVT::f64) ? MVT::i64 : MVT::i32;
+  uint64_t SignBitPos = (Ty == MVT::f64) ? 63 : 31;
+  SDValue StartPos = DAG.getConstant(SignBitPos, CastTy);
+  SDValue EndPos = DAG.getConstant(SignBitPos, CastTy);
+  SDValue ZeroV =
+      DAG.getRegister((Ty == MVT::f64) ? Tile::ZERO : Tile::ZERO_32, CastTy);
   DebugLoc DL = Op.getDebugLoc();
 
   // Bitcast to integer node.
-  SDValue X = DAG.getNode(ISD::BITCAST, DL, MVT::i64, Op.getOperand(0));
+  SDValue X = DAG.getNode(ISD::BITCAST, DL, CastTy, Op.getOperand(0));
 
-  SDValue SllX = DAG.getNode(ISD::SHL, DL, MVT::i64, X, Const1);
-  Res = DAG.getNode(ISD::SRL, DL, MVT::i64, SllX, Const1);
+  Res = DAG.getNode(TileISD::BFINS, DL, CastTy, ZeroV, StartPos, EndPos, X);
 
-  return DAG.getNode(ISD::BITCAST, DL, MVT::f64, Res);
+  return DAG.getNode(ISD::BITCAST, DL, Ty, Res);
 }
 
 SDValue

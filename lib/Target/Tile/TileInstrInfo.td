@@ -21,24 +21,43 @@ include "TileInstrFormats.td"
 // Tile profiles and nodes.
 //===----------------------------------------------------------------------===//
 
-def SDT_TileRet          : SDTypeProfile<0, 1, [SDTCisVT<0, iPTR>]>;
-def SDT_TileJmpLink      : SDTypeProfile<0, 1, [SDTCisVT<0, iPTR>]>;
-def SDT_TileCMov         : SDTypeProfile<1, 4, [SDTCisSameAs<0, 1>,
-                                                SDTCisSameAs<1, 2>,
-                                                SDTCisSameAs<3, 4>,
-                                                SDTCisInt<4>]>;
-def SDT_TileCallSeqStart : SDCallSeqStart<[SDTCisVT<0, i32>]>;
-def SDT_TileCallSeqEnd   : SDCallSeqEnd<[SDTCisVT<0, i32>, SDTCisVT<1, i32>]>;
+def SDT_TileRet
+    : SDTypeProfile<0, 1, [SDTCisVT<0, iPTR>]>;
 
-def SDT_TileMF          : SDTypeProfile<0, 0, []>;
+def SDT_TileJmpLink
+    : SDTypeProfile<0, 1, [SDTCisVT<0, iPTR>]>;
 
-def SDT_TileBRINDJT : SDTypeProfile<0, 2,
-                                    [SDTCisPtrTy<0>, SDTCisVT<1, i64>]>;
+def SDT_TileCMov
+    : SDTypeProfile<1, 4, [SDTCisSameAs<0, 1>,
+                           SDTCisSameAs<1, 2>,
+                           SDTCisSameAs<3, 4>,
+                           SDTCisInt<4>]>;
 
-def SDT_TileTLSADD : SDTypeProfile<1, 3, [
-  SDTCisSameAs<0, 1>, SDTCisSameAs<0, 2>, SDTCisSameAs<0, 3>, SDTCisInt<0>
+def SDT_TileCallSeqStart
+    : SDCallSeqStart<[SDTCisVT<0, i32>]>;
+
+def SDT_TileCallSeqEnd
+    : SDCallSeqEnd<[SDTCisVT<0, i32>, SDTCisVT<1, i32>]>;
+
+def SDT_TileMF
+    : SDTypeProfile<0, 0, []>;
+
+def SDT_TileBRINDJT
+    : SDTypeProfile<0, 2, [SDTCisPtrTy<0>,
+                           SDTCisVT<1, i64>]>;
+
+def SDT_TileTLSADD
+    : SDTypeProfile<1, 3, [SDTCisSameAs<0, 1>,
+                           SDTCisSameAs<0, 2>,
+                           SDTCisSameAs<0, 3>,
+                           SDTCisInt<0>
 ]>;
 
+def SDT_TileBFINS
+    : SDTypeProfile<1, 4, [SDTCisInt<0>,
+                           SDTCisSameAs<0, 1>,
+                           SDTCisInt<2>, SDTCisSameAs<2, 3>,
+                           SDTCisSameAs<0, 4>]>;
 // Call
 def TileJmpLink : SDNode<"TileISD::JmpLink",SDT_TileJmpLink,
                          [SDNPHasChain, SDNPOutGlue, SDNPOptInGlue,
@@ -83,6 +102,8 @@ def callseq_end   : SDNode<"ISD::CALLSEQ_END", SDT_TileCallSeqEnd,
                            [SDNPHasChain, SDNPOptInGlue, SDNPOutGlue]>;
 
 def TileMFNode : SDNode<"TileISD::MF", SDT_TileMF, [SDNPHasChain]>;
+
+def TileBFINSNode : SDNode<"TileISD::BFINS", SDT_TileBFINS>;
 
 // Instruction operand types.
 def jmptarget   : Operand<OtherVT> {
@@ -3176,7 +3197,9 @@ multiclass TileBFINS {
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend, CPURegs:$rf),
          "bfins $rd, $rs, $bfstart, $bfend",
-         [],
+         [(set (i64 CPURegs:$rd),
+           (TileBFINSNode CPURegs:$rs, (i64 immSExt64:$bfstart),
+                          immSExt64:$bfend, CPURegs:$rf))],
          IIC_BIT_P0, FrmRRR, S_X0>;
 
   def #0_X0#
@@ -3186,6 +3209,17 @@ multiclass TileBFINS {
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend, CPURegs:$rf),
          "bfins $rd, $rs, $bfstart, $bfend",
          [],
+         IIC_BIT_P0, FrmRRR, S_X0>;
+
+  def #32#
+      : TileInstX0MM
+        <0x3, 0x6,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rs, i32imm:$bfstart, i32imm:$bfend, CPU32Regs:$rf),
+         "bfins $rd, $rs, $bfstart, $bfend",
+         [(set (i32 CPU32Regs:$rd),
+           (TileBFINSNode CPU32Regs:$rs, (i32 immSExt32:$bfstart),
+                          immSExt32:$bfend, CPU32Regs:$rf))],
          IIC_BIT_P0, FrmRRR, S_X0>;
 }
 
@@ -3621,7 +3655,7 @@ multiclass TileALLOCA_ADDR {
          (ins CPURegs:$rs, i64imm:$imm16),
          "addli $rd, $rs, $imm16",
          [(set (i64 CPURegs:$rd),
-            (TileALLOCA_ADDRNode CPURegs:$rs, immSExt64:$imm16))],
+           (TileALLOCA_ADDRNode CPURegs:$rs, immSExt64:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
   def #0_X0#

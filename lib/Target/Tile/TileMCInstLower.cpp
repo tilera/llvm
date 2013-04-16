@@ -134,6 +134,7 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::BLEZ32:
   case Tile::BLTZ32:
   case Tile::BNEZ32:
+  case Tile::BFINS32:
   case Tile::FSINGLE_PACK232_64:
     Op = Op - 2;
     break;

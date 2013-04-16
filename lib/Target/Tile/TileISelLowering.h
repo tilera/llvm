@@ -51,6 +51,8 @@ enum NodeType {
 
   MF,
 
+  BFINS,
+
   BRINDJT,
   VAARG_SP,
   ALLOCA_SP,
