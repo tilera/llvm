@@ -101,6 +101,7 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case Tile::FSINGLE_CMP_OGT:
     case Tile::FSINGLE_CMP_OGE:
     case Tile::FSINGLE_CMP_OEQ:
+    case Tile::FSINGLE_CMP_ONE:
     case Tile::FSINGLE_CMP_ULT:
     case Tile::FSINGLE_CMP_ULE:
     case Tile::FSINGLE_CMP_UGT:
@@ -112,6 +113,7 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case Tile::FDOUBLE_CMP_OGT:
     case Tile::FDOUBLE_CMP_OGE:
     case Tile::FDOUBLE_CMP_OEQ:
+    case Tile::FDOUBLE_CMP_ONE:
     case Tile::FDOUBLE_CMP_ULT:
     case Tile::FDOUBLE_CMP_ULE:
     case Tile::FDOUBLE_CMP_UGT:

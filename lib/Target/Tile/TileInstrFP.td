@@ -538,6 +538,15 @@ def FDOUBLE_CMP_UEQ
           (setueq (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
+def FSINGLE_CMP_ONE
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+       "#fsingle_cmp_one",
+       [(set (i32 CPU32Regs:$rd),
+          (setone (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
 def FSINGLE_CMP_UNE
     : TilePseudo
       <(outs CPU32Regs:$rd),
@@ -545,6 +554,15 @@ def FSINGLE_CMP_UNE
        "#fsingle_cmp_une",
        [(set (i32 CPU32Regs:$rd),
           (setune (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+       IIC_MUL>;
+
+def FDOUBLE_CMP_ONE
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_one",
+       [(set (i32 CPU32Regs:$rd),
+          (setone (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
 def FDOUBLE_CMP_UNE
