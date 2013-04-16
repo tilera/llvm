@@ -1,4 +1,4 @@
-; RUN: llc -soft-float -march=tilegx < %s | FileCheck %s
+; RUN: llc -march=tilegx < %s | FileCheck %s
 
 define float @test0(float %a, float %b) {
 entry:
