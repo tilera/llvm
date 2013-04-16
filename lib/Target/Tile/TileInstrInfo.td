@@ -56,8 +56,15 @@ def SDT_TileTLSADD
 def SDT_TileBFINS
     : SDTypeProfile<1, 4, [SDTCisInt<0>,
                            SDTCisSameAs<0, 1>,
-                           SDTCisInt<2>, SDTCisSameAs<2, 3>,
+                           SDTCisInt<2>,
+                           SDTCisSameAs<2, 3>,
                            SDTCisSameAs<0, 4>]>;
+
+def SDT_TileBFEXTU
+    : SDTypeProfile<1, 3, [SDTCisInt<0>,
+                           SDTCisInt<2>,
+                           SDTCisSameAs<2, 3>]>;
+
 // Call
 def TileJmpLink : SDNode<"TileISD::JmpLink",SDT_TileJmpLink,
                          [SDNPHasChain, SDNPOutGlue, SDNPOptInGlue,
@@ -104,6 +111,7 @@ def callseq_end   : SDNode<"ISD::CALLSEQ_END", SDT_TileCallSeqEnd,
 def TileMFNode : SDNode<"TileISD::MF", SDT_TileMF, [SDNPHasChain]>;
 
 def TileBFINSNode : SDNode<"TileISD::BFINS", SDT_TileBFINS>;
+def TileBFEXTUNode : SDNode<"TileISD::BFEXTU", SDT_TileBFEXTU>;
 
 // Instruction operand types.
 def jmptarget   : Operand<OtherVT> {
@@ -3175,7 +3183,10 @@ multiclass TileBFEXTU {
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
          "bfextu $rd, $rs, $bfstart, $bfend",
-         [],
+         [(set (i64 CPURegs:$rd),
+           (TileBFEXTUNode (i64 CPURegs:$rs), (i64 immSExt64:$bfstart),
+                           immSExt64:$bfend))],
+
          IIC_BIT_P0, FrmRRR, S_X0>;
 
   def #0_X0#
@@ -3186,6 +3197,41 @@ multiclass TileBFEXTU {
          "bfextu $rd, $rs, $bfstart, $bfend",
          [],
          IIC_BIT_P0, FrmRRR, S_X0>;
+
+  let isCodeGenOnly = 1 in {
+  def #32#
+      : TileInstX0MM
+        <0x3, 0x5,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rs, i32imm:$bfstart, i32imm:$bfend),
+         "bfextu $rd, $rs, $bfstart, $bfend",
+         [(set (i32 CPU32Regs:$rd),
+           (TileBFEXTUNode (i32 CPU32Regs:$rs), (i32 immSExt32:$bfstart),
+                           immSExt32:$bfend))],
+         IIC_BIT_P0, FrmRRR, S_X0>;
+
+  def #32_64#
+      : TileInstX0MM
+        <0x3, 0x5,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
+         "bfextu $rd, $rs, $bfstart, $bfend",
+         [(set (i32 CPU32Regs:$rd),
+           (TileBFEXTUNode (i64 CPURegs:$rs), (i64 immSExt64:$bfstart),
+                            immSExt64:$bfend))],
+         IIC_BIT_P0, FrmRRR, S_X0>;
+
+  def #64_32#
+      : TileInstX0MM
+        <0x3, 0x5,
+         (outs CPURegs:$rd),
+         (ins CPU32Regs:$rs, i32imm:$bfstart, i32imm:$bfend),
+         "bfextu $rd, $rs, $bfstart, $bfend",
+         [(set (i64 CPURegs:$rd),
+           (TileBFEXTUNode (i32 CPU32Regs:$rs), (i32 immSExt32:$bfstart),
+                            immSExt32:$bfend))],
+         IIC_BIT_P0, FrmRRR, S_X0>;
+  }
 }
 
 let Constraints = "$rd = $rf" in
@@ -3211,6 +3257,7 @@ multiclass TileBFINS {
          [],
          IIC_BIT_P0, FrmRRR, S_X0>;
 
+  let isCodeGenOnly = 1 in
   def #32#
       : TileInstX0MM
         <0x3, 0x6,

@@ -70,6 +70,8 @@ const char *TileTargetLowering::getTargetNodeName(unsigned Opcode) const {
     return "TileISD::MF";
   case TileISD::BFINS:
     return "TileISD::BFINS";
+  case TileISD::BFEXTU:
+    return "TileISD::BFEXTU";
   case TileISD::BRINDJT:
     return "TileISD::BRINDJT";
   case TileISD::VAARG_SP:
@@ -738,33 +740,24 @@ TileTargetLowering::lowerFCOPYSIGN(SDValue Op, SelectionDAG &DAG) const {
   unsigned WidthX = Op.getOperand(0).getValueSizeInBits();
   unsigned WidthY = Op.getOperand(1).getValueSizeInBits();
   EVT TyX = MVT::getIntegerVT(WidthX), TyY = MVT::getIntegerVT(WidthY);
-  SDValue Const1 = DAG.getConstant(1, MVT::i32);
+  uint64_t SignBitPosX = (TyX == MVT::i64) ? 63 : 31;
+  uint64_t SignBitPosY = (TyY == MVT::i64) ? 63 : 31;
+  SDValue StartPosX = DAG.getConstant(SignBitPosX, TyX);
+  SDValue EndPosX = DAG.getConstant(SignBitPosX, TyX);
+  SDValue StartPosY = DAG.getConstant(SignBitPosY, TyY);
+  SDValue EndPosY = DAG.getConstant(SignBitPosY, TyY);
   DebugLoc DL = Op.getDebugLoc();
 
   // Bitcast to integer nodes.
   SDValue X = DAG.getNode(ISD::BITCAST, DL, TyX, Op.getOperand(0));
   SDValue Y = DAG.getNode(ISD::BITCAST, DL, TyY, Op.getOperand(1));
 
-  // shl SllX, X, 1
-  // srl SrlX, SllX, 1
-  // srl SrlY, Y, width(Y)-1
-  // sll SllY, SrlX, width(Y)-1
-  // or     Or, SrlX, SllY
-  SDValue SllX = DAG.getNode(ISD::SHL, DL, TyX, X, Const1);
-  SDValue SrlX = DAG.getNode(ISD::SRL, DL, TyX, SllX, Const1);
-  SDValue SrlY =
-      DAG.getNode(ISD::SRL, DL, TyY, Y, DAG.getConstant(WidthY - 1, MVT::i32));
+  // ext  S, Y, width(Y) - 1, 1  ; extract the sign bit from Y
+  // ins  X, S, width(X) - 1, 1  ; update the sign bit to X
+  SDValue Sign = DAG.getNode(TileISD::BFEXTU, DL, TyX, Y, StartPosY, EndPosY);
 
-  if (WidthX > WidthY)
-    SrlY = DAG.getNode(ISD::ZERO_EXTEND, DL, TyX, SrlY);
-  else if (WidthY > WidthX)
-    SrlY = DAG.getNode(ISD::TRUNCATE, DL, TyX, SrlY);
-
-  SDValue SllY = DAG.getNode(ISD::SHL, DL, TyX, SrlY,
-                             DAG.getConstant(WidthX - 1, MVT::i32));
-  SDValue Or = DAG.getNode(ISD::OR, DL, TyX, SrlX, SllY);
-  return DAG.getNode(ISD::BITCAST, DL, Op.getOperand(0).getValueType(), Or);
-
+  SDValue I = DAG.getNode(TileISD::BFINS, DL, TyX, Sign, StartPosX, EndPosX, X);
+  return DAG.getNode(ISD::BITCAST, DL, Op.getOperand(0).getValueType(), I);
 }
 
 SDValue TileTargetLowering::lowerFABS(SDValue Op, SelectionDAG &DAG) const {

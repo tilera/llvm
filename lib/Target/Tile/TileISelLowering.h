@@ -52,6 +52,7 @@ enum NodeType {
   MF,
 
   BFINS,
+  BFEXTU,
 
   BRINDJT,
   VAARG_SP,
