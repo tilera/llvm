@@ -183,3 +183,8 @@ def CPURegs : RegisterClass<"Tile", [i64, f64], 64, (add
   (sequence "R%u", 0, 51),
   FP,
   TP, SP, LR, ZERO)>;
+
+def SIMDRegs : RegisterClass<"Tile", [v8i8, v4i16, v2i32], 64, (add
+  (sequence "R%u", 0, 51),
+  FP,
+  TP, SP, LR, ZERO)>;

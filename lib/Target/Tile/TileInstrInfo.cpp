@@ -86,7 +86,7 @@ void TileInstrInfo::storeRegToStackSlot(
 
   unsigned Opc = 0;
 
-  if (RC == &Tile::CPURegsRegClass)
+  if (RC == &Tile::CPURegsRegClass || RC == &Tile::SIMDRegsRegClass)
     Opc = Tile::ST;
   else if (RC == &Tile::CPU32RegsRegClass)
     Opc = Tile::ST4;
@@ -105,7 +105,7 @@ void TileInstrInfo::loadRegFromStackSlot(
     DL = I->getDebugLoc();
   unsigned Opc = 0;
 
-  if (RC == &Tile::CPURegsRegClass)
+  if (RC == &Tile::CPURegsRegClass || RC == &Tile::SIMDRegsRegClass)
     Opc = Tile::LD;
   else if (RC == &Tile::CPU32RegsRegClass)
     Opc = Tile::LD4S32;
@@ -130,8 +130,8 @@ static unsigned GetAnalyzableBrOpc(unsigned Opc) {
   return (Opc == Tile::BEQZ || Opc == Tile::BNEZ || Opc == Tile::BGTZ ||
           Opc == Tile::BGEZ || Opc == Tile::BLTZ || Opc == Tile::BLEZ ||
           Opc == Tile::J)
-         ? Opc
-         : 0;
+             ? Opc
+             : 0;
 }
 
 unsigned Tile::GetOppositeBranchOpc(unsigned Opc) {
@@ -153,9 +153,9 @@ unsigned Tile::GetOppositeBranchOpc(unsigned Opc) {
   }
 }
 
-static void analyzeCondBr(const MachineInstr *Inst, unsigned Opc,
-                          MachineBasicBlock *&BB,
-                          SmallVectorImpl<MachineOperand> &Cond) {
+static void
+analyzeCondBr(const MachineInstr *Inst, unsigned Opc, MachineBasicBlock *&BB,
+              SmallVectorImpl<MachineOperand> &Cond) {
   assert(GetAnalyzableBrOpc(Opc) && "Not an analyzable branch");
   int NumOp = Inst->getNumExplicitOperands();
 

@@ -20,6 +20,8 @@ def CC_Tile : CallingConv<[
   // Promote i8/i16 arguments to i32.
   CCIfType<[i8, i16], CCPromoteToType<i32>>,
 
+  CCIfType<[v8i8, v4i16, v2i32], CCBitConvertToType<i64>>,
+
   // Integer arguments are passed in integer registers.
   CCIfType<[i32, f32], CCAssignToReg<[R0_32, R1_32, R2_32, R3_32, R4_32,
                                       R5_32, R6_32, R7_32, R8_32, R9_32]>>,
@@ -32,6 +34,9 @@ def CC_Tile : CallingConv<[
 ]>;
 
 def RetCC_Tile : CallingConv<[
+
+  CCIfType<[v8i8, v4i16, v2i32], CCBitConvertToType<i64>>,
+
   // i32 are returned in registers R[0-9]_32.
   CCIfType<[i32, f32], CCAssignToReg<[R0_32, R1_32, R2_32, R3_32, R4_32,
                                       R5_32, R6_32, R7_32, R8_32, R9_32]>>,

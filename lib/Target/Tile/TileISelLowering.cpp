@@ -109,6 +109,9 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
 
   // Set up the register classes.
   addRegisterClass(MVT::i64, &Tile::CPURegsRegClass);
+  addRegisterClass(MVT::v8i8, &Tile::SIMDRegsRegClass);
+  addRegisterClass(MVT::v4i16, &Tile::SIMDRegsRegClass);
+  addRegisterClass(MVT::v2i32, &Tile::SIMDRegsRegClass);
   addRegisterClass(MVT::i32, &Tile::CPU32RegsRegClass);
 
   if (!TM.Options.UseSoftFloat) {
@@ -222,6 +225,9 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::ROTR, MVT::i32, Expand);
   setOperationAction(ISD::ROTR, MVT::i64, Expand);
   setOperationAction(ISD::ROTL, MVT::i32, Expand);
+
+  // SIMD
+  setOperationAction(ISD::EXTRACT_VECTOR_ELT, MVT::v2i32, Expand);
 
   // Operations not directly supported by Tile.
   setOperationAction(ISD::BR_CC, MVT::f32, Expand);
@@ -1377,6 +1383,8 @@ SDValue TileTargetLowering::LowerFormalArguments(
 
       if (RegVT == MVT::i32 || RegVT == MVT::f32)
         RC = &Tile::CPU32RegsRegClass;
+      else if (RegVT == MVT::v8i8 || RegVT == MVT::v4i16 || RegVT == MVT::v2i32)
+        RC = &Tile::SIMDRegsRegClass;
       else
         RC = &Tile::CPURegsRegClass;
 
@@ -1387,16 +1395,24 @@ SDValue TileTargetLowering::LowerFormalArguments(
       // If this is an 8 or 16-bit value, it has been passed promoted
       // to 32 bits.  Insert an assert[sz]ext to capture this, then
       // truncate to the right size.
-      if (VA.getLocInfo() != CCValAssign::Full) {
-        unsigned Opcode = 0;
-        if (VA.getLocInfo() == CCValAssign::SExt)
-          Opcode = ISD::AssertSext;
-        else if (VA.getLocInfo() == CCValAssign::ZExt)
-          Opcode = ISD::AssertZext;
-        if (Opcode)
-          ArgValue =
-              DAG.getNode(Opcode, dl, RegVT, ArgValue, DAG.getValueType(ValVT));
+      switch (VA.getLocInfo()) {
+      default:
+        llvm_unreachable("Unknown loc info!");
+      case CCValAssign::Full:
+        break;
+      case CCValAssign::BCvt:
+        ArgValue = DAG.getNode(ISD::BITCAST, dl, ValVT, ArgValue);
+        break;
+      case CCValAssign::SExt:
+        ArgValue = DAG.getNode(ISD::AssertSext, dl, RegVT, ArgValue,
+                               DAG.getValueType(ValVT));
         ArgValue = DAG.getNode(ISD::TRUNCATE, dl, ValVT, ArgValue);
+        break;
+      case CCValAssign::ZExt:
+        ArgValue = DAG.getNode(ISD::AssertZext, dl, RegVT, ArgValue,
+                               DAG.getValueType(ValVT));
+        ArgValue = DAG.getNode(ISD::TRUNCATE, dl, ValVT, ArgValue);
+        break;
       }
 
       // Handle floating point arguments passed in integer registers.
