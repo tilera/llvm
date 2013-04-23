@@ -161,12 +161,18 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::CMPLTUI32_64:
   case Tile::SHL16INSLI32:
   case Tile::FSINGLE_PACK164:
+  case Tile::V1ADD0_ZIntrinsic:
+  case Tile::V2ADD0_ZIntrinsic:
+  case Tile::V4ADD0_ZIntrinsic:
+  case Tile::V1SUB0_ZIntrinsic:
+  case Tile::V2SUB0_ZIntrinsic:
+  case Tile::V4SUB0_ZIntrinsic:
     Op = Op - 3;
     break;
   case Tile::ST432_F:
   case Tile::LD4S32_F:
-  case Tile::LD0_Z64_V:
-  case Tile::ST0_Z64_V:
+  case Tile::LD0_Z64_V16:
+  case Tile::ST0_Z64_V16:
   case Tile::CMOVNEZC32:
   case Tile::BFEXTU64_32:
     Op = Op - 4;
@@ -187,12 +193,16 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::SHRUI64_32:
   case Tile::CMPLTS32_64:
   case Tile::CMPLTSI32_64:
+  case Tile::LD0_Z64_V32:
+  case Tile::ST0_Z64_V32:
     Op = Op - 5;
     break;
   case Tile::SHRS64_32:
   case Tile::SHRSI64_32:
   case Tile::CMOVNEZF64:
   case Tile::CMPLTU32_64:
+  case Tile::LD0_Z64_V8:
+  case Tile::ST0_Z64_V8:
     Op = Op - 6;
     break;
   case Tile::SHL64_32:

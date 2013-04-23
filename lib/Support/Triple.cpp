@@ -88,7 +88,7 @@ const char *Triple::getArchTypePrefix(ArchType Kind) {
   case amdil:   return "amdil";
   case spir:    return "spir";
   case spir64:  return "spir";
-  case tilegx:  return "tile";
+  case tilegx:  return "tilegx";
   }
 }
 

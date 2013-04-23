@@ -2522,13 +2522,31 @@ multiclass TileST {
          [(store (f64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
-  def #0_Z64_V#
+  def #0_Z64_V32#
       : TileSTOREY2
         <0x3,
          (outs),
          (ins CPURegs:$addr, SIMDRegs:$rs),
          "st $addr, $rs",
          [(store (v2i32 SIMDRegs:$rs), CPURegs:$addr)],
+         IIC_MM, FrmRRR, S_X1_Y2>;
+
+  def #0_Z64_V16#
+      : TileSTOREY2
+        <0x3,
+         (outs),
+         (ins CPURegs:$addr, SIMDRegs:$rs),
+         "st $addr, $rs",
+         [(store (v4i16 SIMDRegs:$rs), CPURegs:$addr)],
+         IIC_MM, FrmRRR, S_X1_Y2>;
+
+  def #0_Z64_V8#
+      : TileSTOREY2
+        <0x3,
+         (outs),
+         (ins CPURegs:$addr, SIMDRegs:$rs),
+         "st $addr, $rs",
+         [(store (v8i8 SIMDRegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
   }
 }
@@ -2710,13 +2728,31 @@ multiclass TileLD {
          [(set (f64 CPURegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
-  def #0_Z64_V#
+  def #0_Z64_V32#
       : TileLOADY2
         <0x2, 0x3,
          (outs SIMDRegs:$rd),
          (ins CPURegs:$addr),
          "ld $rd, $addr",
          [(set (v2i32 SIMDRegs:$rd), (load CPURegs:$addr))],
+         IIC_MM, FrmUnary, S_X1_Y2>;
+
+  def #0_Z64_V16#
+      : TileLOADY2
+        <0x2, 0x3,
+         (outs SIMDRegs:$rd),
+         (ins CPURegs:$addr),
+         "ld $rd, $addr",
+         [(set (v4i16 SIMDRegs:$rd), (load CPURegs:$addr))],
+         IIC_MM, FrmUnary, S_X1_Y2>;
+
+  def #0_Z64_V8#
+      : TileLOADY2
+        <0x2, 0x3,
+         (outs SIMDRegs:$rd),
+         (ins CPURegs:$addr),
+         "ld $rd, $addr",
+         [(set (v8i8 SIMDRegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
   }
 }
