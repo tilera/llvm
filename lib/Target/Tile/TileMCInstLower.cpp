@@ -165,6 +165,8 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
     break;
   case Tile::ST432_F:
   case Tile::LD4S32_F:
+  case Tile::LD0_Z64_V:
+  case Tile::ST0_Z64_V:
   case Tile::CMOVNEZC32:
   case Tile::BFEXTU64_32:
     Op = Op - 4;

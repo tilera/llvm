@@ -2512,6 +2512,7 @@ multiclass TileST {
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
+  let isCodeGenOnly = 1 in {
   def #0_Z64_F#
       : TileSTOREY2
         <0x3,
@@ -2520,6 +2521,16 @@ multiclass TileST {
          "st $addr, $rs",
          [(store (f64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
+
+  def #0_Z64_V#
+      : TileSTOREY2
+        <0x3,
+         (outs),
+         (ins CPURegs:$addr, SIMDRegs:$rs),
+         "st $addr, $rs",
+         [(store (v2i32 SIMDRegs:$rs), CPURegs:$addr)],
+         IIC_MM, FrmRRR, S_X1_Y2>;
+  }
 }
 
 multiclass TileST1 {
@@ -2689,6 +2700,7 @@ multiclass TileLD {
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
+  let isCodeGenOnly = 1 in {
   def #0_Z64_F#
       : TileLOADY2
         <0x2, 0x3,
@@ -2697,6 +2709,16 @@ multiclass TileLD {
          "ld $rd, $addr",
          [(set (f64 CPURegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
+
+  def #0_Z64_V#
+      : TileLOADY2
+        <0x2, 0x3,
+         (outs SIMDRegs:$rd),
+         (ins CPURegs:$addr),
+         "ld $rd, $addr",
+         [(set (v2i32 SIMDRegs:$rd), (load CPURegs:$addr))],
+         IIC_MM, FrmUnary, S_X1_Y2>;
+  }
 }
 
 multiclass TileLD1S {
@@ -4126,6 +4148,6 @@ def : Pat<(membarrier (i64 imm), (i64 imm), (i64 imm),
 include "TileInstrFP.td"
 
 //===----------------------------------------------------------------------===//
-// Floating Point Support
+// SIMD Support
 //===----------------------------------------------------------------------===//
 include "TileInstrSIMD.td"

@@ -71,6 +71,8 @@ public:
 
   virtual bool isOffsetFoldingLegal(const GlobalAddressSDNode *GA) const;
 
+  virtual bool isShuffleMaskLegal(const SmallVectorImpl<int> &M, EVT VT) const;
+
   virtual unsigned getJumpTableEncoding(void) const;
 
   virtual MVT getScalarShiftAmountTy(EVT LHSTy) const { return MVT::i32; }

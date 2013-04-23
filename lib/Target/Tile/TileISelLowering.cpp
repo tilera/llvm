@@ -228,6 +228,9 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
 
   // SIMD
   setOperationAction(ISD::EXTRACT_VECTOR_ELT, MVT::v2i32, Expand);
+  setOperationAction(ISD::VECTOR_SHUFFLE, MVT::v2i32, Expand);
+  setOperationAction(ISD::BUILD_VECTOR, MVT::v2i32, Expand);
+  setOperationAction(ISD::AND, MVT::v2i32, Expand);
 
   // Operations not directly supported by Tile.
   setOperationAction(ISD::BR_CC, MVT::f32, Expand);
@@ -1645,5 +1648,11 @@ EVT TileTargetLowering::getSetCCResultType(EVT VT) const {
 bool
 TileTargetLowering::isOffsetFoldingLegal(const GlobalAddressSDNode *GA) const {
   // The Tile target isn't yet aware of offsets.
+  return false;
+}
+
+bool
+TileTargetLowering::isShuffleMaskLegal(const SmallVectorImpl<int> &M,
+                                       EVT VT) const {
   return false;
 }
