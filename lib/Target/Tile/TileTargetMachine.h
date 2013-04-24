@@ -68,6 +68,9 @@ public:
 
   // Pass Pipeline Configuration.
   virtual TargetPassConfig *createPassConfig(PassManagerBase &PM);
+
+  /// \brief Register Tile analysis passes with a pass manager.
+  virtual void addAnalysisPasses(PassManagerBase &PM);
 };
 
 class TileGXTargetMachine : public TileTargetMachine {

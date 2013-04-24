@@ -33,6 +33,8 @@ FunctionPass *createTileVLIWPacketizer();
 void LowerTileMachineInstrToMCInst(const MachineInstr *MI, MCInst &OutMI,
                                    AsmPrinter &AP);
 
+/// \brief Creates an Tile-specific Target Transformation Info pass.
+ImmutablePass *createTileTargetTransformInfoPass(const TileTargetMachine *TM);
 } // end namespace llvm
 
 // TILE-Gx use 10 registers, r0 ~ r9 for arg passing.

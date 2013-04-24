@@ -28,6 +28,7 @@ add_llvm_target(TileCodeGen
   TileTargetMachine.cpp
   TileSelectionDAGInfo.cpp
   TileVLIWPacketizer.cpp
+  TileTargetTransformInfo.cpp
   )
 
 add_subdirectory(InstPrinter)
