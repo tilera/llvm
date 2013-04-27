@@ -109,14 +109,48 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
 
   // Set up the register classes.
   addRegisterClass(MVT::i64, &Tile::CPURegsRegClass);
-  addRegisterClass(MVT::v8i8, &Tile::SIMDRegsRegClass);
-  addRegisterClass(MVT::v4i16, &Tile::SIMDRegsRegClass);
-  addRegisterClass(MVT::v2i32, &Tile::SIMDRegsRegClass);
   addRegisterClass(MVT::i32, &Tile::CPU32RegsRegClass);
 
   if (!TM.Options.UseSoftFloat) {
     addRegisterClass(MVT::f64, &Tile::CPURegsRegClass);
     addRegisterClass(MVT::f32, &Tile::CPU32RegsRegClass);
+  }
+
+  // SIMD
+  {
+    // First set operation action for all vector types to expand. Then we
+    // will selectively turn on ones that can be effectively codegen'd.
+    for (unsigned i = (unsigned)MVT::FIRST_VECTOR_VALUETYPE;
+         i <= (unsigned)MVT::LAST_VECTOR_VALUETYPE; ++i) {
+      MVT::SimpleValueType VT = (MVT::SimpleValueType)i;
+
+      for (unsigned Opc = 0; Opc < ISD::BUILTIN_OP_END; ++Opc)
+        setOperationAction(Opc, VT, Expand);
+
+      for (unsigned j = (unsigned)MVT::FIRST_VECTOR_VALUETYPE;
+           j <= (unsigned)MVT::LAST_VECTOR_VALUETYPE; ++j) {
+        MVT::SimpleValueType InnerVT = (MVT::SimpleValueType)j;
+        setTruncStoreAction(VT, InnerVT, Expand);
+      }
+
+      setLoadExtAction(ISD::SEXTLOAD, VT, Expand);
+      setLoadExtAction(ISD::ZEXTLOAD, VT, Expand);
+      setLoadExtAction(ISD::EXTLOAD, VT, Expand);
+    }
+
+    setOperationAction(ISD::LOAD, MVT::v2i32, Legal);
+    setOperationAction(ISD::LOAD, MVT::v4i16, Legal);
+    setOperationAction(ISD::LOAD, MVT::v8i8, Legal);
+    setOperationAction(ISD::STORE, MVT::v2i32, Legal);
+    setOperationAction(ISD::STORE, MVT::v4i16, Legal);
+    setOperationAction(ISD::STORE, MVT::v8i8, Legal);
+    setOperationAction(ISD::BITCAST, MVT::v2i32, Legal);
+    setOperationAction(ISD::BITCAST, MVT::v4i16, Legal);
+    setOperationAction(ISD::BITCAST, MVT::v8i8, Legal);
+
+    addRegisterClass(MVT::v2i32, &Tile::SIMDRegsRegClass);
+    addRegisterClass(MVT::v4i16, &Tile::SIMDRegsRegClass);
+    addRegisterClass(MVT::v8i8, &Tile::SIMDRegsRegClass);
   }
 
   // Load extented operations for i1 types must be promoted.
@@ -225,12 +259,6 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::ROTR, MVT::i32, Expand);
   setOperationAction(ISD::ROTR, MVT::i64, Expand);
   setOperationAction(ISD::ROTL, MVT::i32, Expand);
-
-  // SIMD
-  setOperationAction(ISD::EXTRACT_VECTOR_ELT, MVT::v2i32, Expand);
-  setOperationAction(ISD::VECTOR_SHUFFLE, MVT::v2i32, Expand);
-  setOperationAction(ISD::BUILD_VECTOR, MVT::v2i32, Expand);
-  setOperationAction(ISD::AND, MVT::v2i32, Expand);
 
   // Operations not directly supported by Tile.
   setOperationAction(ISD::BR_CC, MVT::f32, Expand);

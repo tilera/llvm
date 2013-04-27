@@ -33,6 +33,7 @@ def IIC_MM     : InstrItinClass;
 def IIC_MMA    : InstrItinClass;
 def IIC_MUL    : InstrItinClass;
 def IIC_SIMD   : InstrItinClass;
+def IIC_SIMD_P0   : InstrItinClass;
 def IIC_PSEUDO_P1 : InstrItinClass;
 def IIC_PSEUDO_ALL: InstrItinClass;
 
@@ -52,6 +53,7 @@ def TileItineraries : ProcessorItineraries<[P0, P1, P2], [], [
   InstrItinData<IIC_MMA,    [InstrStage<1, [P1]>]>,
   InstrItinData<IIC_MUL,    [InstrStage<1, [P0]>]>,
   InstrItinData<IIC_SIMD,   [InstrStage<1, [P0, P1]>]>,
+  InstrItinData<IIC_SIMD_P0,   [InstrStage<1, [P0]>]>,
   InstrItinData<IIC_PSEUDO_P1, [InstrStage<1, [P1]>]>,
   InstrItinData<IIC_PSEUDO_ALL,[InstrStage<1, [P0, P1, P2]>]>
   ]>;

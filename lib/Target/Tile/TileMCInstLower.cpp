@@ -161,12 +161,6 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::CMPLTUI32_64:
   case Tile::SHL16INSLI32:
   case Tile::FSINGLE_PACK164:
-  case Tile::V1ADD0_ZIntrinsic:
-  case Tile::V2ADD0_ZIntrinsic:
-  case Tile::V4ADD0_ZIntrinsic:
-  case Tile::V1SUB0_ZIntrinsic:
-  case Tile::V2SUB0_ZIntrinsic:
-  case Tile::V4SUB0_ZIntrinsic:
     Op = Op - 3;
     break;
   case Tile::ST432_F:
