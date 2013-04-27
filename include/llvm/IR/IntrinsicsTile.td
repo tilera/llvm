@@ -314,4 +314,11 @@ def int_tilegx_v4sub : GCCBuiltin<"__builtin_tilegx_v4sub">,
 
 def int_tilegx_v4subsc : GCCBuiltin<"__builtin_tilegx_v4subsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
+
+// Others
+def int_tilegx_mfspr : GCCBuiltin<"__builtin_tilegx_mfspr">,
+  Intrinsic<[llvm_i64_ty], [llvm_i64_ty], []>;
+
+def int_tilegx_mtspr : GCCBuiltin<"__builtin_tilegx_mtspr">,
+  Intrinsic<[], [llvm_i64_ty, llvm_i64_ty], []>;
 } // end TargetPrefix

@@ -257,6 +257,39 @@ class TileInstX1Jump<bits<3> op, bits<1> j_op, dag outs, dag ins,
   let Inst{30-0} = 0x51483000;
 }
 
+class TileInstX1MFIMM14<bits<3> op, bits<8> sub_op, dag outs, dag ins,
+                        string asmstr, list<dag> pattern, InstrItinClass itin,
+                        TileFormat f, TileValidSlot s>
+      : TileInst<outs, ins, asmstr, pattern, itin, f, s> {
+  bits<6>  rd;
+  bits<14> imm14;
+
+  let Inst{63-62} = 0x0;
+  let Inst{61-59} = op;
+  let Inst{58-51} = sub_op;
+  let Inst{50-37} = imm14;
+  let Inst{36-31} = rd;
+  // Encode the X0 slot with FNOP.
+  let Inst{30-0} = 0x51483000;
+}
+
+class TileInstX1MTIMM14<bits<3> op, bits<8> sub_op, dag outs, dag ins,
+                        string asmstr, list<dag> pattern, InstrItinClass itin,
+                        TileFormat f, TileValidSlot s>
+      : TileInst<outs, ins, asmstr, pattern, itin, f, s> {
+  bits<6>  rs;
+  bits<14> imm14;
+
+  let Inst{63-62} = 0x0;
+  let Inst{61-59} = op;
+  let Inst{58-51} = sub_op;
+  let Inst{50-43} = imm14{13-6};
+  let Inst{42-37} = rs;
+  let Inst{36-31} = imm14{5-0};
+  // Encode the X0 slot with FNOP.
+  let Inst{30-0} = 0x51483000;
+}
+
 class TileSTOREX1<bits<3> op, bits<10> sub_op, dag outs, dag ins,
                 string asmstr, list<dag> pattern, InstrItinClass itin,
                 TileFormat f, TileValidSlot s>
@@ -972,6 +1005,35 @@ class TileBundleX0MM<bits<3> op, bits<4> sub_op,
   let Inst{17-12} = bfend;
   let Inst{11-6} = rs;
   let Inst{5-0} = rd;
+}
+
+class TileBundleX1MFIMM14<bits<3> op, bits<8> sub_op, dag outs, dag ins,
+                          string asmstr, list<dag> pattern, InstrItinClass itin,
+                          TileFormat f, TileValidSlot s>
+      : TileInst<outs, ins, asmstr, pattern, itin, f, s> {
+  bits<6>  rd;
+  bits<14> imm14;
+
+  let Inst{63-62} = 0x0;
+  let Inst{61-59} = op;
+  let Inst{58-51} = sub_op;
+  let Inst{50-37} = imm14;
+  let Inst{36-31} = rd;
+}
+
+class TileBundleX1MTIMM14<bits<3> op, bits<8> sub_op, dag outs, dag ins,
+                          string asmstr, list<dag> pattern, InstrItinClass itin,
+                          TileFormat f, TileValidSlot s>
+      : TileInst<outs, ins, asmstr, pattern, itin, f, s> {
+  bits<6>  rs;
+  bits<14> imm14;
+
+  let Inst{63-62} = 0x0;
+  let Inst{61-59} = op;
+  let Inst{58-51} = sub_op;
+  let Inst{50-43} = imm14{13-6};
+  let Inst{42-37} = rs;
+  let Inst{36-31} = imm14{5-0};
 }
 
 class TilePseudo<dag outs,

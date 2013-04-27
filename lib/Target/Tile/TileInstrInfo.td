@@ -214,25 +214,14 @@ def immZExt16  : PatLeaf<(imm), [{
     return (uint64_t)N->getZExtValue() == (unsigned short)N->getZExtValue();
 }], LO16>;
 
-def immZExt8  : PatLeaf<(imm), [{
-  if (N->getValueType(0) == MVT::i32)
-    return (uint32_t)N->getZExtValue() == (unsigned char)N->getZExtValue();
-  else
-    return (uint64_t)N->getZExtValue() == (unsigned char)N->getZExtValue();
-}], LO8>;
-
-// Immediate can be loaded with LUi (32-bit int with lower 16-bit cleared).
-def immLow16Zero : PatLeaf<(imm), [{
-  int64_t Val = N->getSExtValue();
-  return isInt<32>(Val) && !(Val & 0xffff);
-}]>;
-
 // shamt field must fit in 5 bits.
 def immZExt5 : ImmLeaf<i64, [{return Imm == (Imm & 0x1f);}]>;
 def immZExt5_32 : ImmLeaf<i32, [{return Imm == (Imm & 0x1f);}]>;
 
 def immZExt6 : ImmLeaf<i64, [{return Imm == (Imm & 0x3f);}]>;
 def immZExt6_32 : ImmLeaf<i32, [{return Imm == (Imm & 0x3f);}]>;
+
+def immZExt14 : ImmLeaf<i64, [{return Imm == (Imm & 0x3fff);}]>;
 
 
 //===----------------------------------------------------------------------===//
@@ -4177,6 +4166,66 @@ def : Pat<(membarrier (i32 imm), (i32 imm), (i32 imm),
            (i32 imm), (i32 imm)), (MF)>;
 def : Pat<(membarrier (i64 imm), (i64 imm), (i64 imm),
            (i64 imm), (i64 imm)), (MF)>;
+
+//===----------------------------------------------------------------------===//
+// Intrinsic support for special purpose control instructions
+//===----------------------------------------------------------------------===//
+multiclass TileMFSPR_INTRINSIC
+             <string OpStr,
+              bits<3>op_x1, bits<8>subop_x1,
+              SDPatternOperator intrinsic_op> {
+
+  def #NAME#
+      : TileInstX1MFIMM14
+        <op_x1, subop_x1,
+         (outs CPURegs:$rd),
+         (ins i64imm:$imm14),
+         !strconcat(OpStr, "\t$rd, $imm14"),
+         [(set (i64 CPURegs:$rd),
+            (intrinsic_op immZExt14:$imm14))],
+         IIC_CTL_P1, FrmMFImm14, S_X1>;
+
+  def #0_X1#
+      : TileBundleX1MFIMM14
+        <op_x1, subop_x1,
+         (outs CPURegs:$rd),
+         (ins i64imm:$imm14),
+         !strconcat(OpStr, "\t$rd, $imm14"),
+         [],
+         IIC_CTL_P1, FrmMFImm14, S_X1>;
+}
+
+multiclass TileMTSPR_INTRINSIC
+             <string OpStr,
+              bits<3>op_x1, bits<8>subop_x1,
+              SDPatternOperator intrinsic_op> {
+
+  def #NAME#
+      : TileInstX1MTIMM14
+        <op_x1, subop_x1,
+         (outs),
+         (ins i64imm:$imm14, CPURegs:$rs),
+         !strconcat(OpStr, "\t$imm14, $rs"),
+         [(intrinsic_op immZExt14:$imm14, CPURegs:$rs)],
+         IIC_CTL_P1, FrmMFImm14, S_X1>;
+
+  def #0_X1#
+      : TileBundleX1MTIMM14
+        <op_x1, subop_x1,
+         (outs),
+         (ins i64imm:$imm14, CPURegs:$rs),
+         !strconcat(OpStr, "\t$imm14, $rs"),
+         [],
+         IIC_CTL_P1, FrmMFImm14, S_X1>;
+}
+
+defm MFSPR_INTRINSIC
+     : TileMFSPR_INTRINSIC
+       <"mfspr", 0x3, 0x16, int_tilegx_mfspr>;
+defm MTSPR_INTRINSIC
+     : TileMTSPR_INTRINSIC
+       <"mtspr", 0x3, 0x17, int_tilegx_mtspr>;
+
 
 //===----------------------------------------------------------------------===//
 // Floating Point Support
