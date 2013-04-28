@@ -138,6 +138,13 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
       setLoadExtAction(ISD::EXTLOAD, VT, Expand);
     }
 
+    setOperationAction(ISD::ADD, MVT::v2i32, Legal);
+    setOperationAction(ISD::ADD, MVT::v4i16, Legal);
+    setOperationAction(ISD::ADD, MVT::v8i8, Legal);
+    setOperationAction(ISD::SUB, MVT::v2i32, Legal);
+    setOperationAction(ISD::SUB, MVT::v4i16, Legal);
+    setOperationAction(ISD::SUB, MVT::v8i8, Legal);
+
     setOperationAction(ISD::LOAD, MVT::v2i32, Legal);
     setOperationAction(ISD::LOAD, MVT::v4i16, Legal);
     setOperationAction(ISD::LOAD, MVT::v8i8, Legal);

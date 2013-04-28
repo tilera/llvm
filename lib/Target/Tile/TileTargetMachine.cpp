@@ -92,7 +92,6 @@ bool TilePassConfig::addPreEmitPass() {
   return ShouldPrint;
 }
 
-#if 0
 void TileTargetMachine::addAnalysisPasses(PassManagerBase &PM) {
   // Add first the target-independent BasicTTI pass, then our Tile pass. This
   // allows the Tile pass to delegate to the target independent layer when
@@ -100,4 +99,3 @@ void TileTargetMachine::addAnalysisPasses(PassManagerBase &PM) {
   PM.add(createBasicTargetTransformInfoPass(getTargetLowering()));
   PM.add(createTileTargetTransformInfoPass(this));
 }
-#endif

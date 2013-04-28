@@ -528,7 +528,6 @@ defm V1SUB    : TileVSUB<v8i8, "v1sub", 0x5, 0x72, 0x5, 0x48>;
 defm V2SUB    : TileVSUB<v4i16, "v2sub", 0x5, 0x94, 0x5, 0x5F>;
 defm V4SUB    : TileVSUB<v2i32, "v4sub", 0x5, 0x9F, 0x5, 0x6A>;
 
-
 def : Pat<(v8i8 (bitconvert (i64 CPURegs:$src))),
            (COPY_TO_REGCLASS CPURegs:$src, SIMDRegs)>;
 
