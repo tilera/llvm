@@ -235,7 +235,7 @@ multiclass TileADDI {
         <0x3, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd),
             (add CPURegs:$rs, immSExt8:$imm8))],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
@@ -245,7 +245,7 @@ multiclass TileADDI {
         <0x4, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -254,7 +254,7 @@ multiclass TileADDI {
         <0x3, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd),
             (add CPURegs:$rs, immSExt8:$imm8))],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
@@ -264,7 +264,7 @@ multiclass TileADDI {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -273,7 +273,7 @@ multiclass TileADDI {
         <0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 }
@@ -285,7 +285,7 @@ multiclass TileADDLI {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [(set (i64 CPURegs:$rd),
             (add CPURegs:$rs, immSExt16:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
@@ -295,7 +295,7 @@ multiclass TileADDLI {
         <0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -304,7 +304,7 @@ multiclass TileADDLI {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 }
@@ -316,7 +316,7 @@ multiclass TileADDXI {
         <0x3, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "addxi $rd, $rs, $imm8",
+         "addxi\t$rd, $rs, $imm8",
          [(set (i32 CPU32Regs:$rd),
             (add CPU32Regs:$rs, immSExt8:$imm8))],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
@@ -326,7 +326,7 @@ multiclass TileADDXI {
         <0x4, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "addxi $rd, $rs, $imm8",
+         "addxi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -335,7 +335,7 @@ multiclass TileADDXI {
         <0x3, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "addxi $rd, $rs, $imm8",
+         "addxi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -344,7 +344,7 @@ multiclass TileADDXI {
         <0x1,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "addxi $rd, $rs, $imm8",
+         "addxi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -353,7 +353,7 @@ multiclass TileADDXI {
         <0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "addxi $rd, $rs, $imm8",
+         "addxi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 }
@@ -365,7 +365,7 @@ multiclass TileADDXLI {
         <0x1,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm16),
-         "addxli $rd, $rs, $imm16",
+         "addxli\t$rd, $rs, $imm16",
          [(set (i32 CPU32Regs:$rd),
             (add CPU32Regs:$rs, immSExt16:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
@@ -375,7 +375,7 @@ multiclass TileADDXLI {
         <0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm16),
-         "addxli $rd, $rs, $imm16",
+         "addxli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -384,7 +384,7 @@ multiclass TileADDXLI {
         <0x1,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm16),
-         "addxli $rd, $rs, $imm16",
+         "addxli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 }
@@ -397,7 +397,7 @@ multiclass TileADD {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
             (add CPURegs:$rsa, CPURegs:$rsb))],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -408,7 +408,7 @@ multiclass TileADD {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -417,7 +417,7 @@ multiclass TileADD {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -426,7 +426,7 @@ multiclass TileADD {
         <0x5, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -435,7 +435,7 @@ multiclass TileADD {
         <0x6, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -448,7 +448,7 @@ multiclass TileADDX {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "addx $rd, $rsa, $rsb",
+         "addx\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
            (add CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -458,7 +458,7 @@ multiclass TileADDX {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "addx $rd, $rsa, $rsb",
+         "addx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -467,7 +467,7 @@ multiclass TileADDX {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "addx $rd, $rsa, $rsb",
+         "addx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -476,7 +476,7 @@ multiclass TileADDX {
         <0x5, 0x0,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "addx $rd, $rsa, $rsb",
+         "addx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -485,7 +485,7 @@ multiclass TileADDX {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "addx $rd, $rsa, $rsb",
+         "addx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -498,7 +498,7 @@ multiclass TileADD_EXTEND {
         <0x5, 0x2,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -507,7 +507,7 @@ multiclass TileADD_EXTEND {
         <0x5, 0x2,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -516,7 +516,7 @@ multiclass TileADD_EXTEND {
         <0x5, 0x2,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -525,7 +525,7 @@ multiclass TileADD_EXTEND {
         <0x5, 0x0,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -534,7 +534,7 @@ multiclass TileADD_EXTEND {
         <0x5, 0x2,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -547,7 +547,7 @@ multiclass TileADD_TRUNC {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -556,7 +556,7 @@ multiclass TileADD_TRUNC {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -565,7 +565,7 @@ multiclass TileADD_TRUNC {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -574,7 +574,7 @@ multiclass TileADD_TRUNC {
         <0x5, 0x0,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -583,7 +583,7 @@ multiclass TileADD_TRUNC {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "addx $rd, $rs, zero",
+         "addx\t$rd, $rs, zero",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -595,7 +595,7 @@ multiclass TileSUB {
         <0x5, 0x34,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "sub $rd, $rsa, $rsb",
+         "sub\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (sub CPURegs:$rsa, CPURegs:$rsb))],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -605,7 +605,7 @@ multiclass TileSUB {
         <0x5, 0x51,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "sub $rd, $rsa, $rsb",
+         "sub\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -614,7 +614,7 @@ multiclass TileSUB {
         <0x5, 0x34,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "sub $rd, $rsa, $rsb",
+         "sub\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -623,7 +623,7 @@ multiclass TileSUB {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "sub $rd, $rsa, $rsb",
+         "sub\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -632,7 +632,7 @@ multiclass TileSUB {
         <0x6, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "sub $rd, $rsa, $rsb",
+         "sub\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -644,7 +644,7 @@ multiclass TileSUBX {
         <0x5, 0x33,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "subx $rd, $rsa, $rsb",
+         "subx\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
             (sub CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -654,7 +654,7 @@ multiclass TileSUBX {
         <0x5, 0x50,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "subx $rd, $rsa, $rsb",
+         "subx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -663,7 +663,7 @@ multiclass TileSUBX {
         <0x5, 0x33,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "subx $rd, $rsa, $rsb",
+         "subx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -672,7 +672,7 @@ multiclass TileSUBX {
         <0x5, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "subx $rd, $rsa, $rsb",
+         "subx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -681,7 +681,7 @@ multiclass TileSUBX {
         <0x6, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "subx $rd, $rsa, $rsb",
+         "subx\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -694,7 +694,7 @@ multiclass TileAND {
         <0x5, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "and $rd, $rsa, $rsb",
+         "and\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (and CPURegs:$rsa, CPURegs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -704,7 +704,7 @@ multiclass TileAND {
         <0x5, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "and $rd, $rsa, $rsb",
+         "and\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -713,7 +713,7 @@ multiclass TileAND {
         <0x5, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "and $rd, $rsa, $rsb",
+         "and\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -722,7 +722,7 @@ multiclass TileAND {
         <0xA, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "and $rd, $rsa, $rsb",
+         "and\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -731,7 +731,7 @@ multiclass TileAND {
         <0xB, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "and $rd, $rsa, $rsb",
+         "and\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -741,7 +741,7 @@ multiclass TileAND {
         <0x5, 0x4,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "and $rd, $rsa, $rsb",
+         "and\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (and CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -754,7 +754,7 @@ multiclass TileANDI {
         <0x3, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "andi $rd, $rs, $imm8",
+         "andi\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd),
          (and CPURegs:$rs, immSExt8:$imm8))],
          IIC_LOGIC, FrmImm8, S_X0_X1_Y0_Y1>;
@@ -764,7 +764,7 @@ multiclass TileANDI {
         <0x4, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "andi $rd, $rs, $imm8",
+         "andi\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -773,7 +773,7 @@ multiclass TileANDI {
         <0x5, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "andi $rd, $rs, $imm8",
+         "andi\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -782,7 +782,7 @@ multiclass TileANDI {
         <0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "andi $rd, $rs, $imm8",
+         "andi\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -791,7 +791,7 @@ multiclass TileANDI {
         <0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "andi $rd, $rs, $imm8",
+         "andi\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -801,7 +801,7 @@ multiclass TileANDI {
         <0x3, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "andi $rd, $rs, $imm8",
+         "andi\t$rd, $rs, $imm8",
          [(set (i32 CPU32Regs:$rd),
          (and CPU32Regs:$rs, immSExt8:$imm8))],
          IIC_LOGIC, FrmImm8, S_X0_X1_Y0_Y1>;
@@ -815,7 +815,7 @@ multiclass TileXOR {
         <0x5, 0x6B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "xor $rd, $rsa, $rsb",
+         "xor\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (xor CPURegs:$rsa, CPURegs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -825,7 +825,7 @@ multiclass TileXOR {
         <0x5, 0xA0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "xor $rd, $rsa, $rsb",
+         "xor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -834,7 +834,7 @@ multiclass TileXOR {
         <0x5, 0x6B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "xor $rd, $rsa, $rsb",
+         "xor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -843,7 +843,7 @@ multiclass TileXOR {
         <0xA, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "xor $rd, $rsa, $rsb",
+         "xor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -852,7 +852,7 @@ multiclass TileXOR {
         <0xB, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "xor $rd, $rsa, $rsb",
+         "xor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -862,7 +862,7 @@ multiclass TileXOR {
         <0x5, 0x6B,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "xor $rd, $rsa, $rsb",
+         "xor\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (xor CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -876,7 +876,7 @@ multiclass TileOR {
         <0x5, 0x1D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "or $rd, $rsa, $rsb",
+         "or\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (or CPURegs:$rsa, CPURegs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -886,7 +886,7 @@ multiclass TileOR {
         <0x5, 0x41,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "or $rd, $rsa, $rsb",
+         "or\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -895,7 +895,7 @@ multiclass TileOR {
         <0x5, 0x1D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "or $rd, $rsa, $rsb",
+         "or\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -904,7 +904,7 @@ multiclass TileOR {
         <0xA, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "or $rd, $rsa, $rsb",
+         "or\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -913,7 +913,7 @@ multiclass TileOR {
         <0xA, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "or $rd, $rsa, $rsb",
+         "or\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -923,7 +923,7 @@ multiclass TileOR {
         <0x5, 0x1D,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "or $rd, $rsa, $rsb",
+         "or\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (or CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -936,7 +936,7 @@ multiclass TileXORI {
         <0x3, 0x2D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "xori $rd, $rs, $imm8",
+         "xori\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd),
            (xor CPURegs:$rs, immSExt8:$imm8))],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
@@ -946,7 +946,7 @@ multiclass TileXORI {
         <0x4, 0x14,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "xori $rd, $rs, $imm8",
+         "xori\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
 
@@ -955,7 +955,7 @@ multiclass TileXORI {
         <0x3, 0x2D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "xori $rd, $rs, $imm8",
+         "xori\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
 
@@ -965,7 +965,7 @@ multiclass TileXORI {
         <0x3, 0x2D,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "xori $rd, $rs, $imm8",
+         "xori\t$rd, $rs, $imm8",
          [(set (i32 CPU32Regs:$rd),
            (xor CPU32Regs:$rs, immSExt8:$imm8))],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
@@ -978,7 +978,7 @@ multiclass TileORI {
         <0x3, 0x18,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "ori $rd, $rs, $imm8",
+         "ori\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd),
          (or CPURegs:$rs, immSExt8:$imm8))],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
@@ -988,7 +988,7 @@ multiclass TileORI {
         <0x4, 0x7,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "ori $rd, $rs, $imm8",
+         "ori\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
 
@@ -997,7 +997,7 @@ multiclass TileORI {
         <0x3, 0x18,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "ori $rd, $rs, $imm8",
+         "ori\t$rd, $rs, $imm8",
          [],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
 
@@ -1007,7 +1007,7 @@ multiclass TileORI {
         <0x3, 0x18,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$imm8),
-         "ori $rd, $rs, $imm8",
+         "ori\t$rd, $rs, $imm8",
          [(set (i32 CPU32Regs:$rd),
          (or CPU32Regs:$rs, immSExt8:$imm8))],
          IIC_LOGIC, FrmImm8, S_X0_X1>;
@@ -1021,7 +1021,7 @@ multiclass TileNOR {
         <0x5, 0x1C,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "nor $rd, $rsa, $rsb",
+         "nor\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (not (or CPURegs:$rsa, CPURegs:$rsb)))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1031,7 +1031,7 @@ multiclass TileNOR {
         <0x5, 0x40,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "nor $rd, $rsa, $rsb",
+         "nor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1040,7 +1040,7 @@ multiclass TileNOR {
         <0x5, 0x1C,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "nor $rd, $rsa, $rsb",
+         "nor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1049,7 +1049,7 @@ multiclass TileNOR {
         <0xA, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "nor $rd, $rsa, $rsb",
+         "nor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1058,7 +1058,7 @@ multiclass TileNOR {
         <0xB, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "nor $rd, $rsa, $rsb",
+         "nor\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1068,7 +1068,7 @@ multiclass TileNOR {
         <0x5, 0x1C,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "nor $rd, $rsa, $rsb",
+         "nor\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (not (or CPU32Regs:$rsa, CPU32Regs:$rsb)))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1081,7 +1081,7 @@ multiclass TileSHL {
         <0x5, 0x26,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shl $rd, $rsa, $rsb",
+         "shl\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (shl CPURegs:$rsa, CPURegs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1091,7 +1091,7 @@ multiclass TileSHL {
         <0x5, 0x4A,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shl $rd, $rsa, $rsb",
+         "shl\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1100,7 +1100,7 @@ multiclass TileSHL {
         <0x5, 0x26,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shl $rd, $rsa, $rsb",
+         "shl\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1109,7 +1109,7 @@ multiclass TileSHL {
         <0xB, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shl $rd, $rsa, $rsb",
+         "shl\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1118,7 +1118,7 @@ multiclass TileSHL {
         <0xC, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shl $rd, $rsa, $rsb",
+         "shl\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1128,7 +1128,7 @@ multiclass TileSHL {
         <0x5, 0x26,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "shl $rd, $rsa, $rsb",
+         "shl\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (shl CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
@@ -1141,7 +1141,7 @@ multiclass TileSHLX {
         <0x5, 0x25,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shlx $rd, $rsa, $rsb",
+         "shlx\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (shl CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
@@ -1151,7 +1151,7 @@ multiclass TileSHLX {
         <0x5, 0x49,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shlx $rd, $rsa, $rsb",
+         "shlx\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
 
@@ -1160,7 +1160,7 @@ multiclass TileSHLX {
         <0x5, 0x25,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shlx $rd, $rsa, $rsb",
+         "shlx\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
 
@@ -1173,7 +1173,7 @@ multiclass TileSHLI {
         <0x6, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shli $rd, $rs, $sht",
+         "shli\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
          (shl CPURegs:$rs, immZExt6:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1183,7 +1183,7 @@ multiclass TileSHLI {
         <0x6, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shli $rd, $rs, $sht",
+         "shli\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1192,7 +1192,7 @@ multiclass TileSHLI {
         <0x6, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shli $rd, $rs, $sht",
+         "shli\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1201,7 +1201,7 @@ multiclass TileSHLI {
         <0xF, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shli $rd, $rs, $sht",
+         "shli\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1210,7 +1210,7 @@ multiclass TileSHLI {
         <0xE, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shli $rd, $rs, $sht",
+         "shli\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1220,7 +1220,7 @@ multiclass TileSHLI {
         <0x6, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i32imm:$sht),
-         "shli $rd, $rs, $sht",
+         "shli\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
          (shl CPURegs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1233,7 +1233,7 @@ multiclass TileSHLXI {
         <0x6, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$sht),
-         "shlxi $rd, $rs, $sht",
+         "shlxi\t$rd, $rs, $sht",
          [(set (i32 CPU32Regs:$rd),
          (shl CPU32Regs:$rs, immZExt5_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1>;
@@ -1243,7 +1243,7 @@ multiclass TileSHLXI {
         <0x6, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, i32imm:$sht),
-         "shlxi $rd, $rsa, $sht",
+         "shlxi\t$rd, $rsa, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1>;
 
@@ -1252,7 +1252,7 @@ multiclass TileSHLXI {
         <0x6, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, i32imm:$sht),
-         "shlxi $rd, $rsa, $sht",
+         "shlxi\t$rd, $rsa, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1>;
 
@@ -1262,7 +1262,7 @@ multiclass TileSHLXI {
         <0x6, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i64imm:$sht),
-         "shlxi $rd, $rs, $sht",
+         "shlxi\t$rd, $rs, $sht",
          [(set (i32 CPU32Regs:$rd),
          (shl CPU32Regs:$rs, immZExt5:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1275,7 +1275,7 @@ multiclass TileSHRU {
         <0x5, 0x29,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shru $rd, $rsa, $rsb",
+         "shru\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
            (srl CPURegs:$rsa, CPURegs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1285,7 +1285,7 @@ multiclass TileSHRU {
         <0x5, 0x4D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shru $rd, $rsa, $rsb",
+         "shru\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1294,7 +1294,7 @@ multiclass TileSHRU {
         <0x5, 0x29,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shru $rd, $rsa, $rsb",
+         "shru\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1303,7 +1303,7 @@ multiclass TileSHRU {
         <0xB, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shru $rd, $rsa, $rsb",
+         "shru\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1312,7 +1312,7 @@ multiclass TileSHRU {
         <0xC, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shru $rd, $rsa, $rsb",
+         "shru\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1322,7 +1322,7 @@ multiclass TileSHRU {
         <0x5, 0x29,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "shru $rd, $rsa, $rsb",
+         "shru\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
            (srl CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1335,7 +1335,7 @@ multiclass TileSHRUX {
         <0x5, 0x28,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shrux $rd, $rsa, $rsb",
+         "shrux\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
            (srl CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
@@ -1345,7 +1345,7 @@ multiclass TileSHRUX {
         <0x5, 0x4C,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shrux $rd, $rsa, $rsb",
+         "shrux\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
 
@@ -1354,7 +1354,7 @@ multiclass TileSHRUX {
         <0x5, 0x28,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shrux $rd, $rsa, $rsb",
+         "shrux\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1>;
 }
@@ -1366,7 +1366,7 @@ multiclass TileSHRUI {
         <0x6, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrui $rd, $rs, $sht",
+         "shrui\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
            (srl CPURegs:$rs, immZExt6:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1376,7 +1376,7 @@ multiclass TileSHRUI {
         <0x6, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrui $rd, $rs, $sht",
+         "shrui\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1385,7 +1385,7 @@ multiclass TileSHRUI {
         <0x6, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrui $rd, $rs, $sht",
+         "shrui\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1394,7 +1394,7 @@ multiclass TileSHRUI {
         <0xF, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrui $rd, $rs, $sht",
+         "shrui\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1403,7 +1403,7 @@ multiclass TileSHRUI {
         <0xE, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrui $rd, $rs, $sht",
+         "shrui\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1413,7 +1413,7 @@ multiclass TileSHRUI {
         <0x6, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i32imm:$sht),
-         "shrui $rd, $rs, $sht",
+         "shrui\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
          (srl CPURegs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1426,7 +1426,7 @@ multiclass TileSHRUXI {
         <0x6, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$sht),
-         "shruxi $rd, $rs, $sht",
+         "shruxi\t$rd, $rs, $sht",
          [(set (i32 CPU32Regs:$rd),
            (srl CPU32Regs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1>;
@@ -1436,7 +1436,7 @@ multiclass TileSHRUXI {
         <0x6, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, i32imm:$sht),
-         "shruxi $rd, $rsa, $sht",
+         "shruxi\t$rd, $rsa, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1>;
 
@@ -1445,7 +1445,7 @@ multiclass TileSHRUXI {
         <0x6, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, i32imm:$sht),
-         "shruxi $rd, $rsa, $sht",
+         "shruxi\t$rd, $rsa, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1>;
 }
@@ -1457,7 +1457,7 @@ multiclass TileSHRS {
         <0x5, 0x27,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (sra CPURegs:$rsa, CPURegs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1467,7 +1467,7 @@ multiclass TileSHRS {
         <0x5, 0x4B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1476,7 +1476,7 @@ multiclass TileSHRS {
         <0x5, 0x27,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1485,7 +1485,7 @@ multiclass TileSHRS {
         <0xB, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1494,7 +1494,7 @@ multiclass TileSHRS {
         <0xC, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1504,7 +1504,7 @@ multiclass TileSHRS {
         <0x5, 0x27,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
            (sra CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1515,7 +1515,7 @@ multiclass TileSHRS {
         <0x5, 0x27,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "shrs $rd, $rsa, $rsb",
+         "shrs\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
            (sra CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_LOGIC, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -1528,7 +1528,7 @@ multiclass TileSHRSI {
         <0x6, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
            (sra CPURegs:$rs, immZExt6:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1538,7 +1538,7 @@ multiclass TileSHRSI {
         <0x6, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1547,7 +1547,7 @@ multiclass TileSHRSI {
         <0x6, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1556,7 +1556,7 @@ multiclass TileSHRSI {
         <0xF, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1565,7 +1565,7 @@ multiclass TileSHRSI {
         <0xE, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -1575,7 +1575,7 @@ multiclass TileSHRSI {
         <0x6, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i32imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
          (sra CPURegs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1586,7 +1586,7 @@ multiclass TileSHRSI {
         <0x6, 0x4,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$sht),
-         "shrsi $rd, $rs, $sht",
+         "shrsi\t$rd, $rs, $sht",
          [(set (i32 CPU32Regs:$rd),
          (sra CPU32Regs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
@@ -1599,7 +1599,7 @@ multiclass TileMOVEI {
         <0x3, 0x1,
          (outs CPURegs:$rd),
          (ins simm8_64:$imm8),
-         "movei $rd, $imm8",
+         "movei\t$rd, $imm8",
          [(set (i64 CPURegs:$rd), immSExt8:$imm8)],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1608,7 +1608,7 @@ multiclass TileMOVEI {
         <0x4, 0x1,
          (outs CPURegs:$rd),
          (ins simm8_64:$imm8),
-         "movei $rd, $imm8",
+         "movei\t$rd, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1617,7 +1617,7 @@ multiclass TileMOVEI {
         <0x3, 0x1,
          (outs CPURegs:$rd),
          (ins simm8_64:$imm8),
-         "movei $rd, $imm8",
+         "movei\t$rd, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1626,7 +1626,7 @@ multiclass TileMOVEI {
         <0x0,
          (outs CPURegs:$rd),
          (ins simm8_64:$imm8),
-         "movei $rd, $imm8",
+         "movei\t$rd, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1635,7 +1635,7 @@ multiclass TileMOVEI {
         <0x1,
          (outs CPURegs:$rd),
          (ins simm8_64:$imm8),
-         "movei $rd, $imm8",
+         "movei\t$rd, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1645,7 +1645,7 @@ multiclass TileMOVEI {
         <0x3, 0x1,
          (outs CPU32Regs:$rd),
          (ins simm8_32:$imm8),
-         "movei $rd, $imm8",
+         "movei\t$rd, $imm8",
          [(set (i32 CPU32Regs:$rd), immSExt8:$imm8)],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 }
@@ -1656,7 +1656,7 @@ multiclass TileMOVELI {
       : TileMOVELIX1
         <0x0,
          (outs CPURegs:$rd), (ins simm16_64:$imm16),
-         "moveli $rd, $imm16",
+         "moveli\t$rd, $imm16",
          [(set (i64 CPURegs:$rd), immSExt16:$imm16)],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -1664,7 +1664,7 @@ multiclass TileMOVELI {
       : TileBundleX0MOVELI
         <0x1,
          (outs CPURegs:$rd), (ins simm16_64:$imm16),
-         "moveli $rd, $imm16",
+         "moveli\t$rd, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -1672,7 +1672,7 @@ multiclass TileMOVELI {
       : TileBundleX1MOVELI
         <0x0,
          (outs CPURegs:$rd), (ins simm16_64:$imm16),
-         "moveli $rd, $imm16",
+         "moveli\t$rd, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -1682,7 +1682,7 @@ multiclass TileMOVELI {
         <0x0,
          (outs CPU32Regs:$rd),
          (ins simm16_32:$imm16),
-         "moveli $rd, $imm16",
+         "moveli\t$rd, $imm16",
          [(set (i32 CPU32Regs:$rd), immSExt16:$imm16)],
          IIC_ALU, FrmImm16, S_X0_X1>;
 }
@@ -1694,7 +1694,7 @@ multiclass TileSHL16INSLI {
         <0x7,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, simm16_64:$imm16),
-         "shl16insli $rd, $rs, $imm16",
+         "shl16insli\t$rd, $rs, $imm16",
          [(set (i64 CPURegs:$rd),
            (add (shl CPURegs:$rs, (i64 16)), immSExt16:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
@@ -1704,7 +1704,7 @@ multiclass TileSHL16INSLI {
         <0x7,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, simm16_64:$imm16),
-         "shl16insli $rd, $rs, $imm16",
+         "shl16insli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -1713,7 +1713,7 @@ multiclass TileSHL16INSLI {
         <0x7,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, simm16_64:$imm16),
-         "shl16insli $rd, $rs, $imm16",
+         "shl16insli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -1723,7 +1723,7 @@ multiclass TileSHL16INSLI {
         <0x7,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, simm16_32:$imm16),
-         "shl16insli $rd, $rs, $imm16",
+         "shl16insli\t$rd, $rs, $imm16",
          [(set (i32 CPU32Regs:$rd),
            (add (shl CPU32Regs:$rs, (i64 16)), immSExt16:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
@@ -1736,7 +1736,7 @@ multiclass TileCMPLTSI {
         <0x3, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltsi $rd, $rs, $imm8",
+         "cmpltsi\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd), (setlt CPURegs:$rs, immSExt8:$imm8))],
          IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1745,7 +1745,7 @@ multiclass TileCMPLTSI {
         <0x4, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltsi $rd, $rs, $imm8",
+         "cmpltsi\t$rd, $rs, $imm8",
          [],
          IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1754,7 +1754,7 @@ multiclass TileCMPLTSI {
         <0x3, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltsi $rd, $rs, $imm8",
+         "cmpltsi\t$rd, $rs, $imm8",
          [],
          IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1763,7 +1763,7 @@ multiclass TileCMPLTSI {
         <0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltsi $rd, $rs, $imm8",
+         "cmpltsi\t$rd, $rs, $imm8",
          [],
          IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1772,7 +1772,7 @@ multiclass TileCMPLTSI {
         <0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltsi $rd, $rs, $imm8",
+         "cmpltsi\t$rd, $rs, $imm8",
          [],
          IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -1782,7 +1782,7 @@ multiclass TileCMPLTSI {
         <0x3, 0x5,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltsi $rd, $rs, $imm8",
+         "cmpltsi\t$rd, $rs, $imm8",
          [(set (i32 CPU32Regs:$rd), (setlt CPURegs:$rs, immSExt8:$imm8))],
          IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
 }
@@ -1794,7 +1794,7 @@ multiclass TileCMPLTUI {
         <0x3, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltui $rd, $rs, $imm8",
+         "cmpltui\t$rd, $rs, $imm8",
          [(set (i64 CPURegs:$rd), (setult CPURegs:$rs, immSExt8:$imm8))],
          IIC_CMP, FrmImm8, S_X0_X1>;
   
@@ -1803,7 +1803,7 @@ multiclass TileCMPLTUI {
         <0x4, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltui $rd, $rs, $imm8",
+         "cmpltui\t$rd, $rs, $imm8",
          [],
          IIC_CMP, FrmImm8, S_X0_X1>;
 
@@ -1812,7 +1812,7 @@ multiclass TileCMPLTUI {
         <0x3, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltui $rd, $rs, $imm8",
+         "cmpltui\t$rd, $rs, $imm8",
          [],
          IIC_CMP, FrmImm8, S_X0_X1>;
 
@@ -1822,7 +1822,7 @@ multiclass TileCMPLTUI {
         <0x3, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "cmpltui $rd, $rs, $imm8",
+         "cmpltui\t$rd, $rs, $imm8",
          [(set (i32 CPU32Regs:$rd), (setult CPURegs:$rs, immSExt8:$imm8))],
          IIC_CMP, FrmImm8, S_X0_X1>;
 }
@@ -1834,7 +1834,7 @@ multiclass TileCMPLTS {
         <0x5, 0xA,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmplts $rd, $rsa, $rsb",
+         "cmplts\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd), (setlt (i64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1843,7 +1843,7 @@ multiclass TileCMPLTS {
         <0x5, 0xA,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmplts $rd, $rsa, $rsb",
+         "cmplts\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1852,7 +1852,7 @@ multiclass TileCMPLTS {
         <0x5, 0xA,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmplts $rd, $rsa, $rsb",
+         "cmplts\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1861,7 +1861,7 @@ multiclass TileCMPLTS {
         <0x7, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmplts $rd, $rsa, $rsb",
+         "cmplts\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1870,7 +1870,7 @@ multiclass TileCMPLTS {
         <0x8, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmplts $rd, $rsa, $rsb",
+         "cmplts\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1880,7 +1880,7 @@ multiclass TileCMPLTS {
         <0x5, 0xA,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmplts $rd, $rsa, $rsb",
+         "cmplts\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd), (setlt (i64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -1892,7 +1892,7 @@ multiclass TileCMPLTU {
         <0x5, 0xB,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd), (setult (i64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1901,7 +1901,7 @@ multiclass TileCMPLTU {
         <0x5, 0xB,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1910,7 +1910,7 @@ multiclass TileCMPLTU {
         <0x5, 0xB,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1919,7 +1919,7 @@ multiclass TileCMPLTU {
         <0x7, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1928,7 +1928,7 @@ multiclass TileCMPLTU {
         <0x7, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1938,7 +1938,7 @@ multiclass TileCMPLTU {
         <0x5, 0xB,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd), (setult (i32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -1948,7 +1948,7 @@ multiclass TileCMPLTU {
         <0x5, 0xB,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "cmpltu $rd, $rsa, $rsb",
+         "cmpltu\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd), (setult (i64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -1961,7 +1961,7 @@ multiclass TileBNEZ {
         <0x2, 0x1F,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bnez $rs, $br_target",
+         "bnez\t$rs, $br_target",
          [(brcond (i64 (setne CPURegs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -1970,7 +1970,7 @@ multiclass TileBNEZ {
         <0x2, 0x1F,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bnez $rs, $br_target",
+         "bnez\t$rs, $br_target",
          [],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -1980,7 +1980,7 @@ multiclass TileBNEZ {
         <0x2, 0x1F,
          (outs),
          (ins CPU32Regs:$rs, brtarget:$br_target),
-         "bnez $rs, $br_target",
+         "bnez\t$rs, $br_target",
          [(brcond (i32 (setne CPU32Regs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 }
@@ -1993,7 +1993,7 @@ multiclass TileBEQZ {
         <0x2, 0x11,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "beqz $rs, $br_target",
+         "beqz\t$rs, $br_target",
          [(brcond (i64 (seteq CPURegs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2002,7 +2002,7 @@ multiclass TileBEQZ {
         <0x2, 0x11,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "beqz $rs, $br_target",
+         "beqz\t$rs, $br_target",
          [],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2012,7 +2012,7 @@ multiclass TileBEQZ {
         <0x2, 0x11,
          (outs),
          (ins CPU32Regs:$rs, brtarget:$br_target),
-         "beqz $rs, $br_target",
+         "beqz\t$rs, $br_target",
          [(brcond (i32 (seteq CPU32Regs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 }
@@ -2025,7 +2025,7 @@ multiclass TileBLEZ {
         <0x2, 0x1B,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "blez $rs, $br_target",
+         "blez\t$rs, $br_target",
          [(brcond (i64 (setle CPURegs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2034,7 +2034,7 @@ multiclass TileBLEZ {
         <0x2, 0x1B,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "blez $rs, $br_target",
+         "blez\t$rs, $br_target",
          [],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2044,7 +2044,7 @@ multiclass TileBLEZ {
         <0x2, 0x1B,
          (outs),
          (ins CPU32Regs:$rs, brtarget:$br_target),
-         "blez $rs, $br_target",
+         "blez\t$rs, $br_target",
          [(brcond (i32 (setle CPU32Regs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 }
@@ -2057,7 +2057,7 @@ multiclass TileBLTZ {
         <0x2, 0x1d,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bltz $rs, $br_target",
+         "bltz\t$rs, $br_target",
          [(brcond (i64 (setlt CPURegs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2066,7 +2066,7 @@ multiclass TileBLTZ {
         <0x2, 0x1d,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bltz $rs, $br_target",
+         "bltz\t$rs, $br_target",
          [],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2076,7 +2076,7 @@ multiclass TileBLTZ {
         <0x2, 0x1d,
          (outs),
          (ins CPU32Regs:$rs, brtarget:$br_target),
-         "bltz $rs, $br_target",
+         "bltz\t$rs, $br_target",
          [(brcond (i32 (setlt CPU32Regs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 }
@@ -2089,7 +2089,7 @@ multiclass TileBGEZ {
         <0x2, 0x13,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bgez $rs, $br_target",
+         "bgez\t$rs, $br_target",
          [(brcond (i64 (setge CPURegs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2098,7 +2098,7 @@ multiclass TileBGEZ {
         <0x2, 0x13,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bgez $rs, $br_target",
+         "bgez\t$rs, $br_target",
          [],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2108,7 +2108,7 @@ multiclass TileBGEZ {
         <0x2, 0x13,
          (outs),
          (ins CPU32Regs:$rs, brtarget:$br_target),
-         "bgez $rs, $br_target",
+         "bgez\t$rs, $br_target",
          [(brcond (i32 (setge CPU32Regs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 }
@@ -2121,7 +2121,7 @@ multiclass TileBGTZ {
         <0x2, 0x15,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bgtz $rs, $br_target",
+         "bgtz\t$rs, $br_target",
          [(brcond (i64 (setgt CPURegs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2130,7 +2130,7 @@ multiclass TileBGTZ {
         <0x2, 0x15,
          (outs),
          (ins CPURegs:$rs, brtarget:$br_target),
-         "bgtz $rs, $br_target",
+         "bgtz\t$rs, $br_target",
          [],
          IIC_CTL, FrmBr, S_X1>;
 
@@ -2140,12 +2140,12 @@ multiclass TileBGTZ {
         <0x2, 0x15,
          (outs),
          (ins CPU32Regs:$rs, brtarget:$br_target),
-         "bgtz $rs, $br_target",
+         "bgtz\t$rs, $br_target",
          [(brcond (i32 (setgt CPU32Regs:$rs, 0)), bb:$br_target)],
          IIC_CTL, FrmBr, S_X1>;
 }
 
-let Constraints = "$rf = $rd" in
+let Constraints = "$rf =\t$rd" in
 multiclass TileCMOVNEZ {
 
   def #NAME#
@@ -2153,7 +2153,7 @@ multiclass TileCMOVNEZ {
         <0x5, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd), (select (i64 CPURegs:$rsa), (i64 CPURegs:$rsb), (i64 CPURegs:$rf)))],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
@@ -2162,7 +2162,7 @@ multiclass TileCMOVNEZ {
         <0x5, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
@@ -2171,7 +2171,7 @@ multiclass TileCMOVNEZ {
         <0x9, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
@@ -2181,7 +2181,7 @@ multiclass TileCMOVNEZ {
         <0x5, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
            (select (i32 CPU32Regs:$rsa),
              (i32 CPU32Regs:$rsb), (i32 CPU32Regs:$rf)))],
@@ -2192,7 +2192,7 @@ multiclass TileCMOVNEZ {
         <0x5, 0x6,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPURegs:$rsb, CPURegs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
            (select (i32 CPU32Regs:$rsa),
             (i64 CPURegs:$rsb), (i64 CPURegs:$rf)))],
@@ -2203,7 +2203,7 @@ multiclass TileCMOVNEZ {
         <0x5, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [(set (f32 CPU32Regs:$rd),
            (select (i32 CPU32Regs:$rsa),
             (f32 CPU32Regs:$rsb), (f32 CPU32Regs:$rf)))],
@@ -2214,7 +2214,7 @@ multiclass TileCMOVNEZ {
         <0x5, 0x6,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPURegs:$rsb, CPURegs:$rf),
-         "cmovnez $rd, $rsa, $rsb",
+         "cmovnez\t$rd, $rsa, $rsb",
          [(set (f64 CPURegs:$rd),
            (select (i32 CPU32Regs:$rsa),
             (f64 CPURegs:$rsb), (f64 CPURegs:$rf)))],
@@ -2230,7 +2230,7 @@ multiclass TileCLZ {
         <0x5, 0x52, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "clz $rd, $rs",
+         "clz\t$rd, $rs",
          [(set (i64 CPURegs:$rd), (ctlz CPURegs:$rs))],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2239,7 +2239,7 @@ multiclass TileCLZ {
         <0x5, 0x52, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "clz $rd, $rs",
+         "clz\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2248,7 +2248,7 @@ multiclass TileCLZ {
         <0x6, 0x3, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "clz $rd, $rs",
+         "clz\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2259,7 +2259,7 @@ multiclass TileCLZ {
         <0x5, 0x52, 0x1,
          (outs CPU32Regs:$rd),
           (ins CPU32Regs:$rs),
-          "shli $rd, $rs, 32\n\tclz $rd, $rd",
+          "shli\t$rd, $rs, 32\n\tclz\t$rd, $rd",
           [(set (i32 CPU32Regs:$rd), (ctlz CPU32Regs:$rs))],
           IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 }
@@ -2271,7 +2271,7 @@ multiclass TileCTZ {
         <0x5, 0x52, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "ctz $rd, $rs",
+         "ctz\t$rd, $rs",
          [(set (i64 CPURegs:$rd), (cttz CPURegs:$rs))],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2280,7 +2280,7 @@ multiclass TileCTZ {
         <0x5, 0x52, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "ctz $rd, $rs",
+         "ctz\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2289,7 +2289,7 @@ multiclass TileCTZ {
         <0x6, 0x3, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "ctz $rd, $rs",
+         "ctz\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2299,7 +2299,7 @@ multiclass TileCTZ {
         <0x5, 0x52, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "ctz $rd, $rs",
+         "ctz\t$rd, $rs",
          [(set (i32 CPU32Regs:$rd), (cttz CPU32Regs:$rs))],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 }
@@ -2311,7 +2311,7 @@ multiclass TilePCNT {
         <0x5, 0x52, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "pcnt $rd, $rs",
+         "pcnt\t$rd, $rs",
          [(set (i64 CPURegs:$rd), (ctpop CPURegs:$rs))],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2320,7 +2320,7 @@ multiclass TilePCNT {
         <0x5, 0x52, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "pcnt $rd, $rs",
+         "pcnt\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2329,7 +2329,7 @@ multiclass TilePCNT {
         <0x6, 0x3, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "pcnt $rd, $rs",
+         "pcnt\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 }
@@ -2340,7 +2340,7 @@ multiclass TileREVBYTES {
         <0x5, 0x52, 0x8,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "revbytes $rd, $rs",
+         "revbytes\t$rd, $rs",
          [(set (i64 CPURegs:$rd), (bswap CPURegs:$rs))],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2349,7 +2349,7 @@ multiclass TileREVBYTES {
         <0x5, 0x52, 0x8,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "revbytes $rd, $rs",
+         "revbytes\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2358,7 +2358,7 @@ multiclass TileREVBYTES {
         <0x6, 0x3, 0x8,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "revbytes $rd, $rs",
+         "revbytes\t$rd, $rs",
          [],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 
@@ -2369,7 +2369,7 @@ multiclass TileREVBYTES {
         <0x5, 0x52, 0x8,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "revbytes $rd, $rs\n\tshrui $rd, $rd, 32",
+         "revbytes\t$rd, $rs\n\tshrui\t$rd, $rd, 32",
          [(set (i32 CPU32Regs:$rd), (bswap CPU32Regs:$rs))],
          IIC_BIT_P0, FrmUnary, S_X0_Y0>;
 }
@@ -2381,7 +2381,7 @@ multiclass TileROTL {
         <0x5, 0x1E,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "rotl $rd, $rsa, $rsb",
+         "rotl\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
            (rotl CPURegs:$rsa, CPURegs:$rsb))],
          IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -2391,7 +2391,7 @@ multiclass TileROTL {
         <0x5, 0x42,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "rotl $rd, $rsa, $rsb",
+         "rotl\t$rd, $rsa, $rsb",
          [],
          IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -2400,7 +2400,7 @@ multiclass TileROTL {
         <0x5, 0x1E,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "rotl $rd, $rsa, $rsb",
+         "rotl\t$rd, $rsa, $rsb",
          [],
          IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -2409,7 +2409,7 @@ multiclass TileROTL {
         <0xB, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "rotl $rd, $rsa, $rsb",
+         "rotl\t$rd, $rsa, $rsb",
          [],
          IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -2418,7 +2418,7 @@ multiclass TileROTL {
         <0xC, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "rotl $rd, $rsa, $rsb",
+         "rotl\t$rd, $rsa, $rsb",
          [],
          IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -2430,7 +2430,7 @@ multiclass TileROTLI {
         <0x6, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "rotli $rd, $rs, $sht",
+         "rotli\t$rd, $rs, $sht",
          [(set (i64 CPURegs:$rd),
           (rotl CPURegs:$rs, immZExt6:$sht))],
          IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
@@ -2440,7 +2440,7 @@ multiclass TileROTLI {
         <0x6, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "rotli $rd, $rs, $sht",
+         "rotli\t$rd, $rs, $sht",
          [],
          IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -2449,7 +2449,7 @@ multiclass TileROTLI {
         <0x6, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "rotli $rd, $rs, $sht",
+         "rotli\t$rd, $rs, $sht",
          [],
          IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -2458,7 +2458,7 @@ multiclass TileROTLI {
         <0xF, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "rotli $rd, $rs, $sht",
+         "rotli\t$rd, $rs, $sht",
          [],
          IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
 
@@ -2467,7 +2467,7 @@ multiclass TileROTLI {
         <0xE, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$sht),
-         "rotli $rd, $rs, $sht",
+         "rotli\t$rd, $rs, $sht",
          [],
          IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
 }
@@ -2479,7 +2479,7 @@ multiclass TileST {
         <0x3,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [(store (i64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2488,7 +2488,7 @@ multiclass TileST {
         <0x5, 0x31,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2497,7 +2497,7 @@ multiclass TileST {
         <0x3,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2507,7 +2507,7 @@ multiclass TileST {
         <0x3,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [(store (f64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2516,7 +2516,7 @@ multiclass TileST {
         <0x3,
          (outs),
          (ins CPURegs:$addr, SIMDRegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [(store (v2i32 SIMDRegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2525,7 +2525,7 @@ multiclass TileST {
         <0x3,
          (outs),
          (ins CPURegs:$addr, SIMDRegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [(store (v4i16 SIMDRegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2534,7 +2534,7 @@ multiclass TileST {
         <0x3,
          (outs),
          (ins CPURegs:$addr, SIMDRegs:$rs),
-         "st $addr, $rs",
+         "st\t$addr, $rs",
          [(store (v8i8 SIMDRegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
   }
@@ -2547,7 +2547,7 @@ multiclass TileST1 {
         <0x0,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st1 $addr, $rs",
+         "st1\t$addr, $rs",
          [(truncstorei8 (i64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2556,7 +2556,7 @@ multiclass TileST1 {
         <0x5, 0x2A,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st1 $addr, $rs",
+         "st1\t$addr, $rs",
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2565,7 +2565,7 @@ multiclass TileST1 {
         <0x0,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st1 $addr, $rs",
+         "st1\t$addr, $rs",
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2575,7 +2575,7 @@ multiclass TileST1 {
         <0x0,
          (outs),
          (ins CPURegs:$addr, CPU32Regs:$rs),
-         "st1 $addr, $rs",
+         "st1\t$addr, $rs",
          [(truncstorei8 (i32 CPU32Regs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 }
@@ -2587,7 +2587,7 @@ multiclass TileST2 {
         <0x1,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st2 $addr, $rs",
+         "st2\t$addr, $rs",
          [(truncstorei16 (i64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2596,7 +2596,7 @@ multiclass TileST2 {
         <0x5, 0x2B,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st2 $addr, $rs",
+         "st2\t$addr, $rs",
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2605,7 +2605,7 @@ multiclass TileST2 {
         <0x1,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st2 $addr, $rs",
+         "st2\t$addr, $rs",
          [],
          IIC_MM, FrmRRR, S_X1_Y2>;
 
@@ -2615,7 +2615,7 @@ multiclass TileST2 {
         <0x1,
          (outs),
          (ins CPURegs:$addr, CPU32Regs:$rs),
-         "st2 $addr, $rs",
+         "st2\t$addr, $rs",
          [(truncstorei16 (i32 CPU32Regs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
 }
@@ -2626,7 +2626,7 @@ multiclass TileST4 {
         <0x2,
          (outs),
          (ins CPU32Regs:$addr, CPU32Regs:$rs),
-         "st4 $addr, $rs",
+         "st4\t$addr, $rs",
          [(store (i32 CPU32Regs:$rs), CPU32Regs:$addr)],
          IIC_MM, FrmMM, S_X1_Y2>;
 
@@ -2635,7 +2635,7 @@ multiclass TileST4 {
         <0x5, 0x2C,
          (outs),
          (ins CPU32Regs:$addr, CPU32Regs:$rs),
-         "st4 $addr, $rs",
+         "st4\t$addr, $rs",
          [],
          IIC_MM, FrmMM, S_X1_Y2>;
 
@@ -2644,7 +2644,7 @@ multiclass TileST4 {
         <0x2,
          (outs),
          (ins CPU32Regs:$addr, CPU32Regs:$rs),
-         "st4 $addr, $rs",
+         "st4\t$addr, $rs",
          [],
          IIC_MM, FrmMM, S_X1_Y2>;
 
@@ -2654,7 +2654,7 @@ multiclass TileST4 {
         <0x2,
          (outs),
          (ins CPURegs:$addr, CPU32Regs:$rs),
-         "st4 $addr, $rs",
+         "st4\t$addr, $rs",
          [(store (i32 CPU32Regs:$rs), CPURegs:$addr)],
          IIC_MM, FrmMM, S_X1_Y2>;
 
@@ -2663,7 +2663,7 @@ multiclass TileST4 {
         <0x2,
          (outs),
          (ins CPURegs:$addr, CPU32Regs:$rs),
-         "st4 $addr, $rs",
+         "st4\t$addr, $rs",
          [(store (f32 CPU32Regs:$rs), CPURegs:$addr)],
          IIC_MM, FrmMM, S_X1_Y2>;
 
@@ -2672,7 +2672,7 @@ multiclass TileST4 {
         <0x2,
          (outs),
          (ins CPURegs:$addr, CPURegs:$rs),
-         "st4 $addr, $rs",
+         "st4\t$addr, $rs",
          [(truncstorei32 (i64 CPURegs:$rs), CPURegs:$addr)],
          IIC_MM, FrmRRR, S_X1_Y2>;
   }
@@ -2685,7 +2685,7 @@ multiclass TileLD {
         <0x2, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2694,7 +2694,7 @@ multiclass TileLD {
         <0x5, 0x35, 0x1D,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2703,7 +2703,7 @@ multiclass TileLD {
         <0x2, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2713,7 +2713,7 @@ multiclass TileLD {
         <0x2, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [(set (f64 CPURegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2722,7 +2722,7 @@ multiclass TileLD {
         <0x2, 0x3,
          (outs SIMDRegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [(set (v2i32 SIMDRegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2731,7 +2731,7 @@ multiclass TileLD {
         <0x2, 0x3,
          (outs SIMDRegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [(set (v4i16 SIMDRegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2740,7 +2740,7 @@ multiclass TileLD {
         <0x2, 0x3,
          (outs SIMDRegs:$rd),
          (ins CPURegs:$addr),
-         "ld $rd, $addr",
+         "ld\t$rd, $addr",
          [(set (v8i8 SIMDRegs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
   }
@@ -2753,7 +2753,7 @@ multiclass TileLD1S {
         <0x1, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld1s $rd, $addr",
+         "ld1s\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (sextloadi8 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2762,7 +2762,7 @@ multiclass TileLD1S {
         <0x5, 0x35, 0xF,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld1s $rd, $addr",
+         "ld1s\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2771,7 +2771,7 @@ multiclass TileLD1S {
         <0x1, 0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld1s $rd, $addr",
+         "ld1s\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2781,7 +2781,7 @@ multiclass TileLD1S {
         <0x1, 0x0,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$addr),
-         "ld1s $rd, $addr",
+         "ld1s\t$rd, $addr",
          [(set (i32 CPU32Regs:$rd), (sextloadi8 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 }
@@ -2793,7 +2793,7 @@ multiclass TileLD1U {
         <0x1, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld1u $rd, $addr",
+         "ld1u\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (zextloadi8 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2802,7 +2802,7 @@ multiclass TileLD1U {
         <0x5, 0x35, 0x10,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld1u $rd, $addr",
+         "ld1u\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2811,7 +2811,7 @@ multiclass TileLD1U {
         <0x1, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld1u $rd, $addr",
+         "ld1u\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2821,7 +2821,7 @@ multiclass TileLD1U {
         <0x1, 0x1,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$addr),
-         "ld1u $rd, $addr",
+         "ld1u\t$rd, $addr",
          [(set (i32 CPU32Regs:$rd), (zextloadi8 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 }
@@ -2833,7 +2833,7 @@ multiclass TileLD2S {
         <0x1, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld2s $rd, $addr",
+         "ld2s\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (sextloadi16 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2842,7 +2842,7 @@ multiclass TileLD2S {
         <0x5, 0x35, 0x11,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld2s $rd, $addr",
+         "ld2s\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2851,7 +2851,7 @@ multiclass TileLD2S {
         <0x1, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld2s $rd, $addr",
+         "ld2s\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2861,7 +2861,7 @@ multiclass TileLD2S {
         <0x1, 0x2,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$addr),
-         "ld2s $rd, $addr",
+         "ld2s\t$rd, $addr",
          [(set (i32 CPU32Regs:$rd), (sextloadi16 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 }
@@ -2873,7 +2873,7 @@ multiclass TileLD2U {
         <0x1, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld2u $rd, $addr",
+         "ld2u\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (zextloadi16 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2882,7 +2882,7 @@ multiclass TileLD2U {
         <0x5, 0x35, 0x12,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld2u $rd, $addr",
+         "ld2u\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2891,7 +2891,7 @@ multiclass TileLD2U {
         <0x1, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld2u $rd, $addr",
+         "ld2u\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2901,7 +2901,7 @@ multiclass TileLD2U {
         <0x1, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$addr),
-         "ld2u $rd, $addr",
+         "ld2u\t$rd, $addr",
          [(set (i32 CPU32Regs:$rd), (zextloadi16 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 }
@@ -2913,7 +2913,7 @@ multiclass TileLD4S {
         <0x2, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld4s $rd, $addr",
+         "ld4s\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (sextloadi32 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2922,7 +2922,7 @@ multiclass TileLD4S {
         <0x5, 0x35, 0x13,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld4s $rd, $addr",
+         "ld4s\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2931,7 +2931,7 @@ multiclass TileLD4S {
         <0x2, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld4s $rd, $addr",
+         "ld4s\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2941,7 +2941,7 @@ multiclass TileLD4S {
         <0x2, 0x1,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$addr),
-         "ld4s $rd, $addr",
+         "ld4s\t$rd, $addr",
          [(set (i32 CPU32Regs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2950,7 +2950,7 @@ multiclass TileLD4S {
         <0x2, 0x1,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$addr),
-         "ld4s $rd, $addr",
+         "ld4s\t$rd, $addr",
          [(set (f32 CPU32Regs:$rd), (load CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
   }
@@ -2963,7 +2963,7 @@ multiclass TileLD4U {
         <0x2, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld4u $rd, $addr",
+         "ld4u\t$rd, $addr",
          [(set (i64 CPURegs:$rd), (zextloadi32 CPURegs:$addr))],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2972,7 +2972,7 @@ multiclass TileLD4U {
         <0x5, 0x35, 0x14,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld4u $rd, $addr",
+         "ld4u\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 
@@ -2981,7 +2981,7 @@ multiclass TileLD4U {
         <0x2, 0x2,
          (outs CPURegs:$rd),
          (ins CPURegs:$addr),
-         "ld4u $rd, $addr",
+         "ld4u\t$rd, $addr",
          [],
          IIC_MM, FrmUnary, S_X1_Y2>;
 }
@@ -2993,7 +2993,7 @@ multiclass TileFETCHADD {
         <0x5, 0x15,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fetchadd $rd, $rsa, $rsb",
+         "fetchadd\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (atomic_load_add CPURegs:$rsa, CPURegs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3003,7 +3003,7 @@ multiclass TileFETCHADD {
         <0x5, 0x15,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fetchadd $rd, $rsa, $rsb",
+         "fetchadd\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3015,7 +3015,7 @@ multiclass TileFETCHADD4 {
         <0x5, 0x12,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "fetchadd4 $rd, $rsa, $rsb",
+         "fetchadd4\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (atomic_load_add CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3025,7 +3025,7 @@ multiclass TileFETCHADD4 {
         <0x5, 0x12,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "fetchadd4 $rd, $rsa, $rsb",
+         "fetchadd4\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3037,7 +3037,7 @@ multiclass TileFETCHAND {
         <0x5, 0x17,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fetchand $rd, $rsa, $rsb",
+         "fetchand\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (atomic_load_and CPURegs:$rsa, CPURegs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3047,7 +3047,7 @@ multiclass TileFETCHAND {
         <0x5, 0x17,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fetchand $rd, $rsa, $rsb",
+         "fetchand\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3059,7 +3059,7 @@ multiclass TileFETCHAND4 {
         <0x5, 0x16,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "fetchand4 $rd, $rsa, $rsb",
+         "fetchand4\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (atomic_load_and CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3069,7 +3069,7 @@ multiclass TileFETCHAND4 {
         <0x5, 0x16,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "fetchand4 $rd, $rsa, $rsb",
+         "fetchand4\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3081,7 +3081,7 @@ multiclass TileFETCHOR {
         <0x5, 0x19,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fetchor $rd, $rsa, $rsb",
+         "fetchor\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (atomic_load_or CPURegs:$rsa, CPURegs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3091,7 +3091,7 @@ multiclass TileFETCHOR {
         <0x5, 0x19,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fetchor $rd, $rsa, $rsb",
+         "fetchor\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3103,7 +3103,7 @@ multiclass TileFETCHOR4 {
         <0x5, 0x18,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "fetchor4 $rd, $rsa, $rsb",
+         "fetchor4\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
            (atomic_load_or CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3113,7 +3113,7 @@ multiclass TileFETCHOR4 {
         <0x5, 0x18,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "fetchor4 $rd, $rsa, $rsb",
+         "fetchor4\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3123,7 +3123,7 @@ multiclass TileATOMIC_CMP_SWAP {
   //FIXME: multi insts
   def #NAME# : TileInst<(outs CPURegs:$rd),
                         (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
-                        "mtspr CMPEXCH_VALUE, $rsb\n\tcmpexch $rd, $rsa, $rsc",
+                        "mtspr CMPEXCH_VALUE, $rsb\n\tcmpexch\t$rd, $rsa, $rsc",
                         [(set (i64 CPURegs:$rd),
                           (atomic_cmp_swap
                             CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc))],
@@ -3131,7 +3131,7 @@ multiclass TileATOMIC_CMP_SWAP {
 
   def #32#   : TileInst<(outs CPU32Regs:$rd),
                         (ins CPURegs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rsc),
-                        "mtspr CMPEXCH_VALUE, $rsb\n\tcmpexch4 $rd, $rsa, $rsc",
+                        "mtspr CMPEXCH_VALUE, $rsb\n\tcmpexch4\t$rd, $rsa, $rsc",
                         [(set (i32 CPU32Regs:$rd),
                           (atomic_cmp_swap
                             CPURegs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rsc))],
@@ -3145,7 +3145,7 @@ multiclass TileEXCH {
         <0x5, 0x11,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "exch $rd, $rsa, $rsb",
+         "exch\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
          (atomic_swap CPURegs:$rsa, CPURegs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3155,7 +3155,7 @@ multiclass TileEXCH {
         <0x5, 0x11,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "exch $rd, $rsa, $rsb",
+         "exch\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3167,7 +3167,7 @@ multiclass TileEXCH4 {
         <0x5, 0x10,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "exch4 $rd, $rsa, $rsb",
+         "exch4\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
          (atomic_swap CPURegs:$rsa, CPU32Regs:$rsb))],
          IIC_MM, FrmRRR, S_X1>;
@@ -3177,7 +3177,7 @@ multiclass TileEXCH4 {
         <0x5, 0x10,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPU32Regs:$rsb),
-         "exch4 $rd, $rsa, $rsb",
+         "exch4\t$rd, $rsa, $rsb",
          [],
          IIC_MM, FrmRRR, S_X1>;
 }
@@ -3189,7 +3189,7 @@ multiclass TileV4INT_L {
         <0x5, 0x63,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "v4int_l $rd, zero, $rs",
+         "v4int_l\t$rd, zero, $rs",
          [],
          IIC_SIMD, FrmRRR, S_X0_X1>;
 
@@ -3198,7 +3198,7 @@ multiclass TileV4INT_L {
         <0x5, 0x98,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "v4int_l $rd, zero, $rs",
+         "v4int_l\t$rd, zero, $rs",
          [],
          IIC_SIMD, FrmRRR, S_X0_X1>;
 
@@ -3207,7 +3207,7 @@ multiclass TileV4INT_L {
         <0x5, 0x63,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs),
-         "v4int_l $rd, zero, $rs",
+         "v4int_l\t$rd, zero, $rs",
          [],
          IIC_SIMD, FrmRRR, S_X0_X1>;
 
@@ -3217,7 +3217,7 @@ multiclass TileV4INT_L {
         <0x5, 0x63,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rs),
-         "v4int_l $rd, zero, $rs",
+         "v4int_l\t$rd, zero, $rs",
          [],
          IIC_SIMD, FrmRRR, S_X0_X1>;
 }
@@ -3229,7 +3229,7 @@ multiclass TileBFEXTU {
         <0x3, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
-         "bfextu $rd, $rs, $bfstart, $bfend",
+         "bfextu\t$rd, $rs, $bfstart, $bfend",
          [(set (i64 CPURegs:$rd),
            (TileBFEXTUNode (i64 CPURegs:$rs), (i64 immSExt64:$bfstart),
                            immSExt64:$bfend))],
@@ -3241,7 +3241,7 @@ multiclass TileBFEXTU {
         <0x3, 0x5,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
-         "bfextu $rd, $rs, $bfstart, $bfend",
+         "bfextu\t$rd, $rs, $bfstart, $bfend",
          [],
          IIC_BIT_P0, FrmRRR, S_X0>;
 
@@ -3251,7 +3251,7 @@ multiclass TileBFEXTU {
         <0x3, 0x5,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$bfstart, i32imm:$bfend),
-         "bfextu $rd, $rs, $bfstart, $bfend",
+         "bfextu\t$rd, $rs, $bfstart, $bfend",
          [(set (i32 CPU32Regs:$rd),
            (TileBFEXTUNode (i32 CPU32Regs:$rs), (i32 immSExt32:$bfstart),
                            immSExt32:$bfend))],
@@ -3262,7 +3262,7 @@ multiclass TileBFEXTU {
         <0x3, 0x5,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend),
-         "bfextu $rd, $rs, $bfstart, $bfend",
+         "bfextu\t$rd, $rs, $bfstart, $bfend",
          [(set (i32 CPU32Regs:$rd),
            (TileBFEXTUNode (i64 CPURegs:$rs), (i64 immSExt64:$bfstart),
                             immSExt64:$bfend))],
@@ -3273,7 +3273,7 @@ multiclass TileBFEXTU {
         <0x3, 0x5,
          (outs CPURegs:$rd),
          (ins CPU32Regs:$rs, i32imm:$bfstart, i32imm:$bfend),
-         "bfextu $rd, $rs, $bfstart, $bfend",
+         "bfextu\t$rd, $rs, $bfstart, $bfend",
          [(set (i64 CPURegs:$rd),
            (TileBFEXTUNode (i32 CPU32Regs:$rs), (i32 immSExt32:$bfstart),
                             immSExt32:$bfend))],
@@ -3289,7 +3289,7 @@ multiclass TileBFINS {
         <0x3, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend, CPURegs:$rf),
-         "bfins $rd, $rs, $bfstart, $bfend",
+         "bfins\t$rd, $rs, $bfstart, $bfend",
          [(set (i64 CPURegs:$rd),
            (TileBFINSNode CPURegs:$rs, (i64 immSExt64:$bfstart),
                           immSExt64:$bfend, CPURegs:$rf))],
@@ -3300,7 +3300,7 @@ multiclass TileBFINS {
         <0x3, 0x6,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$bfstart, i64imm:$bfend, CPURegs:$rf),
-         "bfins $rd, $rs, $bfstart, $bfend",
+         "bfins\t$rd, $rs, $bfstart, $bfend",
          [],
          IIC_BIT_P0, FrmRRR, S_X0>;
 
@@ -3310,7 +3310,7 @@ multiclass TileBFINS {
         <0x3, 0x6,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs, i32imm:$bfstart, i32imm:$bfend, CPU32Regs:$rf),
-         "bfins $rd, $rs, $bfstart, $bfend",
+         "bfins\t$rd, $rs, $bfstart, $bfend",
          [(set (i32 CPU32Regs:$rd),
            (TileBFINSNode CPU32Regs:$rs, (i32 immSExt32:$bfstart),
                           immSExt32:$bfend, CPU32Regs:$rf))],
@@ -3501,7 +3501,7 @@ multiclass TileMULX {
         <0x5, 0x34,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "mulx $rd, $rsa, $rsb",
+         "mulx\t$rd, $rsa, $rsb",
          [(set (i32 CPU32Regs:$rd),
            (mul CPU32Regs:$rsa, CPU32Regs:$rsb))],
          IIC_MUL, FrmRRR, S_X0_Y0>;
@@ -3511,7 +3511,7 @@ multiclass TileMULX {
         <0x5, 0x34,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "mulx $rd, $rsa, $rsb",
+         "mulx\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -3520,7 +3520,7 @@ multiclass TileMULX {
         <0x8, 0x3,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "mulx $rd, $rsa, $rsb",
+         "mulx\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 }
@@ -3533,7 +3533,7 @@ multiclass TileMUL_HU_LU {
         <0x5, 0x3B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_hu_lu $rd, $rsa, $rsb",
+         "mul_hu_lu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -3542,7 +3542,7 @@ multiclass TileMUL_HU_LU {
         <0x5, 0x3B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_hu_lu $rd, $rsa, $rsb",
+         "mul_hu_lu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -3555,7 +3555,7 @@ multiclass TileMUL_LU_LU {
         <0x5, 0x3E,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_lu_lu $rd, $rsa, $rsb",
+         "mul_lu_lu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -3564,7 +3564,7 @@ multiclass TileMUL_LU_LU {
         <0x5, 0x3E,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_lu_lu $rd, $rsa, $rsb",
+         "mul_lu_lu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -3573,7 +3573,7 @@ multiclass TileMUL_LU_LU {
         <0xD, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_lu_lu $rd, $rsa, $rsb",
+         "mul_lu_lu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 }
@@ -3586,7 +3586,7 @@ multiclass TileMUL_HU_HU {
         <0x5, 0x39,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_hu_hu $rd, $rsa, $rsb",
+         "mul_hu_hu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -3595,7 +3595,7 @@ multiclass TileMUL_HU_HU {
         <0x5, 0x39,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_hu_hu $rd, $rsa, $rsb",
+         "mul_hu_hu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -3604,12 +3604,12 @@ multiclass TileMUL_HU_HU {
         <0xD, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "mul_hu_hu $rd, $rsa, $rsb",
+         "mul_hu_hu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 }
 
-let Constraints = "$rd0 = $rd" in
+let Constraints = "$rd0 =\t$rd" in
 multiclass TileMULA_HU_LU {
 
   def #NAME#
@@ -3629,7 +3629,7 @@ multiclass TileMULA_HU_LU {
          [], IIC_MUL, FrmRRR, S_X0>;
 }
 
-let Constraints = "$rd0 = $rd" in
+let Constraints = "$rd0 =\t$rd" in
 multiclass TileMULA_LU_LU {
 
   def #NAME#
@@ -3665,7 +3665,7 @@ multiclass TileVAARG_SP {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [(set (i64 CPURegs:$rd),
             (TileVAARG_SPNode CPURegs:$rs, immSExt64:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
@@ -3675,7 +3675,7 @@ multiclass TileVAARG_SP {
         <0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -3684,7 +3684,7 @@ multiclass TileVAARG_SP {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 }
@@ -3697,7 +3697,7 @@ multiclass TileALLOCA_SP {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [(set (i64 CPURegs:$rd),
             (TileALLOCA_SPNode CPURegs:$rsa, CPURegs:$rsb))],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
@@ -3707,7 +3707,7 @@ multiclass TileALLOCA_SP {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -3716,7 +3716,7 @@ multiclass TileALLOCA_SP {
         <0x5, 0x3,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -3725,7 +3725,7 @@ multiclass TileALLOCA_SP {
         <0x5, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 
@@ -3734,7 +3734,7 @@ multiclass TileALLOCA_SP {
         <0x6, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "add $rd, $rsa, $rsb",
+         "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
 }
@@ -3747,7 +3747,7 @@ multiclass TileALLOCA_ADDR {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [(set (i64 CPURegs:$rd),
            (TileALLOCA_ADDRNode CPURegs:$rs, immSExt64:$imm16))],
          IIC_ALU, FrmImm16, S_X0_X1>;
@@ -3757,7 +3757,7 @@ multiclass TileALLOCA_ADDR {
         <0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 
@@ -3766,12 +3766,12 @@ multiclass TileALLOCA_ADDR {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm16),
-         "addli $rd, $rs, $imm16",
+         "addli\t$rd, $rs, $imm16",
          [],
          IIC_ALU, FrmImm16, S_X0_X1>;
 }
 
-let Constraints = "$link = $rd", isCodeGenOnly = 1 in
+let Constraints = "$link =\t$rd", isCodeGenOnly = 1 in
 multiclass TileADDI_TLS {
 
   def #NAME#
@@ -3779,7 +3779,7 @@ multiclass TileADDI_TLS {
         <0x3, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8, CPURegs:$link),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -3788,7 +3788,7 @@ multiclass TileADDI_TLS {
         <0x4, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8, CPURegs:$link),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -3797,7 +3797,7 @@ multiclass TileADDI_TLS {
         <0x3, 0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8, CPURegs:$link),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -3806,7 +3806,7 @@ multiclass TileADDI_TLS {
         <0x0,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8, CPURegs:$link),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 
@@ -3815,7 +3815,7 @@ multiclass TileADDI_TLS {
         <0x1,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8, CPURegs:$link),
-         "addi $rd, $rs, $imm8",
+         "addi\t$rd, $rs, $imm8",
          [],
          IIC_ALU, FrmImm8, S_X0_X1_Y0_Y1>;
 }
@@ -3828,7 +3828,7 @@ multiclass TileLD_TLS {
         <0x3, 0x14,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "ld_tls $rd, $rs, $imm8",
+         "ld_tls\t$rd, $rs, $imm8",
          [],
          IIC_PSEUDO_P1, FrmImm8, S_X1>;
 
@@ -3837,7 +3837,7 @@ multiclass TileLD_TLS {
         <0x3, 0x14,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
-         "ld_tls $rd, $rs, $imm8",
+         "ld_tls\t$rd, $rs, $imm8",
          [],
          IIC_PSEUDO_P1, FrmImm8, S_X1>;
 }

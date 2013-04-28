@@ -20,7 +20,7 @@ multiclass TileFSINGLE_ADD1 {
         <0x5, 0x22,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_add1 $rd, $rsa, $rsb",
+         "fsingle_add1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -29,7 +29,7 @@ multiclass TileFSINGLE_ADD1 {
         <0x5, 0x22,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_add1 $rd, $rsa, $rsb",
+         "fsingle_add1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -41,7 +41,7 @@ multiclass TileFSINGLE_SUB1 {
         <0x5, 0x27,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_sub1 $rd, $rsa, $rsb",
+         "fsingle_sub1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -50,7 +50,7 @@ multiclass TileFSINGLE_SUB1 {
         <0x5, 0x27,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_sub1 $rd, $rsa, $rsb",
+         "fsingle_sub1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -63,7 +63,7 @@ multiclass TileFSINGLE_ADDSUB2 {
         <0x5, 0x23,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rsc),
-         "fsingle_addsub2 $rd, $rsa, $rsb",
+         "fsingle_addsub2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -72,7 +72,7 @@ multiclass TileFSINGLE_ADDSUB2 {
         <0x5, 0x23,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rsc),
-         "fsingle_addsub2 $rd, $rsa, $rsb",
+         "fsingle_addsub2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -84,7 +84,7 @@ multiclass TileFSINGLE_MUL1 {
         <0x5, 0x24,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_mul1 $rd, $rsa, $rsb",
+         "fsingle_mul1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -93,7 +93,7 @@ multiclass TileFSINGLE_MUL1 {
         <0x5, 0x24,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_mul1 $rd, $rsa, $rsb",
+         "fsingle_mul1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -105,7 +105,7 @@ multiclass TileFSINGLE_MUL2 {
         <0x5, 0x25,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_mul2 $rd, $rsa, $rsb",
+         "fsingle_mul2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -114,7 +114,7 @@ multiclass TileFSINGLE_MUL2 {
         <0x5, 0x25,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_mul2 $rd, $rsa, $rsb",
+         "fsingle_mul2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -126,7 +126,7 @@ multiclass TileFSINGLE_PACK1 {
         <0x5, 0x52, 0x4,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "fsingle_pack1 $rd, $rs",
+         "fsingle_pack1\t$rd, $rs",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -135,7 +135,7 @@ multiclass TileFSINGLE_PACK1 {
         <0x5, 0x52, 0x4,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "fsingle_pack1 $rd, $rs",
+         "fsingle_pack1\t$rd, $rs",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -144,7 +144,7 @@ multiclass TileFSINGLE_PACK1 {
         <0x6, 0x3, 0x4,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rs),
-         "fsingle_pack1 $rd, $rs",
+         "fsingle_pack1\t$rd, $rs",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 
@@ -153,7 +153,7 @@ multiclass TileFSINGLE_PACK1 {
         <0x5, 0x52, 0x4,
          (outs CPURegs:$rd),
          (ins CPURegs:$rs),
-         "fsingle_pack1 $rd, $rs",
+         "fsingle_pack1\t$rd, $rs",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
 }
@@ -165,7 +165,7 @@ multiclass TileFSINGLE_PACK2 {
         <0x5, 0x26,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_pack2 $rd, $rsa, $rsb",
+         "fsingle_pack2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -174,7 +174,7 @@ multiclass TileFSINGLE_PACK2 {
         <0x5, 0x26,
          (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
-         "fsingle_pack2 $rd, $rsa, $rsb",
+         "fsingle_pack2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -183,7 +183,7 @@ multiclass TileFSINGLE_PACK2 {
         <0x5, 0x26,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fsingle_pack2 $rd, $rsa, $rsb",
+         "fsingle_pack2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -195,7 +195,7 @@ multiclass TileFDOUBLE_PACK1 {
         <0x5, 0x1D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_pack1 $rd, $rsa, $rsb",
+         "fdouble_pack1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -204,7 +204,7 @@ multiclass TileFDOUBLE_PACK1 {
         <0x5, 0x1D,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_pack1 $rd, $rsa, $rsb",
+         "fdouble_pack1\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -217,7 +217,7 @@ multiclass TileFDOUBLE_PACK2 {
         <0x5, 0x1E,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
-         "fdouble_pack2 $rd, $rsa, $rsb",
+         "fdouble_pack2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -226,7 +226,7 @@ multiclass TileFDOUBLE_PACK2 {
         <0x5, 0x1E,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
-         "fdouble_pack2 $rd, $rsa, $rsb",
+         "fdouble_pack2\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -239,7 +239,7 @@ multiclass TileFDOUBLE_ADDSUB {
         <0x5, 0x1A,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
-         "fdouble_addsub $rd, $rsa, $rsb",
+         "fdouble_addsub\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -248,7 +248,7 @@ multiclass TileFDOUBLE_ADDSUB {
         <0x5, 0x1A,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rsc),
-         "fdouble_addsub $rd, $rsa, $rsb",
+         "fdouble_addsub\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -260,7 +260,7 @@ multiclass TileFDOUBLE_MUL_FLAGS {
         <0x5, 0x1C,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_mul_flags $rd, $rsa, $rsb",
+         "fdouble_mul_flags\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -269,7 +269,7 @@ multiclass TileFDOUBLE_MUL_FLAGS {
         <0x5, 0x1C,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_mul_flags $rd, $rsa, $rsb",
+         "fdouble_mul_flags\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -281,7 +281,7 @@ multiclass TileFDOUBLE_ADD_FLAGS {
         <0x5, 0x1B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_add_flags $rd, $rsa, $rsb",
+         "fdouble_add_flags\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -290,7 +290,7 @@ multiclass TileFDOUBLE_ADD_FLAGS {
         <0x5, 0x1B,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_add_flags $rd, $rsa, $rsb",
+         "fdouble_add_flags\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -302,7 +302,7 @@ multiclass TileFDOUBLE_SUB_FLAGS {
         <0x5, 0x1F,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_sub_flags $rd, $rsa, $rsb",
+         "fdouble_sub_flags\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -311,7 +311,7 @@ multiclass TileFDOUBLE_SUB_FLAGS {
         <0x5, 0x1F,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_sub_flags $rd, $rsa, $rsb",
+         "fdouble_sub_flags\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -323,7 +323,7 @@ multiclass TileFDOUBLE_UNPACK_MAX {
         <0x5, 0x20,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_unpack_max $rd, $rsa, $rsb",
+         "fdouble_unpack_max\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -332,7 +332,7 @@ multiclass TileFDOUBLE_UNPACK_MAX {
         <0x5, 0x20,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_unpack_max $rd, $rsa, $rsb",
+         "fdouble_unpack_max\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
@@ -344,7 +344,7 @@ multiclass TileFDOUBLE_UNPACK_MIN {
         <0x5, 0x21,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_unpack_min $rd, $rsa, $rsb",
+         "fdouble_unpack_min\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 
@@ -353,7 +353,7 @@ multiclass TileFDOUBLE_UNPACK_MIN {
         <0x5, 0x21,
          (outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
-         "fdouble_unpack_min $rd, $rsa, $rsb",
+         "fdouble_unpack_min\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0>;
 }
