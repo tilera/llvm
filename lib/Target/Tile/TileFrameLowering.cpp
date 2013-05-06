@@ -31,7 +31,8 @@ using namespace llvm;
 // allocas or if frame pointer elimination is disabled.
 bool TileFrameLowering::hasFP(const MachineFunction &MF) const {
   const MachineFrameInfo *MFI = MF.getFrameInfo();
-  return MF.getTarget().Options.DisableFramePointerElim(MF) ||
+  return (MF.getTarget().Options.DisableFramePointerElim(MF) &&
+          MFI->hasCalls()) ||
          MFI->hasVarSizedObjects() || MFI->isFrameAddressTaken();
 }
 
@@ -39,9 +40,9 @@ bool TileFrameLowering::hasReservedCallFrame(const MachineFunction &MF) const {
   return !MF.getFrameInfo()->hasVarSizedObjects();
 }
 
-static void addImmR(unsigned Dreg, unsigned Treg, int64_t Imm,
-                    const TileInstrInfo &TII, MachineBasicBlock &MBB,
-                    MachineBasicBlock::iterator II, DebugLoc DL) {
+static void
+addImmR(unsigned Dreg, unsigned Treg, int64_t Imm, const TileInstrInfo &TII,
+        MachineBasicBlock &MBB, MachineBasicBlock::iterator II, DebugLoc DL) {
   if (isInt<8>(Imm))
     BuildMI(MBB, II, DL, TII.get(Tile::ADDI), Dreg).addReg(Dreg).addImm(Imm);
   else if (isInt<16>(Imm))
