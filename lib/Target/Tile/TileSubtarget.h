@@ -48,7 +48,7 @@ public:
 
   // Return the pointer size and type alignment properties of this subtarget.
   const char *getTargetDataLayout() const {
-    return "e-p:64:64:64-i8:8:32-i16:16:32-i64:64:64-f128:128:128-n32";
+    return "e-p:64:64:64-i8:8:32-i16:16:32-i64:64:64-f128:128:128-n32:64";
   }
 };
 } // End llvm namespace
