@@ -42,10 +42,6 @@ enum NodeType {
   // Unary operand move
   MOVE,
 
-  // Floating Point Conditional Moves
-  CMovFP_T,
-  CMovFP_F,
-
   // Return
   Ret,
 
