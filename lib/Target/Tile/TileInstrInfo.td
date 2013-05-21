@@ -2265,7 +2265,7 @@ multiclass TileCMPEQI {
   let isCodeGenOnly = 1 in
   def #32_64#
       : TileInstX1Imm8
-        <0x3, 0x5,
+        <0x3, 0x4,
          (outs CPU32Regs:$rd),
          (ins CPURegs:$rs, i64imm:$imm8),
          "cmpeqi\t$rd, $rs, $imm8",
@@ -4432,13 +4432,9 @@ def : Pat<(setuge (i64 CPURegs:$lhs), CPURegs:$rhs),
           (XORI32 (CMPLTU32_64 CPURegs:$lhs, CPURegs:$rhs), 1)>;
 
 def : Pat<(brcond (i32 (setle (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),
-            (BEQZ (CMPLTS CPURegs:$rhs, CPURegs:$lhs), bb:$dst)>;
-def : Pat<(brcond (i32 (setle (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),
-            (BEQZ32 (CMPLTS32_64 CPURegs:$rhs, CPURegs:$lhs), bb:$dst)>;
+            (BNEZ (CMPLES CPURegs:$lhs, CPURegs:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setule (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),
-            (BEQZ (CMPLTU CPURegs:$rhs, CPURegs:$lhs), bb:$dst)>;
-def : Pat<(brcond (i32 (setule (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),
-            (BEQZ32 (CMPLTU32_64 CPURegs:$rhs, CPURegs:$lhs), bb:$dst)>;
+            (BNEZ (CMPLEU CPURegs:$lhs, CPURegs:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setge (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),
             (BEQZ (CMPLTS CPURegs:$lhs, CPURegs:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setge (i64 CPURegs:$lhs), immSExt8:$rhs)), bb:$dst),
@@ -4447,11 +4443,6 @@ def : Pat<(brcond (i32 (setuge (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),
             (BEQZ (CMPLTU CPURegs:$lhs, CPURegs:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setuge (i64 CPURegs:$lhs), immSExt8:$rhs)), bb:$dst),
             (BEQZ (CMPLTUI CPURegs:$lhs, immSExt8:$rhs), bb:$dst)>;
-
-def : Pat<(brcond (i32 (setne CPURegs:$lhs, 0)), bb:$dst),
-            (BNEZ CPURegs:$lhs, bb:$dst)>;
-def : Pat<(brcond (i32 (seteq CPURegs:$lhs, 0)), bb:$dst),
-            (BEQZ CPURegs:$lhs, bb:$dst)>;
 
 // Extended loads.
 def : Pat<(i64 (extloadi8  CPURegs:$src)), (LD1U CPURegs:$src)>;
