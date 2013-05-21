@@ -1953,6 +1953,326 @@ multiclass TileCMPLTU {
          IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
 }
 
+multiclass TileCMPLES {
+
+  def #NAME#
+      : TileInstX1RRR
+        <0x5, 0x8,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmples\t$rd, $rsa, $rsb",
+         [(set (i64 CPURegs:$rd), (setle (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x8,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmples\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X1#
+      : TileBundleX1RRR
+        <0x5, 0x8,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmples\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0x7, 0x0,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmples\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y1#
+      : TileBundleY1RRR
+        <0x8, 0x0,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmples\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32_64#
+      : TileInstX1RRR
+        <0x5, 0x8,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmples\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (setle (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+}
+
+multiclass TileCMPLEU {
+
+  def #NAME#
+      : TileInstX1RRR
+        <0x5, 0x9,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [(set (i64 CPURegs:$rd), (setule (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x9,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X1#
+      : TileBundleX1RRR
+        <0x5, 0x9,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0x7, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y1#
+      : TileBundleY1RRR
+        <0x8, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32#
+      : TileInstX1RRR
+        <0x5, 0x9,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (setule (i32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32_64#
+      : TileInstX1RRR
+        <0x5, 0x9,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpleu\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (setule (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+}
+
+multiclass TileCMPEQ {
+
+  def #NAME#
+      : TileInstX1RRR
+        <0x5, 0x5,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [(set (i64 CPURegs:$rd), (seteq (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x7,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X1#
+      : TileBundleX1RRR
+        <0x5, 0x5,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0x8, 0x0,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y1#
+      : TileBundleY1RRR
+        <0x9, 0x2,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32#
+      : TileInstX1RRR
+        <0x5, 0x5,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (seteq (i32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32_64#
+      : TileInstX1RRR
+        <0x5, 0x5,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpeq\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (seteq (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+}
+
+multiclass TileCMPNE {
+
+  def #NAME#
+      : TileInstX1RRR
+        <0x5, 0xC,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [(set (i64 CPURegs:$rd), (setne (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0xC,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X1#
+      : TileBundleX1RRR
+        <0x5, 0xC,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0x8, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y1#
+      : TileBundleY1RRR
+        <0x9, 0x3,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32#
+      : TileInstX1RRR
+        <0x5, 0xC,
+         (outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (setne (i32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32_64#
+      : TileInstX1RRR
+        <0x5, 0xC,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "cmpne\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd), (setne (i64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_CMP, FrmRRR, S_X0_X1_Y0_Y1>;
+}
+
+multiclass TileCMPEQI {
+
+  def #NAME#
+      : TileInstX1Imm8
+        <0x3, 0x4,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$imm8),
+         "cmpeqi\t$rd, $rs, $imm8",
+         [(set (i64 CPURegs:$rd), (seteq CPURegs:$rs, immSExt8:$imm8))],
+         IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
+
+  def #0_X0#
+      : TileBundleX0Imm8
+        <0x4, 0x4,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$imm8),
+         "cmpeqi\t$rd, $rs, $imm8",
+         [],
+         IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
+
+  def #0_X1#
+      : TileBundleX1Imm8
+        <0x3, 0x4,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$imm8),
+         "cmpeqi\t$rd, $rs, $imm8",
+         [],
+         IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
+
+  def #0_Y0#
+      : TileBundleY0Imm8
+        <0x3,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$imm8),
+         "cmpeqi\t$rd, $rs, $imm8",
+         [],
+         IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
+
+  def #0_Y1#
+      : TileBundleY1Imm8
+        <0x4,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i64imm:$imm8),
+         "cmpeqi\t$rd, $rs, $imm8",
+         [],
+         IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in
+  def #32_64#
+      : TileInstX1Imm8
+        <0x3, 0x5,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rs, i64imm:$imm8),
+         "cmpeqi\t$rd, $rs, $imm8",
+         [(set (i32 CPU32Regs:$rd), (seteq CPURegs:$rs, immSExt8:$imm8))],
+         IIC_CMP, FrmImm8, S_X0_X1_Y0_Y1>;
+}
+
 let isBranch = 1, isTerminator = 1 in
 multiclass TileBNEZ {
 
@@ -3916,6 +4236,11 @@ defm BFINS   : TileBFINS;
 
 
 // CMP
+defm CMPEQ   : TileCMPEQ;
+defm CMPEQI  : TileCMPEQI;
+defm CMPNE   : TileCMPNE;
+defm CMPLES  : TileCMPLES;
+defm CMPLEU  : TileCMPLEU;
 defm CMPLTS  : TileCMPLTS;
 defm CMPLTU  : TileCMPLTU;
 defm CMPLTSI : TileCMPLTSI;
@@ -4101,16 +4426,6 @@ def : Pat<(setgt (i64 CPURegs:$lhs), CPURegs:$rhs),
 def : Pat<(setugt (i64 CPURegs:$lhs), CPURegs:$rhs),
           (CMPLTU32_64 CPURegs:$rhs, CPURegs:$lhs)>;
 
-def : Pat<(setne (i64 CPURegs:$lhs), CPURegs:$rhs),
-          (CMPLTU32_64 (i64 ZERO), (XOR CPURegs:$lhs, CPURegs:$rhs))>;
-
-def : Pat<(seteq (i64 CPURegs:$lhs), CPURegs:$rhs),
-          (CMPLTUI32_64 (XOR CPURegs:$lhs, CPURegs:$rhs), 1)>;
-
-def : Pat<(setle (i64 CPURegs:$lhs), CPURegs:$rhs),
-          (XORI32 (CMPLTS32_64 CPURegs:$rhs, CPURegs:$lhs), 1)>;
-def : Pat<(setule (i64 CPURegs:$lhs), CPURegs:$rhs),
-          (XORI32 (CMPLTU32_64 CPURegs:$rhs, CPURegs:$lhs), 1)>;
 def : Pat<(setge (i64 CPURegs:$lhs), CPURegs:$rhs),
           (XORI32 (CMPLTS32_64 CPURegs:$lhs, CPURegs:$rhs), 1)>;
 def : Pat<(setuge (i64 CPURegs:$lhs), CPURegs:$rhs),
