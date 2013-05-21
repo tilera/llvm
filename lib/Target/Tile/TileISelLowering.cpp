@@ -120,16 +120,16 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   {
     // First set operation action for all vector types to expand. Then we
     // will selectively turn on ones that can be effectively codegen'd.
-    for (unsigned i = (unsigned)MVT::FIRST_VECTOR_VALUETYPE;
-         i <= (unsigned)MVT::LAST_VECTOR_VALUETYPE; ++i) {
-      MVT::SimpleValueType VT = (MVT::SimpleValueType)i;
+    for (unsigned i = (unsigned) MVT::FIRST_VECTOR_VALUETYPE;
+         i <= (unsigned) MVT::LAST_VECTOR_VALUETYPE; ++i) {
+      MVT::SimpleValueType VT = (MVT::SimpleValueType) i;
 
       for (unsigned Opc = 0; Opc < ISD::BUILTIN_OP_END; ++Opc)
         setOperationAction(Opc, VT, Expand);
 
-      for (unsigned j = (unsigned)MVT::FIRST_VECTOR_VALUETYPE;
-           j <= (unsigned)MVT::LAST_VECTOR_VALUETYPE; ++j) {
-        MVT::SimpleValueType InnerVT = (MVT::SimpleValueType)j;
+      for (unsigned j = (unsigned) MVT::FIRST_VECTOR_VALUETYPE;
+           j <= (unsigned) MVT::LAST_VECTOR_VALUETYPE; ++j) {
+        MVT::SimpleValueType InnerVT = (MVT::SimpleValueType) j;
         setTruncStoreAction(VT, InnerVT, Expand);
       }
 
@@ -305,6 +305,7 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setStackPointerRegisterToSaveRestore(Tile::SP);
 
   setTargetDAGCombine(ISD::SELECT);
+  setTargetDAGCombine(ISD::TRUNCATE);
 
   setMinFunctionAlignment(3);
 
@@ -348,6 +349,27 @@ static SDValue PerformSELECTCombine(SDNode *N, SelectionDAG &DAG,
   return DAG.getNode(ISD::SELECT, DL, FalseTy, SetCC, False, True);
 }
 
+static SDValue PerformTRUNCATECombine(SDNode *N, SelectionDAG &DAG,
+                                      TargetLowering::DAGCombinerInfo &DCI,
+                                      const TileSubtarget *Subtarget) {
+  if (DCI.isBeforeLegalizeOps())
+    return SDValue();
+
+  // setcc write 64bit reg, the high part is automatically correct,
+  // no need for an extra truncation.
+  SDValue SetCC = N->getOperand(0);
+
+  if ((SetCC.getOpcode() != ISD::SETCC) ||
+      !SetCC.getOperand(0).getValueType().isInteger())
+    return SDValue();
+
+  DebugLoc DL = SetCC.getDebugLoc();
+  EVT Ty = SetCC.getOperand(0).getValueType();
+
+  return DAG.getNode(ISD::SETCC, DL, MVT::i32, SetCC.getOperand(0),
+                     SetCC.getOperand(1), SetCC.getOperand(2));
+}
+
 SDValue
 TileTargetLowering::PerformDAGCombine(SDNode *N, DAGCombinerInfo &DCI) const {
   SelectionDAG &DAG = DCI.DAG;
@@ -358,6 +380,8 @@ TileTargetLowering::PerformDAGCombine(SDNode *N, DAGCombinerInfo &DCI) const {
     break;
   case ISD::SELECT:
     return PerformSELECTCombine(N, DAG, DCI, Subtarget);
+  case ISD::TRUNCATE:
+    return PerformTRUNCATECombine(N, DAG, DCI, Subtarget);
   }
 
   return SDValue();
@@ -1675,8 +1699,9 @@ unsigned TileTargetLowering::getJumpTableEncoding() const {
 }
 
 EVT TileTargetLowering::getSetCCResultType(EVT VT) const {
+  // TileGX comparision instructions operate on 64bit reg natively.
   if (!VT.isVector())
-    return MVT::i32;
+    return MVT::i64;
   return VT.changeVectorElementTypeToInteger();
 }
 
@@ -1686,8 +1711,7 @@ TileTargetLowering::isOffsetFoldingLegal(const GlobalAddressSDNode *GA) const {
   return false;
 }
 
-bool
-TileTargetLowering::isShuffleMaskLegal(const SmallVectorImpl<int> &M,
-                                       EVT VT) const {
+bool TileTargetLowering::isShuffleMaskLegal(const SmallVectorImpl<int> &M,
+                                            EVT VT) const {
   return false;
 }
