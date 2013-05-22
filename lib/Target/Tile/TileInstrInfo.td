@@ -2507,6 +2507,17 @@ multiclass TileCMOVNEZ {
              (i32 CPU32Regs:$rsb), (i32 CPU32Regs:$rf)))],
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
+  def #64_32# 
+      : TileInstX0RRR
+        <0x5, 0x6,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
+         "cmovnez\t$rd, $rsa, $rsb",
+         [(set (i32 CPU32Regs:$rd),
+           (select (i64 CPURegs:$rsa),
+             (i32 CPU32Regs:$rsb), (i32 CPU32Regs:$rf)))],
+         IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
+
   def #C32#
       : TileInstX0RRR
         <0x5, 0x6,
@@ -2522,6 +2533,17 @@ multiclass TileCMOVNEZ {
       : TileInstX0RRR
         <0x5, 0x6,
          (outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
+         "cmovnez\t$rd, $rsa, $rsb",
+         [(set (f32 CPU32Regs:$rd),
+           (select (i64 CPURegs:$rsa),
+            (f32 CPU32Regs:$rsb), (f32 CPU32Regs:$rf)))],
+         IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
+
+  def #F32_32# 
+      : TileInstX0RRR
+        <0x5, 0x6,
+         (outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb, CPU32Regs:$rf),
          "cmovnez\t$rd, $rsa, $rsb",
          [(set (f32 CPU32Regs:$rd),
@@ -2530,6 +2552,17 @@ multiclass TileCMOVNEZ {
          IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
 
   def #F64#
+      : TileInstX0RRR
+        <0x5, 0x6,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb, CPURegs:$rf),
+         "cmovnez\t$rd, $rsa, $rsb",
+         [(set (f64 CPURegs:$rd),
+           (select (i64 CPURegs:$rsa),
+            (f64 CPURegs:$rsb), (f64 CPURegs:$rf)))],
+         IIC_LOGIC_P0, FrmRRR, S_X0_Y0>;
+
+  def #F64_32#
       : TileInstX0RRR
         <0x5, 0x6,
          (outs CPURegs:$rd),
@@ -4420,15 +4453,24 @@ def : Pat<(brcond CPURegs:$cond, bb:$dst),
 def : Pat<(brcond CPU32Regs:$cond, bb:$dst),
           (BNEZ32 CPU32Regs:$cond, bb:$dst)>;
 
-def : Pat<(setgt (i64 CPURegs:$lhs), CPURegs:$rhs),
+def : Pat<(i64 (setgt (i64 CPURegs:$lhs), CPURegs:$rhs)),
+          (CMPLTS CPURegs:$rhs, CPURegs:$lhs)>;
+def : Pat<(i32 (setgt (i64 CPURegs:$lhs), CPURegs:$rhs)),
           (CMPLTS32_64 CPURegs:$rhs, CPURegs:$lhs)>;
 
-def : Pat<(setugt (i64 CPURegs:$lhs), CPURegs:$rhs),
+def : Pat<(i64 (setugt (i64 CPURegs:$lhs), CPURegs:$rhs)),
+          (CMPLTU CPURegs:$rhs, CPURegs:$lhs)>;
+def : Pat<(i32 (setugt (i64 CPURegs:$lhs), CPURegs:$rhs)),
           (CMPLTU32_64 CPURegs:$rhs, CPURegs:$lhs)>;
 
-def : Pat<(setge (i64 CPURegs:$lhs), CPURegs:$rhs),
+def : Pat<(i64 (setge (i64 CPURegs:$lhs), CPURegs:$rhs)),
+          (XORI (CMPLTS CPURegs:$lhs, CPURegs:$rhs), 1)>;
+def : Pat<(i32 (setge (i64 CPURegs:$lhs), CPURegs:$rhs)),
           (XORI32 (CMPLTS32_64 CPURegs:$lhs, CPURegs:$rhs), 1)>;
-def : Pat<(setuge (i64 CPURegs:$lhs), CPURegs:$rhs),
+
+def : Pat<(i64 (setuge (i64 CPURegs:$lhs), CPURegs:$rhs)),
+          (XORI (CMPLTU CPURegs:$lhs, CPURegs:$rhs), 1)>;
+def : Pat<(i32 (setuge (i64 CPURegs:$lhs), CPURegs:$rhs)),
           (XORI32 (CMPLTU32_64 CPURegs:$lhs, CPURegs:$rhs), 1)>;
 
 def : Pat<(brcond (i32 (setle (i64 CPURegs:$lhs), CPURegs:$rhs)), bb:$dst),

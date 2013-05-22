@@ -305,7 +305,7 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setStackPointerRegisterToSaveRestore(Tile::SP);
 
   setTargetDAGCombine(ISD::SELECT);
-  setTargetDAGCombine(ISD::TRUNCATE);
+  setTargetDAGCombine(ISD::ZERO_EXTEND);
 
   setMinFunctionAlignment(3);
 
@@ -349,24 +349,23 @@ static SDValue PerformSELECTCombine(SDNode *N, SelectionDAG &DAG,
   return DAG.getNode(ISD::SELECT, DL, FalseTy, SetCC, False, True);
 }
 
-static SDValue PerformTRUNCATECombine(SDNode *N, SelectionDAG &DAG,
-                                      TargetLowering::DAGCombinerInfo &DCI,
-                                      const TileSubtarget *Subtarget) {
+static SDValue PerformZEXTCombine(SDNode *N, SelectionDAG &DAG,
+                                  TargetLowering::DAGCombinerInfo &DCI,
+                                  const TileSubtarget *Subtarget) {
   if (DCI.isBeforeLegalizeOps())
     return SDValue();
 
   // setcc write 64bit reg, the high part is automatically correct,
-  // no need for an extra truncation.
+  // no need for an extra extension.
   SDValue SetCC = N->getOperand(0);
 
-  if ((SetCC.getOpcode() != ISD::SETCC) ||
-      !SetCC.getOperand(0).getValueType().isInteger())
+  if ((SetCC.getOpcode() != ISD::SETCC) || (N->getValueType(0) != MVT::i64))
     return SDValue();
 
   DebugLoc DL = SetCC.getDebugLoc();
   EVT Ty = SetCC.getOperand(0).getValueType();
 
-  return DAG.getNode(ISD::SETCC, DL, MVT::i32, SetCC.getOperand(0),
+  return DAG.getNode(ISD::SETCC, DL, MVT::i64, SetCC.getOperand(0),
                      SetCC.getOperand(1), SetCC.getOperand(2));
 }
 
@@ -380,8 +379,8 @@ TileTargetLowering::PerformDAGCombine(SDNode *N, DAGCombinerInfo &DCI) const {
     break;
   case ISD::SELECT:
     return PerformSELECTCombine(N, DAG, DCI, Subtarget);
-  case ISD::TRUNCATE:
-    return PerformTRUNCATECombine(N, DAG, DCI, Subtarget);
+  case ISD::ZERO_EXTEND:
+    return PerformZEXTCombine(N, DAG, DCI, Subtarget);
   }
 
   return SDValue();
@@ -1699,9 +1698,8 @@ unsigned TileTargetLowering::getJumpTableEncoding() const {
 }
 
 EVT TileTargetLowering::getSetCCResultType(EVT VT) const {
-  // TileGX comparision instructions operate on 64bit reg natively.
   if (!VT.isVector())
-    return MVT::i64;
+    return MVT::i32;
   return VT.changeVectorElementTypeToInteger();
 }
 
