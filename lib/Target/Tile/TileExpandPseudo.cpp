@@ -96,54 +96,78 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       break;
     }
 
-    case Tile::FSINGLE_CMP_OLT:
-    case Tile::FSINGLE_CMP_OLE:
-    case Tile::FSINGLE_CMP_OGT:
-    case Tile::FSINGLE_CMP_OGE:
-    case Tile::FSINGLE_CMP_OEQ:
-    case Tile::FSINGLE_CMP_ONE:
-    case Tile::FSINGLE_CMP_ULT:
-    case Tile::FSINGLE_CMP_ULE:
-    case Tile::FSINGLE_CMP_UGT:
-    case Tile::FSINGLE_CMP_UGE:
-    case Tile::FSINGLE_CMP_UEQ:
-    case Tile::FSINGLE_CMP_UNE:
-    case Tile::FDOUBLE_CMP_OLT:
-    case Tile::FDOUBLE_CMP_OLE:
-    case Tile::FDOUBLE_CMP_OGT:
-    case Tile::FDOUBLE_CMP_OGE:
-    case Tile::FDOUBLE_CMP_OEQ:
-    case Tile::FDOUBLE_CMP_ONE:
-    case Tile::FDOUBLE_CMP_ULT:
-    case Tile::FDOUBLE_CMP_ULE:
-    case Tile::FDOUBLE_CMP_UGT:
-    case Tile::FDOUBLE_CMP_UGE:
-    case Tile::FDOUBLE_CMP_UEQ:
-    case Tile::FDOUBLE_CMP_UNE:
-    case Tile::FSINGLE_CMP_OLT32:
-    case Tile::FSINGLE_CMP_OLE32:
-    case Tile::FSINGLE_CMP_OGT32:
-    case Tile::FSINGLE_CMP_OGE32:
-    case Tile::FSINGLE_CMP_OEQ32:
-    case Tile::FSINGLE_CMP_ONE32:
-    case Tile::FSINGLE_CMP_ULT32:
-    case Tile::FSINGLE_CMP_ULE32:
-    case Tile::FSINGLE_CMP_UGT32:
-    case Tile::FSINGLE_CMP_UGE32:
-    case Tile::FSINGLE_CMP_UEQ32:
-    case Tile::FSINGLE_CMP_UNE32:
-    case Tile::FDOUBLE_CMP_OLT32:
-    case Tile::FDOUBLE_CMP_OLE32:
-    case Tile::FDOUBLE_CMP_OGT32:
-    case Tile::FDOUBLE_CMP_OGE32:
-    case Tile::FDOUBLE_CMP_OEQ32:
-    case Tile::FDOUBLE_CMP_ONE32:
-    case Tile::FDOUBLE_CMP_ULT32:
-    case Tile::FDOUBLE_CMP_ULE32:
-    case Tile::FDOUBLE_CMP_UGT32:
-    case Tile::FDOUBLE_CMP_UGE32:
-    case Tile::FDOUBLE_CMP_UEQ32:
-    case Tile::FDOUBLE_CMP_UNE32: {
+    case Tile::FSINGLE_CMP_LTO:
+    case Tile::FSINGLE_CMP_LEO:
+    case Tile::FSINGLE_CMP_GTO:
+    case Tile::FSINGLE_CMP_GEO:
+    case Tile::FSINGLE_CMP_EQO:
+    case Tile::FSINGLE_CMP_NEO:
+    case Tile::FSINGLE_CMP_LTU:
+    case Tile::FSINGLE_CMP_LEU:
+    case Tile::FSINGLE_CMP_GTU:
+    case Tile::FSINGLE_CMP_GEU:
+    case Tile::FSINGLE_CMP_EQU:
+    case Tile::FSINGLE_CMP_NEU:
+    case Tile::FDOUBLE_CMP_LTO:
+    case Tile::FDOUBLE_CMP_LEO:
+    case Tile::FDOUBLE_CMP_GTO:
+    case Tile::FDOUBLE_CMP_GEO:
+    case Tile::FDOUBLE_CMP_EQO:
+    case Tile::FDOUBLE_CMP_NEO:
+    case Tile::FDOUBLE_CMP_LTU:
+    case Tile::FDOUBLE_CMP_LEU:
+    case Tile::FDOUBLE_CMP_GTU:
+    case Tile::FDOUBLE_CMP_GEU:
+    case Tile::FDOUBLE_CMP_EQU:
+    case Tile::FDOUBLE_CMP_NEU:
+    case Tile::FSINGLE_CMP_LTO32:
+    case Tile::FSINGLE_CMP_LEO32:
+    case Tile::FSINGLE_CMP_GTO32:
+    case Tile::FSINGLE_CMP_GEO32:
+    case Tile::FSINGLE_CMP_EQO32:
+    case Tile::FSINGLE_CMP_NEO32:
+    case Tile::FSINGLE_CMP_LTU32:
+    case Tile::FSINGLE_CMP_LEU32:
+    case Tile::FSINGLE_CMP_GTU32:
+    case Tile::FSINGLE_CMP_GEU32:
+    case Tile::FSINGLE_CMP_EQU32:
+    case Tile::FSINGLE_CMP_NEU32:
+    case Tile::FDOUBLE_CMP_LTO32:
+    case Tile::FDOUBLE_CMP_LEO32:
+    case Tile::FDOUBLE_CMP_GTO32:
+    case Tile::FDOUBLE_CMP_GEO32:
+    case Tile::FDOUBLE_CMP_EQO32:
+    case Tile::FDOUBLE_CMP_NEO32:
+    case Tile::FDOUBLE_CMP_LTU32:
+    case Tile::FDOUBLE_CMP_LEU32:
+    case Tile::FDOUBLE_CMP_GTU32:
+    case Tile::FDOUBLE_CMP_GEU32:
+    case Tile::FDOUBLE_CMP_EQU32:
+    case Tile::FDOUBLE_CMP_NEU32:
+    case Tile::FSINGLE_CMP_LT:
+    case Tile::FSINGLE_CMP_LE:
+    case Tile::FSINGLE_CMP_GT:
+    case Tile::FSINGLE_CMP_GE:
+    case Tile::FSINGLE_CMP_EQ:
+    case Tile::FSINGLE_CMP_NE:
+    case Tile::FSINGLE_CMP_LT32:
+    case Tile::FSINGLE_CMP_LE32:
+    case Tile::FSINGLE_CMP_GT32:
+    case Tile::FSINGLE_CMP_GE32:
+    case Tile::FSINGLE_CMP_EQ32:
+    case Tile::FSINGLE_CMP_NE32:
+    case Tile::FDOUBLE_CMP_LT:
+    case Tile::FDOUBLE_CMP_LE:
+    case Tile::FDOUBLE_CMP_GT:
+    case Tile::FDOUBLE_CMP_GE:
+    case Tile::FDOUBLE_CMP_EQ:
+    case Tile::FDOUBLE_CMP_NE:
+    case Tile::FDOUBLE_CMP_LT32:
+    case Tile::FDOUBLE_CMP_LE32:
+    case Tile::FDOUBLE_CMP_GT32:
+    case Tile::FDOUBLE_CMP_GE32:
+    case Tile::FDOUBLE_CMP_EQ32:
+    case Tile::FDOUBLE_CMP_NE32: {
 
       unsigned DestReg = I->getOperand(0).getReg();
       unsigned SraReg = I->getOperand(1).getReg();
@@ -159,16 +183,11 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       // 31  ne
       int64_t FPResOff[6] = { 30, 29, 28, 27, 26, 31 };
       int64_t BitOff;
-      if (OldOpcode >= Tile::FSINGLE_CMP_OEQ) {
+      if (OldOpcode >= Tile::FSINGLE_CMP_EQ) {
         NewOpcode = Tile::FSINGLE_ADD1;
-        if (OldOpcode >= Tile::FSINGLE_CMP_UEQ)
-          BitOff = FPResOff[(OldOpcode - Tile::FSINGLE_CMP_UEQ) / 2];
-        else
-          BitOff = FPResOff[(OldOpcode - Tile::FSINGLE_CMP_OEQ) / 2];
-      } else if (OldOpcode >= Tile::FDOUBLE_CMP_UEQ)
-        BitOff = FPResOff[(OldOpcode - Tile::FDOUBLE_CMP_UEQ) / 2];
-      else
-        BitOff = FPResOff[(OldOpcode - Tile::FDOUBLE_CMP_OEQ) / 2];
+        BitOff = FPResOff[(OldOpcode - Tile::FSINGLE_CMP_EQ) / 6];
+      } else
+        BitOff = FPResOff[(OldOpcode - Tile::FDOUBLE_CMP_EQ) / 6];
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode), DestReg)
           .addReg(SraReg).addReg(SrbReg);
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::BFEXTU), DestReg)

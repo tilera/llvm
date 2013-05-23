@@ -358,9 +358,27 @@ multiclass TileFDOUBLE_UNPACK_MIN {
          IIC_MUL, FrmRRR, S_X0>;
 }
 
-multiclass TileFSINGLE_CMP_OLT {
+multiclass TileFSINGLE_CMP_LT {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_lt",
+         [(set (i64 CPURegs:$rd),
+            (setlt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_lt_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setlt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -369,7 +387,7 @@ multiclass TileFSINGLE_CMP_OLT {
             (setolt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -377,11 +395,8 @@ multiclass TileFSINGLE_CMP_OLT {
          [(set (i32 CPU32Regs:$rd),
             (setolt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_ULT {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -390,7 +405,7 @@ multiclass TileFSINGLE_CMP_ULT {
             (setult (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -400,9 +415,27 @@ multiclass TileFSINGLE_CMP_ULT {
          IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_OLT {
+multiclass TileFDOUBLE_CMP_LT {
 
   def #NAME#
+    : TilePseudo
+      <(outs CPURegs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_lt",
+       [(set (i64 CPURegs:$rd),
+          (setlt (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+  def #32#
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_lt_32",
+       [(set (i32 CPU32Regs:$rd),
+          (setlt (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+  def #O#
     : TilePseudo
       <(outs CPURegs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -411,7 +444,7 @@ multiclass TileFDOUBLE_CMP_OLT {
           (setolt (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
 
-  def #32#
+  def #O32#
     : TilePseudo
       <(outs CPU32Regs:$rd),
        (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -419,32 +452,47 @@ multiclass TileFDOUBLE_CMP_OLT {
        [(set (i32 CPU32Regs:$rd),
           (setolt (f64 CPURegs:$rsa), CPURegs:$rsb))],
        IIC_MUL>;
+
+  def #U#
+    : TilePseudo
+      <(outs CPURegs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_ult",
+       [(set (i64 CPURegs:$rd),
+          (setult (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
+
+  def #U32#
+    : TilePseudo
+      <(outs CPU32Regs:$rd),
+       (ins CPURegs:$rsa, CPURegs:$rsb),
+       "#fdouble_cmp_ult_32",
+       [(set (i32 CPU32Regs:$rd),
+          (setult (f64 CPURegs:$rsa), CPURegs:$rsb))],
+       IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_ULT {
+multiclass TileFSINGLE_CMP_LE {
 
   def #NAME#
       : TilePseudo
         <(outs CPURegs:$rd),
-         (ins CPURegs:$rsa, CPURegs:$rsb),
-         "#fdouble_cmp_ult",
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_le",
          [(set (i64 CPURegs:$rd),
-            (setult (f64 CPURegs:$rsa), CPURegs:$rsb))],
+            (setle (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
   def #32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
-         (ins CPURegs:$rsa, CPURegs:$rsb),
-         "#fdouble_cmp_ult_32",
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_le_32",
          [(set (i32 CPU32Regs:$rd),
-            (setult (f64 CPURegs:$rsa), CPURegs:$rsb))],
+            (setle (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_OLE {
-
-  def #NAME#
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -453,7 +501,7 @@ multiclass TileFSINGLE_CMP_OLE {
             (setole (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -461,11 +509,8 @@ multiclass TileFSINGLE_CMP_OLE {
          [(set (i32 CPU32Regs:$rd),
             (setole (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_ULE {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -474,7 +519,7 @@ multiclass TileFSINGLE_CMP_ULE {
             (setule (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -484,9 +529,27 @@ multiclass TileFSINGLE_CMP_ULE {
          IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_OLE {
+multiclass TileFDOUBLE_CMP_LE {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_le",
+         [(set (i64 CPURegs:$rd),
+            (setle (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_le_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setle (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -495,7 +558,7 @@ multiclass TileFDOUBLE_CMP_OLE {
             (setole (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -503,11 +566,8 @@ multiclass TileFDOUBLE_CMP_OLE {
          [(set (i32 CPU32Regs:$rd),
             (setole (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFDOUBLE_CMP_ULE {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -516,7 +576,7 @@ multiclass TileFDOUBLE_CMP_ULE {
             (setule (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -526,9 +586,27 @@ multiclass TileFDOUBLE_CMP_ULE {
          IIC_MUL>;
 }
 
-multiclass TileFSINGLE_CMP_OGT {
+multiclass TileFSINGLE_CMP_GT {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_gt",
+         [(set (i64 CPURegs:$rd),
+            (setgt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_gt_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setgt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -537,7 +615,7 @@ multiclass TileFSINGLE_CMP_OGT {
             (setogt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -545,11 +623,8 @@ multiclass TileFSINGLE_CMP_OGT {
          [(set (i32 CPU32Regs:$rd),
             (setogt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_UGT {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -558,7 +633,7 @@ multiclass TileFSINGLE_CMP_UGT {
             (setugt (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -568,9 +643,27 @@ multiclass TileFSINGLE_CMP_UGT {
          IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_OGT {
+multiclass TileFDOUBLE_CMP_GT {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_gt",
+         [(set (i64 CPURegs:$rd),
+            (setgt (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_gt_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setgt (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -579,7 +672,7 @@ multiclass TileFDOUBLE_CMP_OGT {
             (setogt (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -587,11 +680,8 @@ multiclass TileFDOUBLE_CMP_OGT {
          [(set (i32 CPU32Regs:$rd),
             (setogt (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFDOUBLE_CMP_UGT {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -600,7 +690,7 @@ multiclass TileFDOUBLE_CMP_UGT {
             (setugt (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -610,9 +700,27 @@ multiclass TileFDOUBLE_CMP_UGT {
          IIC_MUL>;
 }
 
-multiclass TileFSINGLE_CMP_OGE {
+multiclass TileFSINGLE_CMP_GE {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_ge",
+         [(set (i64 CPURegs:$rd),
+            (setge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_ge_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -621,7 +729,7 @@ multiclass TileFSINGLE_CMP_OGE {
             (setoge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -629,11 +737,8 @@ multiclass TileFSINGLE_CMP_OGE {
          [(set (i32 CPU32Regs:$rd),
             (setoge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_UGE {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -642,7 +747,7 @@ multiclass TileFSINGLE_CMP_UGE {
             (setuge (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -652,9 +757,27 @@ multiclass TileFSINGLE_CMP_UGE {
          IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_OGE {
+multiclass TileFDOUBLE_CMP_GE {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_ge",
+         [(set (i64 CPURegs:$rd),
+            (setge (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_ge_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setge (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -663,7 +786,7 @@ multiclass TileFDOUBLE_CMP_OGE {
             (setoge (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -671,11 +794,8 @@ multiclass TileFDOUBLE_CMP_OGE {
          [(set (i32 CPU32Regs:$rd),
             (setoge (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFDOUBLE_CMP_UGE {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -684,7 +804,7 @@ multiclass TileFDOUBLE_CMP_UGE {
             (setuge (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -694,9 +814,27 @@ multiclass TileFDOUBLE_CMP_UGE {
          IIC_MUL>;
 }
 
-multiclass TileFSINGLE_CMP_OEQ {
+multiclass TileFSINGLE_CMP_EQ {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_eq",
+         [(set (i64 CPURegs:$rd),
+            (seteq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_eq_32",
+         [(set (i32 CPU32Regs:$rd),
+            (seteq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -705,7 +843,7 @@ multiclass TileFSINGLE_CMP_OEQ {
             (setoeq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -713,11 +851,8 @@ multiclass TileFSINGLE_CMP_OEQ {
          [(set (i32 CPU32Regs:$rd),
             (setoeq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_UEQ {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -726,7 +861,7 @@ multiclass TileFSINGLE_CMP_UEQ {
             (setueq (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -736,9 +871,27 @@ multiclass TileFSINGLE_CMP_UEQ {
          IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_OEQ {
+multiclass TileFDOUBLE_CMP_EQ {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_eq",
+         [(set (i64 CPURegs:$rd),
+            (seteq (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_eq_32",
+         [(set (i32 CPU32Regs:$rd),
+            (seteq (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -747,7 +900,7 @@ multiclass TileFDOUBLE_CMP_OEQ {
             (setoeq (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -755,11 +908,8 @@ multiclass TileFDOUBLE_CMP_OEQ {
          [(set (i32 CPU32Regs:$rd),
             (setoeq (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFDOUBLE_CMP_UEQ {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -768,7 +918,7 @@ multiclass TileFDOUBLE_CMP_UEQ {
             (setueq (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -778,9 +928,27 @@ multiclass TileFDOUBLE_CMP_UEQ {
          IIC_MUL>;
 }
 
-multiclass TileFSINGLE_CMP_ONE {
+multiclass TileFSINGLE_CMP_NE {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_ne",
+         [(set (i64 CPURegs:$rd),
+            (setne (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "#fsingle_cmp_ne_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setne (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -789,7 +957,7 @@ multiclass TileFSINGLE_CMP_ONE {
             (setone (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -797,11 +965,8 @@ multiclass TileFSINGLE_CMP_ONE {
          [(set (i32 CPU32Regs:$rd),
             (setone (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFSINGLE_CMP_UNE {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -810,7 +975,7 @@ multiclass TileFSINGLE_CMP_UNE {
             (setune (f32 CPU32Regs:$rsa), CPU32Regs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
@@ -820,9 +985,27 @@ multiclass TileFSINGLE_CMP_UNE {
          IIC_MUL>;
 }
 
-multiclass TileFDOUBLE_CMP_ONE {
+multiclass TileFDOUBLE_CMP_NE {
 
   def #NAME#
+      : TilePseudo
+        <(outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_ne",
+         [(set (i64 CPURegs:$rd),
+            (setne (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #32#
+      : TilePseudo
+        <(outs CPU32Regs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "#fdouble_cmp_ne_32",
+         [(set (i32 CPU32Regs:$rd),
+            (setne (f64 CPURegs:$rsa), CPURegs:$rsb))],
+         IIC_MUL>;
+
+  def #O#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -831,7 +1014,7 @@ multiclass TileFDOUBLE_CMP_ONE {
             (setone (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #O32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -839,11 +1022,8 @@ multiclass TileFDOUBLE_CMP_ONE {
          [(set (i32 CPU32Regs:$rd),
             (setone (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
-}
 
-multiclass TileFDOUBLE_CMP_UNE {
-
-  def #NAME#
+  def #U#
       : TilePseudo
         <(outs CPURegs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -852,7 +1032,7 @@ multiclass TileFDOUBLE_CMP_UNE {
             (setune (f64 CPURegs:$rsa), CPURegs:$rsb))],
          IIC_MUL>;
 
-  def #32#
+  def #U32#
       : TilePseudo
         <(outs CPU32Regs:$rd),
          (ins CPURegs:$rsa, CPURegs:$rsb),
@@ -887,27 +1067,15 @@ defm FDOUBLE_SUB_FLAGS  : TileFDOUBLE_SUB_FLAGS;
 defm FDOUBLE_UNPACK_MIN : TileFDOUBLE_UNPACK_MIN;
 defm FDOUBLE_UNPACK_MAX : TileFDOUBLE_UNPACK_MAX;
 
-defm FSINGLE_CMP_OLT : TileFSINGLE_CMP_OLT;
-defm FSINGLE_CMP_ULT : TileFSINGLE_CMP_ULT;
-defm FDOUBLE_CMP_OLT : TileFDOUBLE_CMP_OLT;
-defm FDOUBLE_CMP_ULT : TileFDOUBLE_CMP_ULT;
-defm FSINGLE_CMP_OLE : TileFSINGLE_CMP_OLE;
-defm FSINGLE_CMP_ULE : TileFSINGLE_CMP_ULE;
-defm FDOUBLE_CMP_OLE : TileFDOUBLE_CMP_OLE;
-defm FDOUBLE_CMP_ULE : TileFDOUBLE_CMP_ULE;
-defm FSINGLE_CMP_OGT : TileFSINGLE_CMP_OGT;
-defm FSINGLE_CMP_UGT : TileFSINGLE_CMP_UGT;
-defm FDOUBLE_CMP_OGT : TileFDOUBLE_CMP_OGT;
-defm FDOUBLE_CMP_UGT : TileFDOUBLE_CMP_UGT;
-defm FSINGLE_CMP_OGE : TileFSINGLE_CMP_OGE;
-defm FSINGLE_CMP_UGE : TileFSINGLE_CMP_UGE;
-defm FDOUBLE_CMP_OGE : TileFDOUBLE_CMP_OGE;
-defm FDOUBLE_CMP_UGE : TileFDOUBLE_CMP_UGE;
-defm FSINGLE_CMP_OEQ : TileFSINGLE_CMP_OEQ;
-defm FSINGLE_CMP_UEQ : TileFSINGLE_CMP_UEQ;
-defm FDOUBLE_CMP_OEQ : TileFDOUBLE_CMP_OEQ;
-defm FDOUBLE_CMP_UEQ : TileFDOUBLE_CMP_UEQ;
-defm FSINGLE_CMP_ONE : TileFSINGLE_CMP_ONE;
-defm FSINGLE_CMP_UNE : TileFSINGLE_CMP_UNE;
-defm FDOUBLE_CMP_ONE : TileFDOUBLE_CMP_ONE;
-defm FDOUBLE_CMP_UNE : TileFDOUBLE_CMP_UNE;
+defm FSINGLE_CMP_LT : TileFSINGLE_CMP_LT;
+defm FDOUBLE_CMP_LT : TileFDOUBLE_CMP_LT;
+defm FSINGLE_CMP_LE : TileFSINGLE_CMP_LE;
+defm FDOUBLE_CMP_LE : TileFDOUBLE_CMP_LE;
+defm FSINGLE_CMP_GT : TileFSINGLE_CMP_GT;
+defm FDOUBLE_CMP_GT : TileFDOUBLE_CMP_GT;
+defm FSINGLE_CMP_GE : TileFSINGLE_CMP_GE;
+defm FDOUBLE_CMP_GE : TileFDOUBLE_CMP_GE;
+defm FSINGLE_CMP_EQ : TileFSINGLE_CMP_EQ;
+defm FDOUBLE_CMP_EQ : TileFDOUBLE_CMP_EQ;
+defm FSINGLE_CMP_NE : TileFSINGLE_CMP_NE;
+defm FDOUBLE_CMP_NE : TileFDOUBLE_CMP_NE;
