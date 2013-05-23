@@ -90,6 +90,9 @@ private:
   // INT/UNSIGNED to F32/F64 has hardware support.
   // All other type conversion should use softfloat.
   SDNode *SelectIntToFloatConv(SDNode *N);
+  // Select MULHS/MULHU for i32 and i64
+  SDNode *SelectMULHIPart32(SDNode *N);
+  SDNode *SelectMULHIPart64(SDNode *N);
 
   // Complex Pattern.
   bool SelectFI(SDValue N, SDValue &R1);
@@ -296,6 +299,77 @@ SDNode *TileDAGToDAGISel::SelectIntToFloatConv(SDNode *Node) {
                                 SDValue(Tmp2, 0), SDValue(Tmp3, 0));
 }
 
+SDNode *TileDAGToDAGISel::SelectMULHIPart32(SDNode *N) {
+  unsigned Opcode = N->getOpcode();
+  DebugLoc dl = N->getDebugLoc();
+  SDValue SrcA = N->getOperand(0);
+  SDValue SrcB = N->getOperand(1);
+
+  SDNode *Tmp = CurDAG->getMachineNode(
+      Opcode == ISD::MULHU ? Tile::MUL_LU_LU32 : Tile::MUL_LS_LS32, dl,
+      MVT::i64, SrcA, SrcB);
+
+  return CurDAG->getMachineNode(
+      Opcode == ISD::MULHU ? Tile::SHRUI32_64 : Tile::SHRSI32_64, dl, MVT::i32,
+      SDValue(Tmp, 0), CurDAG->getTargetConstant(32, MVT::i64));
+}
+
+SDNode *TileDAGToDAGISel::SelectMULHIPart64(SDNode *N) {
+  unsigned Opcode = N->getOpcode();
+  DebugLoc dl = N->getDebugLoc();
+  SDValue SrcA = N->getOperand(0);
+  SDValue SrcB = N->getOperand(1);
+  bool Signed = Opcode == ISD::MULHS;
+  SDNode *Tmp0, *Tmp1, *Tmp2, *Tmp3, *Tmp4, *Tmp5, *Tmp6, *Tmp7, *Tmp8, *Tmp9,
+      *Tmp10, *Tmp11, *Tmp12, *Tmp13, *ResultLo;
+  SDValue Const32 = CurDAG->getTargetConstant(32, MVT::i64);
+
+  Tmp2 = CurDAG->getMachineNode(Tile::MUL_LU_LU, dl, MVT::i64, SrcA, SrcB);
+  if (Signed) {
+    Tmp0 = CurDAG->getMachineNode(Tile::MUL_HS_LU, dl, MVT::i64, SrcA, SrcB);
+    Tmp1 = CurDAG->getMachineNode(Tile::MUL_HS_LU, dl, MVT::i64, SrcB, SrcA);
+    Tmp3 = CurDAG->getMachineNode(Tile::MUL_HS_HS, dl, MVT::i64, SrcA, SrcB);
+  } else {
+    Tmp0 = CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::i64, SrcA, SrcB);
+    Tmp1 = CurDAG->getMachineNode(Tile::MUL_HU_LU, dl, MVT::i64, SrcB, SrcA);
+    Tmp3 = CurDAG->getMachineNode(Tile::MUL_HU_HU, dl, MVT::i64, SrcA, SrcB);
+  }
+
+  Tmp4 = CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(Tmp0, 0),
+                                Const32);
+  Tmp5 = CurDAG->getMachineNode(Tile::SHLI, dl, MVT::i64, SDValue(Tmp1, 0),
+                                Const32);
+  Tmp6 = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, SDValue(Tmp4, 0),
+                                SDValue(Tmp5, 0));
+  ResultLo = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, SDValue(Tmp2, 0),
+                                    SDValue(Tmp6, 0));
+  Tmp7 = CurDAG->getMachineNode(Tile::CMPLTU, dl, MVT::i64, SDValue(Tmp6, 0),
+                                SDValue(Tmp4, 0));
+  Tmp8 = CurDAG->getMachineNode(Tile::CMPLTU, dl, MVT::i64,
+                                SDValue(ResultLo, 0), SDValue(Tmp2, 0));
+
+  if (Signed) {
+    Tmp9 = CurDAG->getMachineNode(Tile::SHRSI, dl, MVT::i64, SDValue(Tmp0, 0),
+                                  Const32);
+    Tmp10 = CurDAG->getMachineNode(Tile::SHRSI, dl, MVT::i64, SDValue(Tmp1, 0),
+                                   Const32);
+  } else {
+    Tmp9 = CurDAG->getMachineNode(Tile::SHRUI, dl, MVT::i64, SDValue(Tmp0, 0),
+                                  Const32);
+    Tmp10 = CurDAG->getMachineNode(Tile::SHRUI, dl, MVT::i64, SDValue(Tmp1, 0),
+                                   Const32);
+  }
+
+  Tmp11 = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, SDValue(Tmp3, 0),
+                                 SDValue(Tmp7, 0));
+  Tmp12 = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, SDValue(Tmp8, 0),
+                                 SDValue(Tmp9, 0));
+  Tmp13 = CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, SDValue(Tmp11, 0),
+                                 SDValue(Tmp12, 0));
+  return CurDAG->getMachineNode(Tile::ADD, dl, MVT::i64, SDValue(Tmp13, 0),
+                                SDValue(Tmp10, 0));
+}
+
 SDNode *TileDAGToDAGISel::SelectDoubleFloatBinOp(SDNode *Node) {
 
   unsigned Opcode = Node->getOpcode();
@@ -440,6 +514,14 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
     return CurDAG->getMachineNode(Tile::MULA_LU_LU, dl, MVT::i64,
                                   SDValue(Tmp, 0), SrcB, SrcA);
   }
+
+  case ISD::MULHU:
+  case ISD::MULHS:
+
+    if (NodeTy == MVT::i32)
+      return SelectMULHIPart32(Node);
+
+    return SelectMULHIPart64(Node);
 
   case ISD::SINT_TO_FP:
   case ISD::UINT_TO_FP:

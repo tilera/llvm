@@ -89,21 +89,6 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
     : TargetLowering(TM, new TargetLoweringObjectFileELF()),
       Subtarget(&TM.getSubtarget<TileSubtarget>()) {
 
-  // For divide by integer, llvm will try to expand it
-  // into a sequence of instructions which use multiply
-  // by a magic number.
-  //
-  // This cause trouble for i64 type, because this
-  // algorithm needs the high part of the multiply
-  // result while there is no way in tilegx to
-  // fetch the high part of i64 * i64
-  //
-  // So, we pretend to be cheap for div / integer,
-  // so that libcall will actually generated.
-  setIntDivIsCheap();
-
-  // Tile does not have i1 type, so use i32 for
-  // setcc operations results (slt, sgt, ...).
   setBooleanContents(ZeroOrOneBooleanContent);
   setBooleanVectorContents(ZeroOrOneBooleanContent);
 
@@ -170,7 +155,7 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::CTPOP, MVT::i32, Promote);
 
   // For SETCC, because tilegx cmplt* only support 64bit operand
-  // we need to sign extend i32 to i64.
+  // we need to extend i32 to i64.
   setOperationAction(ISD::SETCC, MVT::i32, Promote);
 
   // TILE-Gx has partial hardware float point support.
@@ -241,6 +226,7 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::ConstantPool, MVT::i64, Custom);
   setOperationAction(ISD::SELECT, MVT::i64, Custom);
 
+  setOperationAction(ISD::MUL, MVT::i64, Custom);
   setOperationAction(ISD::SDIV, MVT::i32, Expand);
   setOperationAction(ISD::SREM, MVT::i32, Expand);
   setOperationAction(ISD::SDIV, MVT::i64, Expand);
@@ -253,8 +239,6 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::UDIVREM, MVT::i32, Expand);
   setOperationAction(ISD::SDIVREM, MVT::i64, Expand);
   setOperationAction(ISD::UDIVREM, MVT::i64, Expand);
-  setOperationAction(ISD::MULHU, MVT::i64, Expand);
-  setOperationAction(ISD::MULHS, MVT::i64, Expand);
   setOperationAction(ISD::UMUL_LOHI, MVT::i64, Expand);
   setOperationAction(ISD::SMUL_LOHI, MVT::i64, Expand);
 
@@ -429,6 +413,11 @@ TileTargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
   case ISD::FP_TO_SINT:
   case ISD::FP_TO_UINT:
     return lowerFpIntConv(Op, DAG);
+  // For MUL, we handle it in DAGToDAG pass, it's marked
+  // as Custom, so that the target-independent code knows
+  // it's not nativelly supported on hardward.
+  case ISD::MUL:
+    return Op;
   }
   return SDValue();
 }

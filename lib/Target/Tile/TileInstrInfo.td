@@ -1407,7 +1407,16 @@ multiclass TileSHRUI {
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
-  let isCodeGenOnly = 1 in
+  let isCodeGenOnly = 1 in {
+  def #32_64#
+      : TileInstX1Shift
+        <0x6, 0x5,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rs, i64imm:$sht),
+         "shrui\t$rd, $rs, $sht",
+         [],
+         IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
+
   def #64_32#
       : TileInstX1Shift
         <0x6, 0x5,
@@ -1417,6 +1426,7 @@ multiclass TileSHRUI {
          [(set (i64 CPURegs:$rd),
          (srl CPURegs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
+  }
 }
 
 multiclass TileSHRUXI {
@@ -1569,7 +1579,7 @@ multiclass TileSHRSI {
          [],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
-  let isCodeGenOnly = 1 in
+  let isCodeGenOnly = 1 in {
   def #64_32#
       : TileInstX1Shift
         <0x6, 0x4,
@@ -1580,7 +1590,6 @@ multiclass TileSHRSI {
          (sra CPURegs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
 
-  let isCodeGenOnly = 1 in
   def #32#
       : TileInstX1Shift
         <0x6, 0x4,
@@ -1590,6 +1599,16 @@ multiclass TileSHRSI {
          [(set (i32 CPU32Regs:$rd),
          (sra CPU32Regs:$rs, immZExt6_32:$sht))],
          IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
+
+  def #32_64#
+      : TileInstX1Shift
+        <0x6, 0x4,
+         (outs CPU32Regs:$rd),
+         (ins CPURegs:$rs, i64imm:$sht),
+         "shrsi\t$rd, $rs, $sht",
+         [],
+         IIC_LOGIC, FrmShift, S_X0_X1_Y0_Y1>;
+  }
 }
 
 multiclass TileMOVEI {
@@ -3929,6 +3948,59 @@ multiclass TileMUL_LU_LU {
          "mul_lu_lu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  let isCodeGenOnly = 1 in {
+  def #32#
+      : TileInstX0RRR
+        <0x5, 0x3E,
+         (outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "mul_lu_lu\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+  }
+}
+
+let isCommutable = 1 in
+multiclass TileMUL_LS_LS {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x3C,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_ls_ls\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x3C,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_ls_ls\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0xD, 0x2,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_ls_ls\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  let isCodeGenOnly = 1 in {
+  def #32#
+      : TileInstX0RRR
+        <0x5, 0x3C,
+         (outs CPURegs:$rd),
+         (ins CPU32Regs:$rsa, CPU32Regs:$rsb),
+         "mul_ls_ls\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+  }
 }
 
 let isCommutable = 1 in
@@ -3960,6 +4032,79 @@ multiclass TileMUL_HU_HU {
          "mul_hu_hu\t$rd, $rsa, $rsb",
          [],
          IIC_MUL, FrmRRR, S_X0_Y0>;
+}
+
+let isCommutable = 1 in
+multiclass TileMUL_HS_HS {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x35,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_hs\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x35,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_hs\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0xD, 0x0,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_hs\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0_Y0>;
+}
+
+multiclass TileMUL_HS_HU {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x36,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_hu\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x36,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_hu\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+}
+
+multiclass TileMUL_HS_LU {
+
+  def #NAME#
+      : TileInstX0RRR
+        <0x5, 0x38,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_lu\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
+
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x38,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "mul_hs_lu\t$rd, $rsa, $rsb",
+         [],
+         IIC_MUL, FrmRRR, S_X0>;
 }
 
 let Constraints = "$rd0 =\t$rd" in
@@ -4326,7 +4471,11 @@ defm BRINDJT: TileBRINDJT;
 defm MULX   : TileMULX;
 defm MUL_HU_LU   : TileMUL_HU_LU;
 defm MUL_LU_LU   : TileMUL_LU_LU;
+defm MUL_LS_LS   : TileMUL_LS_LS;
 defm MUL_HU_HU   : TileMUL_HU_HU;
+defm MUL_HS_HS   : TileMUL_HS_HS;
+defm MUL_HS_HU   : TileMUL_HS_HU;
+defm MUL_HS_LU   : TileMUL_HS_LU;
 defm MULA_HU_LU  : TileMULA_HU_LU;
 defm MULA_LU_LU  : TileMULA_LU_LU;
 
