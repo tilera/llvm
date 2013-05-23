@@ -207,6 +207,16 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::FCOS, MVT::f64, Expand);
   setOperationAction(ISD::FNEG, MVT::f32, Expand);
   setOperationAction(ISD::FNEG, MVT::f64, Expand);
+  setOperationAction(ISD::FPOWI, MVT::f32, Expand);
+  setOperationAction(ISD::FPOW, MVT::f32, Expand);
+  setOperationAction(ISD::FPOW, MVT::f64, Expand);
+  setOperationAction(ISD::FLOG, MVT::f32, Expand);
+  setOperationAction(ISD::FLOG2, MVT::f32, Expand);
+  setOperationAction(ISD::FLOG10, MVT::f32, Expand);
+  setOperationAction(ISD::FEXP, MVT::f32, Expand);
+  setOperationAction(ISD::FMA, MVT::f32, Expand);
+  setOperationAction(ISD::FMA, MVT::f64, Expand);
+
   setOperationAction(ISD::FCOPYSIGN, MVT::f32, Custom);
   setOperationAction(ISD::FCOPYSIGN, MVT::f64, Custom);
   setOperationAction(ISD::FABS, MVT::f32, Custom);
