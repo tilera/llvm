@@ -127,8 +127,10 @@ MachineInstr *TileInstrInfo::emitFrameIndexDebugValue(
 //===----------------------------------------------------------------------===//
 
 static unsigned GetAnalyzableBrOpc(unsigned Opc) {
-  return (Opc == Tile::BEQZ || Opc == Tile::BNEZ || Opc == Tile::BGTZ ||
-          Opc == Tile::BGEZ || Opc == Tile::BLTZ || Opc == Tile::BLEZ ||
+  return (Opc == Tile::BEQZ || Opc == Tile::BEQZ32 || Opc == Tile::BNEZ ||
+          Opc == Tile::BNEZ32 || Opc == Tile::BGTZ || Opc == Tile::BGTZ32 ||
+          Opc == Tile::BGEZ || Opc == Tile::BGEZ32 || Opc == Tile::BLTZ ||
+          Opc == Tile::BLTZ32 || Opc == Tile::BLEZ || Opc == Tile::BLEZ32 ||
           Opc == Tile::J)
              ? Opc
              : 0;
@@ -150,6 +152,18 @@ unsigned Tile::GetOppositeBranchOpc(unsigned Opc) {
     return Tile::BGEZ;
   case Tile::BLEZ:
     return Tile::BGTZ;
+  case Tile::BEQZ32:
+    return Tile::BNEZ32;
+  case Tile::BNEZ32:
+    return Tile::BEQZ32;
+  case Tile::BGTZ32:
+    return Tile::BLEZ32;
+  case Tile::BGEZ32:
+    return Tile::BLTZ32;
+  case Tile::BLTZ32:
+    return Tile::BGEZ32;
+  case Tile::BLEZ32:
+    return Tile::BGTZ32;
   }
 }
 
