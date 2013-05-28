@@ -374,7 +374,6 @@ static SDValue PerformZEXTCombine(SDNode *N, SelectionDAG &DAG,
     return SDValue();
 
   DebugLoc DL = SetCC.getDebugLoc();
-  EVT Ty = SetCC.getOperand(0).getValueType();
 
   return DAG.getNode(ISD::SETCC, DL, MVT::i64, SetCC.getOperand(0),
                      SetCC.getOperand(1), SetCC.getOperand(2));

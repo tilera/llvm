@@ -333,8 +333,7 @@ void TileAsmPrinter::printOperand(const MachineInstr *MI, int opNum,
 
   switch (MO.getType()) {
   case MachineOperand::MO_Register:
-    O << 'r'
-      << StringRef(TileInstPrinter::getRegisterName(MO.getReg())).lower();
+    O << StringRef(TileInstPrinter::getRegisterName(MO.getReg())).lower();
     break;
 
   case MachineOperand::MO_Immediate:

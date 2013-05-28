@@ -2793,6 +2793,18 @@ multiclass TileROTL {
          "rotl\t$rd, $rsa, $rsb",
          [],
          IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in {
+  def #32#
+      : TileInstX1RRR
+        <0x5, 0x1E,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPU32Regs:$rsb),
+         "rotl\t$rd, $rsa, $rsb",
+         [(set (i64 CPURegs:$rd),
+           (rotl CPURegs:$rsa, CPU32Regs:$rsb))],
+         IIC_BIT, FrmRRR, S_X0_X1_Y0_Y1>;
+  }
 }
 
 multiclass TileROTLI {
@@ -2842,6 +2854,18 @@ multiclass TileROTLI {
          "rotli\t$rd, $rs, $sht",
          [],
          IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
+
+  let isCodeGenOnly = 1 in {
+  def #32#
+      : TileInstX1Shift
+        <0x6, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rs, i32imm:$sht),
+         "rotli\t$rd, $rs, $sht",
+         [(set (i64 CPURegs:$rd),
+          (rotl CPURegs:$rs, immZExt6_32:$sht))],
+         IIC_BIT, FrmShift, S_X0_X1_Y0_Y1>;
+  }
 }
 
 multiclass TileST {

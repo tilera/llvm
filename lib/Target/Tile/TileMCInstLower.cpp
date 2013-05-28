@@ -180,6 +180,8 @@ mapToOpcodeWithIssueSlot(unsigned Op, const unsigned IssueSlot,
   case Tile::NOR32:
   case Tile::ANDI32:
   case Tile::SHRS32:
+  case Tile::ROTL32:
+  case Tile::ROTLI32:
   case Tile::MOVEI32:
   case Tile::SHRSI32:
   case Tile::CMPEQ32:
