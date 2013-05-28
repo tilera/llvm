@@ -34,7 +34,7 @@
         <h3>Introduction.</h3>
 
 <p>TILE-Gx is Tilera's second generation high performance manycore(36/72/100 core) processor. It's with VLIW architecture, up to 3 issues each cycle, 64 64-bit general purpose registers, 64-bit address space and 64-bit instructions. TILE-Gx has load-store architecture ISAs. You can find more hardware details here <a href="http://www.tilera.com/scm/docs/index.html">http://www.tilera.com/scm/docs/index.html</a>.</p>
-<p>Clang/LLVM support for Tilera TILE-Gx architecture has reached a quite stable status. Now it's open for anyone's access, please have a try. We appreicate all your feedbacks.</p>
+<p>Clang/LLVM support for Tilera TILE-Gx architecture has reached a quite stable status. It passed llvm regression test, test-suite, and clang/llvm bootstrap. It's open for anyone's access, please have a try. We appreicate all your feedbacks.</p>
 
 <h3>Getting Source Code</h3>
 <pre><code>
@@ -49,12 +49,12 @@ $ git clone https://github.com/tilera/clang.git
 $ mkdir BUILD_ROOT
 $ cd BUILD_ROOT
 $ SOURCE_ROOT/configure --enable-targets=tilegx
-$ make -j40 (for cross build on X86, -j4...)
+$ make ENABLE_OPTIMIZED=1 -j40 (for cross build on X86, -j4...)
 </code></pre>
 
 <p>Clang/LLVM will generate huge binary, so the linking stage is very long. One tip to fast the linking is uing GOLD linker, it's 3x faster than GNU ld, and supported on TILE-Gx already. To build llvm using GOLD linker, you need to specify the extra -B option to relocate the linker used:</p>
 <pre><code>
-$ make CFLAGS+="-B/PATH_TO_GOLD_BIN/" CXXFLAGS+="-B/PATH_TO_GOLD_BIN/" -j40
+$ make ENABLE_OPTIMIZED=1 CFLAGS+="-B/PATH_TO_GOLD_BIN/" CXXFLAGS+="-B/PATH_TO_GOLD_BIN/" -j40
 </code></pre>
 
 <h3>Usage</h3>
@@ -144,7 +144,7 @@ $ llc/lli -march=tilegx hello.ll
 </tr>
 <tr>
 <td align=center>simd</td>
-<td align=center>N</td>
+<td align=center>Y</td>
 </tr>
 </table>
 
