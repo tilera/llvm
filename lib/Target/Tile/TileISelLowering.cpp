@@ -1540,8 +1540,8 @@ SDValue TileTargetLowering::LowerFormalArguments(
     int FirstVaArgOffset;
 
     if (Idx == NumOfRegs) {
-      FirstVaArgOffset =
-          (CCInfo.getNextStackOffset() + RegSize - 1) / RegSize * RegSize;
+      FirstVaArgOffset = (CCInfo.getNextStackOffset() + TILEGX_BZONE_SIZE +
+                          RegSize - 1) / RegSize * RegSize;
     } else
       FirstVaArgOffset = RegSlotOffset;
 
