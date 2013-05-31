@@ -234,14 +234,29 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::FFLOOR, MVT::f32, Expand);
   setOperationAction(ISD::FFLOOR, MVT::f64, Expand);
 
+  // TileGX float compare instructions generate
+  // normal compare result and unorder check
+  // result in bit 25 ~ 31, it's simple to
+  // check SETUXX with few instructions, while
+  // for SETOXX, the logic is complexer, so we
+  // just expand them to SETO and SETXX.
+  setCondCodeAction(ISD::SETOEQ, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETOEQ, MVT::f64, Expand);
+  setCondCodeAction(ISD::SETONE, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETONE, MVT::f64, Expand);
+  setCondCodeAction(ISD::SETOLT, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETOLT, MVT::f64, Expand);
+  setCondCodeAction(ISD::SETOLE, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETOLE, MVT::f64, Expand);
+  setCondCodeAction(ISD::SETOGT, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETOGT, MVT::f64, Expand);
+  setCondCodeAction(ISD::SETOGE, MVT::f32, Expand);
+  setCondCodeAction(ISD::SETOGE, MVT::f64, Expand);
+
   setOperationAction(ISD::FCOPYSIGN, MVT::f32, Custom);
   setOperationAction(ISD::FCOPYSIGN, MVT::f64, Custom);
   setOperationAction(ISD::FABS, MVT::f32, Custom);
   setOperationAction(ISD::FABS, MVT::f64, Custom);
-  setCondCodeAction(ISD::SETUO, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETUO, MVT::f64, Expand);
-  setCondCodeAction(ISD::SETO, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETO, MVT::f64, Expand);
   setOperationAction(ISD::FREM, MVT::f32, Expand);
   setOperationAction(ISD::FREM, MVT::f64, Expand);
 

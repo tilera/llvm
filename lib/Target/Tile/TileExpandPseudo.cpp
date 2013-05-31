@@ -102,48 +102,26 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case Tile::FSINGLE_CMP_GEO:
     case Tile::FSINGLE_CMP_EQO:
     case Tile::FSINGLE_CMP_NEO:
-    case Tile::FSINGLE_CMP_LTU:
-    case Tile::FSINGLE_CMP_LEU:
-    case Tile::FSINGLE_CMP_GTU:
-    case Tile::FSINGLE_CMP_GEU:
-    case Tile::FSINGLE_CMP_EQU:
-    case Tile::FSINGLE_CMP_NEU:
     case Tile::FDOUBLE_CMP_LTO:
     case Tile::FDOUBLE_CMP_LEO:
     case Tile::FDOUBLE_CMP_GTO:
     case Tile::FDOUBLE_CMP_GEO:
     case Tile::FDOUBLE_CMP_EQO:
     case Tile::FDOUBLE_CMP_NEO:
-    case Tile::FDOUBLE_CMP_LTU:
-    case Tile::FDOUBLE_CMP_LEU:
-    case Tile::FDOUBLE_CMP_GTU:
-    case Tile::FDOUBLE_CMP_GEU:
-    case Tile::FDOUBLE_CMP_EQU:
-    case Tile::FDOUBLE_CMP_NEU:
     case Tile::FSINGLE_CMP_LTO32:
     case Tile::FSINGLE_CMP_LEO32:
     case Tile::FSINGLE_CMP_GTO32:
     case Tile::FSINGLE_CMP_GEO32:
     case Tile::FSINGLE_CMP_EQO32:
     case Tile::FSINGLE_CMP_NEO32:
-    case Tile::FSINGLE_CMP_LTU32:
-    case Tile::FSINGLE_CMP_LEU32:
-    case Tile::FSINGLE_CMP_GTU32:
-    case Tile::FSINGLE_CMP_GEU32:
-    case Tile::FSINGLE_CMP_EQU32:
-    case Tile::FSINGLE_CMP_NEU32:
     case Tile::FDOUBLE_CMP_LTO32:
     case Tile::FDOUBLE_CMP_LEO32:
     case Tile::FDOUBLE_CMP_GTO32:
     case Tile::FDOUBLE_CMP_GEO32:
     case Tile::FDOUBLE_CMP_EQO32:
     case Tile::FDOUBLE_CMP_NEO32:
-    case Tile::FDOUBLE_CMP_LTU32:
-    case Tile::FDOUBLE_CMP_LEU32:
-    case Tile::FDOUBLE_CMP_GTU32:
-    case Tile::FDOUBLE_CMP_GEU32:
-    case Tile::FDOUBLE_CMP_EQU32:
-    case Tile::FDOUBLE_CMP_NEU32:
+      llvm_unreachable("All SETOXX should be expanded to SETO and SETXX");
+
     case Tile::FSINGLE_CMP_LT:
     case Tile::FSINGLE_CMP_LE:
     case Tile::FSINGLE_CMP_GT:
@@ -175,6 +153,7 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       unsigned OldOpcode = MCId.getOpcode();
       unsigned NewOpcode = Tile::FDOUBLE_ADD_FLAGS;
       // Bit Name
+      // 25  unorder
       // 26  lt
       // 27  le
       // 28  gt
@@ -192,6 +171,104 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
           .addReg(SraReg).addReg(SrbReg);
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::BFEXTU), DestReg)
           .addReg(DestReg).addImm(BitOff).addImm(BitOff);
+      break;
+    }
+
+    case Tile::FSINGLE_CMP_LTU:
+    case Tile::FSINGLE_CMP_LEU:
+    case Tile::FSINGLE_CMP_GTU:
+    case Tile::FSINGLE_CMP_GEU:
+    case Tile::FSINGLE_CMP_EQU:
+    case Tile::FSINGLE_CMP_NEU:
+    case Tile::FDOUBLE_CMP_LTU:
+    case Tile::FDOUBLE_CMP_LEU:
+    case Tile::FDOUBLE_CMP_GTU:
+    case Tile::FDOUBLE_CMP_GEU:
+    case Tile::FDOUBLE_CMP_EQU:
+    case Tile::FDOUBLE_CMP_NEU:
+    case Tile::FSINGLE_CMP_LTU32:
+    case Tile::FSINGLE_CMP_LEU32:
+    case Tile::FSINGLE_CMP_GTU32:
+    case Tile::FSINGLE_CMP_GEU32:
+    case Tile::FSINGLE_CMP_EQU32:
+    case Tile::FSINGLE_CMP_NEU32:
+    case Tile::FDOUBLE_CMP_LTU32:
+    case Tile::FDOUBLE_CMP_LEU32:
+    case Tile::FDOUBLE_CMP_GTU32:
+    case Tile::FDOUBLE_CMP_GEU32:
+    case Tile::FDOUBLE_CMP_EQU32:
+    case Tile::FDOUBLE_CMP_NEU32: {
+
+      unsigned DestReg = I->getOperand(0).getReg();
+      unsigned SraReg = I->getOperand(1).getReg();
+      unsigned SrbReg = I->getOperand(2).getReg();
+      unsigned OldOpcode = MCId.getOpcode();
+      unsigned NewOpcode = Tile::FDOUBLE_ADD_FLAGS;
+      // Bit Name
+      // 25  unorder
+      // 26  lt
+      // 27  le
+      // 28  gt
+      // 29  ge
+      // 30  eq
+      // 31  ne
+      int64_t FPResOff[6] = { 30, 29, 28, 27, 26, 31 };
+      int64_t BitOff;
+      int64_t BitMask;
+      if (OldOpcode >= Tile::FSINGLE_CMP_EQ) {
+        NewOpcode = Tile::FSINGLE_ADD1;
+        BitOff = FPResOff[(OldOpcode - Tile::FSINGLE_CMP_EQ) / 6];
+      } else
+        BitOff = FPResOff[(OldOpcode - Tile::FDOUBLE_CMP_EQ) / 6];
+
+      BitMask = (1LL << (BitOff - 25)) | 1LL;
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode), DestReg)
+          .addReg(SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::SHRUI), DestReg)
+          .addReg(DestReg).addImm(25);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ANDI), DestReg)
+          .addReg(DestReg).addImm(BitMask);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::CMPNE), DestReg)
+          .addReg(DestReg).addReg(Tile::ZERO);
+      break;
+    }
+
+    case Tile::FSINGLE_CMP_O:
+    case Tile::FDOUBLE_CMP_O:
+    case Tile::FSINGLE_CMP_UO:
+    case Tile::FDOUBLE_CMP_UO:
+    case Tile::FSINGLE_CMP_O32:
+    case Tile::FDOUBLE_CMP_O32:
+    case Tile::FSINGLE_CMP_UO32:
+    case Tile::FDOUBLE_CMP_UO32: {
+
+      unsigned DestReg = I->getOperand(0).getReg();
+      unsigned SraReg = I->getOperand(1).getReg();
+      unsigned SrbReg = I->getOperand(2).getReg();
+      unsigned OldOpcode = MCId.getOpcode();
+      unsigned NewOpcode1 = Tile::FDOUBLE_ADD_FLAGS;
+      unsigned NewOpcode2 = Tile::CMPNE;
+
+      int64_t BitMask;
+
+      if (OldOpcode >= Tile::FSINGLE_CMP_O) 
+        NewOpcode1 = Tile::FSINGLE_ADD1;
+
+      if (OldOpcode == Tile::FSINGLE_CMP_O
+          || OldOpcode == Tile::FDOUBLE_CMP_O
+          || OldOpcode == Tile::FSINGLE_CMP_O32
+          || OldOpcode == Tile::FDOUBLE_CMP_O32)
+        NewOpcode2 = Tile::CMPEQ;
+
+
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode1), DestReg)
+          .addReg(SraReg).addReg(SrbReg);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::SHRUI), DestReg)
+          .addReg(DestReg).addImm(25);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ANDI), DestReg)
+          .addReg(DestReg).addImm(0x1);
+      BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode2), DestReg)
+          .addReg(DestReg).addReg(Tile::ZERO);
       break;
     }
 
