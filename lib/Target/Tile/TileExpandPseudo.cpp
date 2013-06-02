@@ -249,8 +249,6 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       unsigned NewOpcode1 = Tile::FDOUBLE_ADD_FLAGS;
       unsigned NewOpcode2 = Tile::CMPNE;
 
-      int64_t BitMask;
-
       if (OldOpcode >= Tile::FSINGLE_CMP_O) 
         NewOpcode1 = Tile::FSINGLE_ADD1;
 

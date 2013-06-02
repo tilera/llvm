@@ -8,7 +8,7 @@ entry:
   %call = tail call float @fabsf(float %a) nounwind readnone
   ret float %call
 
-; CHECK: bfins r0, zero, 31, 31
+; CHECK: bfextu r0, r0, 0, 30
 }
 
 declare float @fabsf(float) nounwind readnone
@@ -21,7 +21,7 @@ entry:
   %call = tail call double @fabs(double %a) nounwind readnone
   ret double %call
 
-; CHECK: bfins r0, zero, 63, 63
+; CHECK: bfextu r0, r0, 0, 62
 }
 
 declare double @fabs(double) nounwind readnone

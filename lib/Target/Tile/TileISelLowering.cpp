@@ -861,17 +861,14 @@ SDValue TileTargetLowering::lowerFABS(SDValue Op, SelectionDAG &DAG) const {
   SDValue Res;
   EVT Ty = Op.getValueType();
   EVT CastTy = (Ty == MVT::f64) ? MVT::i64 : MVT::i32;
-  uint64_t SignBitPos = (Ty == MVT::f64) ? 63 : 31;
-  SDValue StartPos = DAG.getConstant(SignBitPos, CastTy);
-  SDValue EndPos = DAG.getConstant(SignBitPos, CastTy);
-  SDValue ZeroV =
-      DAG.getRegister((Ty == MVT::f64) ? Tile::ZERO : Tile::ZERO_32, CastTy);
+  SDValue StartPos = DAG.getConstant(0, CastTy);
+  SDValue EndPos = DAG.getConstant(Ty == MVT::f64 ? 62 : 30, CastTy);
   DebugLoc DL = Op.getDebugLoc();
 
   // Bitcast to integer node.
   SDValue X = DAG.getNode(ISD::BITCAST, DL, CastTy, Op.getOperand(0));
 
-  Res = DAG.getNode(TileISD::BFINS, DL, CastTy, ZeroV, StartPos, EndPos, X);
+  Res = DAG.getNode(TileISD::BFEXTU, DL, CastTy, X, StartPos, EndPos);
 
   return DAG.getNode(ISD::BITCAST, DL, Ty, Res);
 }
