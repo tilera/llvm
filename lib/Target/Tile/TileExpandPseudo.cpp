@@ -120,7 +120,8 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case Tile::FDOUBLE_CMP_GEO32:
     case Tile::FDOUBLE_CMP_EQO32:
     case Tile::FDOUBLE_CMP_NEO32:
-      llvm_unreachable("All SETOXX should be expanded to SETO and SETXX");
+      if (!TM.Options.NoNaNsFPMath)
+        llvm_unreachable("All SETOXX should be expanded to SETO and SETXX");
 
     case Tile::FSINGLE_CMP_LT:
     case Tile::FSINGLE_CMP_LE:
@@ -221,9 +222,15 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       } else
         BitOff = FPResOff[(OldOpcode - Tile::FDOUBLE_CMP_EQ) / 6];
 
-      BitMask = (1LL << (BitOff - 25)) | 1LL;
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode), DestReg)
           .addReg(SraReg).addReg(SrbReg);
+      if (TM.Options.NoNaNsFPMath) {
+        BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::BFEXTU), DestReg)
+            .addReg(DestReg).addImm(BitOff).addImm(BitOff);
+        break;
+      }
+
+      BitMask = (1LL << (BitOff - 25)) | 1LL;
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::SHRUI), DestReg)
           .addReg(DestReg).addImm(25);
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ANDI), DestReg)
@@ -249,15 +256,14 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       unsigned NewOpcode1 = Tile::FDOUBLE_ADD_FLAGS;
       unsigned NewOpcode2 = Tile::CMPNE;
 
-      if (OldOpcode >= Tile::FSINGLE_CMP_O) 
+      if (OldOpcode >= Tile::FSINGLE_CMP_O)
         NewOpcode1 = Tile::FSINGLE_ADD1;
 
-      if (OldOpcode == Tile::FSINGLE_CMP_O
-          || OldOpcode == Tile::FDOUBLE_CMP_O
-          || OldOpcode == Tile::FSINGLE_CMP_O32
-          || OldOpcode == Tile::FDOUBLE_CMP_O32)
+      if (OldOpcode == Tile::FSINGLE_CMP_O ||
+          OldOpcode == Tile::FDOUBLE_CMP_O ||
+          OldOpcode == Tile::FSINGLE_CMP_O32 ||
+          OldOpcode == Tile::FDOUBLE_CMP_O32)
         NewOpcode2 = Tile::CMPEQ;
-
 
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(NewOpcode1), DestReg)
           .addReg(SraReg).addReg(SrbReg);

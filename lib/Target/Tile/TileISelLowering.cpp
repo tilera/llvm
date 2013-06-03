@@ -240,18 +240,20 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   // check SETUXX with few instructions, while
   // for SETOXX, the logic is complexer, so we
   // just expand them to SETO and SETXX.
-  setCondCodeAction(ISD::SETOEQ, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETOEQ, MVT::f64, Expand);
-  setCondCodeAction(ISD::SETONE, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETONE, MVT::f64, Expand);
-  setCondCodeAction(ISD::SETOLT, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETOLT, MVT::f64, Expand);
-  setCondCodeAction(ISD::SETOLE, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETOLE, MVT::f64, Expand);
-  setCondCodeAction(ISD::SETOGT, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETOGT, MVT::f64, Expand);
-  setCondCodeAction(ISD::SETOGE, MVT::f32, Expand);
-  setCondCodeAction(ISD::SETOGE, MVT::f64, Expand);
+  if (!TM.Options.NoNaNsFPMath) {
+    setCondCodeAction(ISD::SETOEQ, MVT::f32, Expand);
+    setCondCodeAction(ISD::SETOEQ, MVT::f64, Expand);
+    setCondCodeAction(ISD::SETONE, MVT::f32, Expand);
+    setCondCodeAction(ISD::SETONE, MVT::f64, Expand);
+    setCondCodeAction(ISD::SETOLT, MVT::f32, Expand);
+    setCondCodeAction(ISD::SETOLT, MVT::f64, Expand);
+    setCondCodeAction(ISD::SETOLE, MVT::f32, Expand);
+    setCondCodeAction(ISD::SETOLE, MVT::f64, Expand);
+    setCondCodeAction(ISD::SETOGT, MVT::f32, Expand);
+    setCondCodeAction(ISD::SETOGT, MVT::f64, Expand);
+    setCondCodeAction(ISD::SETOGE, MVT::f32, Expand);
+    setCondCodeAction(ISD::SETOGE, MVT::f64, Expand);
+  }
 
   setOperationAction(ISD::FCOPYSIGN, MVT::f32, Custom);
   setOperationAction(ISD::FCOPYSIGN, MVT::f64, Custom);
