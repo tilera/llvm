@@ -239,8 +239,7 @@ SDNode *TileDAGToDAGISel::SelectIntToFloatConv(SDNode *Node) {
       SDValue Ops[] = { Src64, CurDAG->getTargetConstant(4, MVT::i64),
                         CurDAG->getTargetConstant(35, MVT::i64),
                         SDValue(Tmp1, 0) };
-      Tmp2 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops,
-                                    array_lengthof(Ops));
+      Tmp2 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops);
 
       SDValue Tmp2V = SDValue(Tmp2, 0);
 
@@ -254,7 +253,7 @@ SDNode *TileDAGToDAGISel::SelectIntToFloatConv(SDNode *Node) {
                       CurDAG->getTargetConstant(63, MVT::i64),
                       SDValue(Exp, 0) };
     Tmp1 =
-        CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+        CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops);
     Tmp2 = CurDAG->getMachineNode(Tile::FSINGLE_PACK164, dl, MVT::f64,
                                   SDValue(Tmp1, 0));
     return CurDAG->getMachineNode(Tile::FSINGLE_PACK232_64, dl, MVT::f32,
@@ -278,7 +277,7 @@ SDNode *TileDAGToDAGISel::SelectIntToFloatConv(SDNode *Node) {
                       CurDAG->getTargetConstant(20, MVT::i64),
                       SDValue(Exp, 0) };
     Tmp2 =
-        CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+        CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops);
     Tmp3 = CurDAG->getMachineNode(Tile::FDOUBLE_PACK1, dl, MVT::f64, Tmp1V,
                                   SDValue(Tmp2, 0));
     return CurDAG->getMachineNode(Tile::FDOUBLE_PACK2, dl, MVT::f64, Tmp1V,
@@ -287,12 +286,12 @@ SDNode *TileDAGToDAGISel::SelectIntToFloatConv(SDNode *Node) {
 
   SDValue Ops[] = { SignV, CurDAG->getTargetConstant(10, MVT::i64),
                     CurDAG->getTargetConstant(10, MVT::i64), SDValue(Exp, 0) };
-  Tmp1 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+  Tmp1 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops);
   Ops[0] = SDValue(Abs, 0);
   Ops[1] = CurDAG->getTargetConstant(32, MVT::i64);
   Ops[2] = CurDAG->getTargetConstant(63, MVT::i64);
   Ops[3] = SDValue(Tmp1, 0);
-  Tmp2 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops, array_lengthof(Ops));
+  Tmp2 = CurDAG->getMachineNode(Tile::BFINS, dl, VTs, Ops);
   Tmp3 = CurDAG->getMachineNode(Tile::FSINGLE_PACK164, dl, MVT::f64,
                                 SDValue(Tmp2, 0));
   return CurDAG->getMachineNode(Tile::FSINGLE_PACK232_64, dl, MVT::f32,
@@ -485,7 +484,7 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
 
     EVT VT = LHS.getValueType();
     SDNode *Carry = CurDAG->getMachineNode(
-        NodeTy == MVT::i64 ? Tile::CMPLTU : Tile::CMPLTU32, dl, VT, Ops, 2);
+        NodeTy == MVT::i64 ? Tile::CMPLTU : Tile::CMPLTU32, dl, VT, Ops);
     SDNode *AddCarry =
         CurDAG->getMachineNode(NodeTy == MVT::i64 ? Tile::ADD : Tile::ADDX, dl,
                                VT, SDValue(Carry, 0), RHS);

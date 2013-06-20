@@ -1,4 +1,4 @@
-; RUN: llc -march=tilegx < %s | FileCheck %s -check-prefix=HARD
+; RUN: llc -enable-no-nans-fp-math -march=tilegx < %s | FileCheck %s -check-prefix=HARD
 ; RUN: llc -soft-float -march=tilegx < %s | FileCheck %s -check-prefix=SOFT
 
 define i32 @f0(float %a) {

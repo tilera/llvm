@@ -4681,12 +4681,7 @@ def : Pat<(addc CPURegs:$lhs, CPURegs:$rhs),
 def : Pat<(addc CPURegs:$src, immSExt16:$imm),
            (ADDLI CPURegs:$src, imm:$imm)>;
 
-// Memory fence.
 def : Pat<(atomic_fence (imm), (imm)), (MF)>;
-def : Pat<(membarrier (i32 imm), (i32 imm), (i32 imm),
-           (i32 imm), (i32 imm)), (MF)>;
-def : Pat<(membarrier (i64 imm), (i64 imm), (i64 imm),
-           (i64 imm), (i64 imm)), (MF)>;
 
 //===----------------------------------------------------------------------===//
 // Intrinsic support for special purpose control instructions
