@@ -688,6 +688,120 @@ void RuntimeDyldELF::resolveSystemZRelocation(const SectionEntry &Section,
   }
 }
 
+void RuntimeDyldELF::resolveTileGXRelocation(const SectionEntry &Section,
+                                             uint64_t Offset,
+                                             uint64_t Value,
+                                             uint32_t Type,
+                                             int64_t Addend) {
+  DEBUG(dbgs() << "resolveTileGXRelocation, LocalAddress: "
+	       << Section.Address + Offset
+               << " FinalAddress: "
+               << format("%p",Section.LoadAddress + Offset)
+               << " Value: " << format("%llx",Value)
+               << " Type: " << format("%x",Type)
+               << " Addend: " << format("%llx",Addend)
+               << "\n");
+
+  uint64_t* TargetPtr = (uint64_t*)(Section.Address + Offset);
+  Value += Addend;
+
+  switch(Type) {
+  default:
+    llvm_unreachable("Not implemented relocation type!");
+    break;
+  case ELF::R_TILEGX_64: {
+    *TargetPtr = Value;
+    break;
+  }
+  case ELF::R_TILEGX_32: {
+    uint32_t TruncatedValue = (Value & 0xFFFFFFFF);
+    *TargetPtr = TruncatedValue;
+    break;
+  }
+  case ELF::R_TILEGX_32_PCREL: {
+    uint64_t FinalAddress = Section.LoadAddress + Offset;
+    int64_t RealOffset = Value - FinalAddress;
+    assert(RealOffset <= INT32_MAX && RealOffset >= INT32_MIN);
+    int32_t TruncOffset = (RealOffset & 0xFFFFFFFF);
+    *TargetPtr = TruncOffset;
+    break;
+  }
+  // R_TILEGX_JUMPOFF_X1
+  //
+  //       the 64bit instruction bundle
+  //  ---------------------------------------------
+  // |     |                |                      |
+  // V     V                V                      V
+  // 63    57              31                      0
+  //       -----------------
+  //               |
+  //               V
+  //        relocation area
+  case ELF::R_TILEGX_JUMPOFF_X1: {
+    uint64_t FinalAddress = Section.LoadAddress + Offset;
+    int64_t RealOffset = Value - FinalAddress;
+    int64_t TruncOffset = (RealOffset >> 3) & 0x7FFFFFFLL;
+    *TargetPtr = ((*TargetPtr) & (~(0x7FFFFFFLL << 31)))
+                  | (TruncOffset << 31);
+    break;
+  }
+
+  // R_TILEGX_IMM16_X0_HW2_LAST
+  //
+  // inst-bundle[27-12] = Value[47-32]
+  case ELF::R_TILEGX_IMM16_X0_HW2_LAST: {
+    uint64_t RelVal = (Value >> 32) & 0xFFFF;
+    *TargetPtr = ((*TargetPtr) & (~(0xFFFFLL << 12))) | (RelVal << 12);
+    break;
+  }
+
+  // R_TILEGX_IMM16_X1_HW2_LAST
+  //
+  // inst-bundle[58-43] = Value[47-32]
+  case ELF::R_TILEGX_IMM16_X1_HW2_LAST: {
+    uint64_t RelVal = (Value >> 32) & 0xFFFF;
+    *TargetPtr = ((*TargetPtr) & (~(0xFFFFLL << 43))) | (RelVal << 43);
+    break;
+  }
+
+  // R_TILEGX_IMM16_X0_HW1
+  //
+  // inst-bundle[27-12] = Value[31-16]
+  case ELF::R_TILEGX_IMM16_X0_HW1: {
+    uint64_t RelVal = (Value >> 16) & 0xFFFF;
+    *TargetPtr = ((*TargetPtr) & (~(0xFFFFLL << 12))) | (RelVal << 12);
+    break;
+  }
+
+  // R_TILEGX_IMM16_X1_HW1
+  //
+  // inst-bundle[58-43] = Value[31-16]
+  case ELF::R_TILEGX_IMM16_X1_HW1: {
+    uint64_t RelVal = (Value >> 16) & 0xFFFF;
+    *TargetPtr = ((*TargetPtr) & (~(0xFFFFLL << 43))) | (RelVal << 43);
+    break;
+  }
+
+  // R_TILEGX_IMM16_X0_HW0
+  //
+  // inst-bundle[27-12] = Value[15-0]
+  case ELF::R_TILEGX_IMM16_X0_HW0: {
+    uint64_t RelVal = Value & 0xFFFF;
+    *TargetPtr = ((*TargetPtr) & (~(0xFFFFLL << 12))) | (RelVal << 12);
+    break;
+  }
+
+  // R_TILEGX_IMM16_X1_HW0
+  //
+  // inst-bundle[58-43] = Value[15-0]
+  case ELF::R_TILEGX_IMM16_X1_HW0: {
+    uint64_t RelVal = Value & 0xFFFF;
+    *TargetPtr = ((*TargetPtr) & (~(0xFFFFLL << 43))) | (RelVal << 43);
+    break;
+  }
+  }
+}
+
 void RuntimeDyldELF::resolveRelocation(const RelocationEntry &RE,
 				       uint64_t Value) {
   const SectionEntry &Section = Sections[RE.SectionID];
@@ -725,6 +839,9 @@ void RuntimeDyldELF::resolveRelocation(const SectionEntry &Section,
     break;
   case Triple::ppc64:
     resolvePPC64Relocation(Section, Offset, Value, Type, Addend);
+    break;
+  case Triple::tilegx:
+    resolveTileGXRelocation(Section, Offset, Value, Type, Addend);
     break;
   case Triple::systemz:
     resolveSystemZRelocation(Section, Offset, Value, Type, Addend);

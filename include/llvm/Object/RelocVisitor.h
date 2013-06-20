@@ -112,6 +112,16 @@ public:
         HasError = true;
         return RelocToApply();
       }
+    } else if (FileFormat == "ELF64-tilegx") {
+      switch (RelocType) {
+      case llvm::ELF::R_TILEGX_32:
+        return visitELF_TILEGX_32(R, Value);
+      case llvm::ELF::R_TILEGX_64:
+        return visitELF_TILEGX_64(R, Value);
+      default:
+        HasError = true;
+        return RelocToApply();
+      }
     }
     HasError = true;
     return RelocToApply();
@@ -230,6 +240,21 @@ private:
     R.getAdditionalInfo(Addend);
     return RelocToApply(Value + Addend, 8);
   }
+
+  // TILEGX ELF
+  RelocToApply visitELF_TILEGX_32(RelocationRef R, uint64_t Value) {
+    int64_t Addend;
+    R.getAdditionalInfo(Addend);
+    uint32_t Res = (Value + Addend) & 0xFFFFFFFF;
+    return RelocToApply(Res, 4);
+  }
+
+  RelocToApply visitELF_TILEGX_64(RelocationRef R, uint64_t Value) {
+    int64_t Addend;
+    R.getAdditionalInfo(Addend);
+    return RelocToApply(Value + Addend, 8);
+  }
+
 };
 
 }

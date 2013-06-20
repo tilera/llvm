@@ -45,6 +45,7 @@ const char *Triple::getArchTypeName(ArchType Kind) {
   case amdil:   return "amdil";
   case spir:    return "spir";
   case spir64:  return "spir64";
+  case tilegx:  return "tilegx";
   }
 
   llvm_unreachable("Invalid ArchType!");
@@ -90,6 +91,7 @@ const char *Triple::getArchTypePrefix(ArchType Kind) {
   case amdil:   return "amdil";
   case spir:    return "spir";
   case spir64:  return "spir";
+  case tilegx:  return "tilegx";
   }
 }
 
@@ -185,6 +187,7 @@ Triple::ArchType Triple::getArchTypeForLLVMName(StringRef Name) {
     .Case("amdil", amdil)
     .Case("spir", spir)
     .Case("spir64", spir64)
+    .Case("tilegx", tilegx)
     .Default(UnknownArch);
 }
 
@@ -248,6 +251,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("amdil", Triple::amdil)
     .Case("spir", Triple::spir)
     .Case("spir64", Triple::spir64)
+    .Case("tilegx", Triple::tilegx)
     .Default(Triple::UnknownArch);
 }
 
@@ -695,6 +699,7 @@ static unsigned getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::systemz:
   case llvm::Triple::x86_64:
   case llvm::Triple::spir64:
+  case llvm::Triple::tilegx:
     return 64;
   }
   llvm_unreachable("Invalid architecture value");
@@ -719,6 +724,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::aarch64:
   case Triple::msp430:
   case Triple::systemz:
+  case Triple::tilegx:
     T.setArch(UnknownArch);
     break;
 
@@ -778,6 +784,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::sparcv9:
   case Triple::systemz:
   case Triple::x86_64:
+  case Triple::tilegx:
     // Already 64-bit.
     break;
 
