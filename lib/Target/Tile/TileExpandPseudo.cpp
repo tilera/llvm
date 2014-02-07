@@ -70,6 +70,20 @@ bool TileExpandPseudo::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     default:
       ++I;
       continue;
+    case Tile::NET: {
+      unsigned SraReg = I->getOperand(1).getReg();
+      unsigned SrbReg = I->getOperand(2).getReg();
+      if ((SraReg == Tile::UDN0  && SrbReg != Tile::ZERO)
+	      || (SraReg == Tile::IDN0 && SrbReg != Tile::ZERO)) {
+        BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ADD),
+                I->getOperand(1).getReg()).addReg(Tile::ZERO).addReg(SrbReg);
+        break;
+      } else {
+        ++I;
+        continue;
+      }
+    }
+
     case Tile::VAARG_SP:
       BuildMI(MBB, I, I->getDebugLoc(), TII->get(Tile::ADDLI),
               I->getOperand(0).getReg())

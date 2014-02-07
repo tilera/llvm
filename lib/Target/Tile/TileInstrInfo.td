@@ -113,6 +113,8 @@ def TileMFNode : SDNode<"TileISD::MF", SDT_TileMF, [SDNPHasChain]>;
 def TileBFINSNode : SDNode<"TileISD::BFINS", SDT_TileBFINS>;
 def TileBFEXTUNode : SDNode<"TileISD::BFEXTU", SDT_TileBFEXTU>;
 
+def TileNETNode : SDNode<"TileISD::NET", SDTIntBinOp, [SDNPHasChain]>;
+
 // Instruction operand types.
 def jmptarget   : Operand<OtherVT> {
   let EncoderMethod = "getJumpTargetOpValue";
@@ -438,6 +440,58 @@ multiclass TileADD {
          "add\t$rd, $rsa, $rsb",
          [],
          IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
+}
+
+let isCommutable = 1, hasSideEffects = 1 in
+multiclass TileNET {
+
+  def #NAME#
+      : TileInstX1RRR
+        <0x5, 0x3,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "add\t$rd, $rsa, $rsb",
+         [(set (i64 CPURegs:$rd),
+            (TileNETNode CPURegs:$rsa, CPURegs:$rsb))],
+         IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  // These 0_XXX are for encoding only.
+  def #0_X0#
+      : TileBundleX0RRR
+        <0x5, 0x3,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "add\t$rd, $rsa, $rsb",
+         [],
+         IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_X1#
+      : TileBundleX1RRR
+        <0x5, 0x3,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "add\t$rd, $rsa, $rsb",
+         [],
+         IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y0#
+      : TileBundleY0RRR
+        <0x5, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "add\t$rd, $rsa, $rsb",
+         [],
+         IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
+
+  def #0_Y1#
+      : TileBundleY1RRR
+        <0x6, 0x1,
+         (outs CPURegs:$rd),
+         (ins CPURegs:$rsa, CPURegs:$rsb),
+         "add\t$rd, $rsa, $rsb",
+         [],
+         IIC_ALU, FrmRRR, S_X0_X1_Y0_Y1>;
+
 }
 
 let isCommutable = 1 in
@@ -4513,6 +4567,9 @@ defm ALLOCA_SP  : TileALLOCA_SP;
 defm ALLOCA_ADDR: TileALLOCA_ADDR;
 defm ADDI_TLS   : TileADDI_TLS;
 defm LD_TLS     : TileLD_TLS;
+
+// NETWORK Receiver
+defm NET   : TileNET;
 
 // 64-to-32-bit truncation.
 def : Pat<(i32 (trunc CPURegs:$src)),

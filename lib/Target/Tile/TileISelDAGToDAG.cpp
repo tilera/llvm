@@ -459,6 +459,65 @@ SDNode *TileDAGToDAGISel::Select(SDNode *Node) {
   default:
     break;
 
+  case ISD::INTRINSIC_VOID: {
+    unsigned NetReg = 0xFFFFFFFF;
+    switch (cast<ConstantSDNode>(Node->getOperand(1))->getZExtValue()) {
+    default:
+      llvm_unreachable("INTRINSIC_VOID should not reach here.\n");
+    case Intrinsic::tilegx_netbarrier:
+      ReplaceUses(SDValue(Node, 0), Node->getOperand(0));
+      return NULL;
+    case Intrinsic::tilegx_usend:
+      NetReg = Tile::UDN0;
+      break;
+    case Intrinsic::tilegx_isend:
+      NetReg = Tile::IDN0;
+      break;
+    }
+
+    SDNode *ResNode = CurDAG->getMachineNode(
+        Tile::NET, dl, MVT::i64, MVT::Other, CurDAG->getRegister(NetReg, MVT::i64),
+        Node->getOperand(2), Node->getOperand(0));
+    ReplaceUses(SDValue(Node, 0), SDValue(ResNode, 1));
+    return NULL;
+  }
+
+  case ISD::INTRINSIC_W_CHAIN: {
+    unsigned NetReg = 0xFFFFFFFF;
+    switch (cast<ConstantSDNode>(Node->getOperand(1))->getZExtValue()) {
+    default:
+      break;
+   case Intrinsic::tilegx_udn0r:
+      NetReg = Tile::UDN0;
+      break;
+    case Intrinsic::tilegx_udn1r:
+      NetReg = Tile::UDN1;
+      break;
+    case Intrinsic::tilegx_udn2r:
+      NetReg = Tile::UDN2;
+      break;
+    case Intrinsic::tilegx_udn3r:
+      NetReg = Tile::UDN3;
+      break;
+    case Intrinsic::tilegx_idn0r:
+      NetReg = Tile::IDN0;
+      break;
+    case Intrinsic::tilegx_idn1r:
+      NetReg = Tile::IDN1;
+      break;
+    }
+
+    if (NetReg == 0xFFFFFFFF)
+      break;
+
+    SDNode *ResNode = CurDAG->getMachineNode(
+        Tile::NET, dl, MVT::i64, MVT::Other, CurDAG->getRegister(Tile::ZERO, MVT::i64),
+        CurDAG->getRegister(NetReg, MVT::i64), Node->getOperand(0));
+    ReplaceUses(SDValue(Node, 0), SDValue(ResNode, 0));
+    ReplaceUses(SDValue(Node, 1), SDValue(ResNode, 1));
+    return NULL;
+  }
+
   // Carry-bit add/sub.
   case ISD::SUBE:
   case ISD::ADDE: {

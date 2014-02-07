@@ -99,6 +99,12 @@ let Namespace = "Tile" in {
   def TP_32    : TileGPRReg< 53, "tp">,  DwarfRegNum<[53]>;
   def SP_32    : TileGPRReg< 54, "sp">,  DwarfRegNum<[54]>;
   def LR_32    : TileGPRReg< 55, "lr">,  DwarfRegNum<[55]>;
+  def IDN0_32  : TileGPRReg< 57, "idn0">,DwarfRegNum<[57]>;
+  def IDN1_32  : TileGPRReg< 58, "idn1">,DwarfRegNum<[58]>;
+  def UDN0_32  : TileGPRReg< 59, "udn0">,DwarfRegNum<[59]>;
+  def UDN1_32  : TileGPRReg< 60, "udn1">,DwarfRegNum<[60]>;
+  def UDN2_32  : TileGPRReg< 61, "udn2">,DwarfRegNum<[61]>;
+  def UDN3_32  : TileGPRReg< 62, "udn3">,DwarfRegNum<[62]>;
   def ZERO_32  : TileGPRReg< 63, "zero">,DwarfRegNum<[63]>;
 
   // General 64-bit Purpose Registers.
@@ -158,6 +164,12 @@ let Namespace = "Tile" in {
   def TP   : Tile64GPRReg< 53, "tp",   [TP_32]>,  DwarfRegNum<[53]>;
   def SP   : Tile64GPRReg< 54, "sp",   [SP_32]>,  DwarfRegNum<[54]>;
   def LR   : Tile64GPRReg< 55, "lr",   [LR_32]>,  DwarfRegNum<[55]>;
+  def IDN0 : Tile64GPRReg< 57, "idn0", [IDN0_32]>,DwarfRegNum<[57]>;
+  def IDN1 : Tile64GPRReg< 58, "idn1", [IDN1_32]>,DwarfRegNum<[58]>;
+  def UDN0 : Tile64GPRReg< 59, "udn0", [UDN0_32]>,DwarfRegNum<[59]>;
+  def UDN1 : Tile64GPRReg< 60, "udn1", [UDN1_32]>,DwarfRegNum<[60]>;
+  def UDN2 : Tile64GPRReg< 61, "udn2", [UDN2_32]>,DwarfRegNum<[61]>;
+  def UDN3 : Tile64GPRReg< 62, "udn3", [UDN3_32]>,DwarfRegNum<[62]>;
   def ZERO : Tile64GPRReg< 63, "zero", [ZERO_32]>,DwarfRegNum<[63]>;
 }
 
@@ -177,14 +189,20 @@ def CPU32Regs : RegisterClass<"Tile", [i32, f32], 32, (add
   // Optional frame pointer, callee saved.
   FP_32,
   // Reserved, non alloctable.
-  TP_32, SP_32, LR_32, ZERO_32)>;
+  TP_32, SP_32, LR_32,
+  IDN0_32, IDN1_32, UDN0_32, UDN1_32, UDN2_32, UDN3_32,
+  ZERO_32)>;
 
 def CPURegs : RegisterClass<"Tile", [i64, f64], 64, (add
   (sequence "R%u", 0, 51),
   FP,
-  TP, SP, LR, ZERO)>;
+  TP, SP, LR,
+  IDN0, IDN1, UDN0, UDN1, UDN2, UDN3,
+  ZERO)>;
 
 def SIMDRegs : RegisterClass<"Tile", [v8i8, v4i16, v2i32], 64, (add
   (sequence "R%u", 0, 51),
   FP,
-  TP, SP, LR, ZERO)>;
+  TP, SP, LR,
+  IDN0, IDN1, UDN0, UDN1, UDN2, UDN3,
+  ZERO)>;

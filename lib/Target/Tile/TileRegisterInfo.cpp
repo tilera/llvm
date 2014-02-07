@@ -62,11 +62,19 @@ const uint32_t *TileRegisterInfo::getCallPreservedMask(CallingConv::ID) const {
 
 BitVector TileRegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   static const uint16_t ReservedCPURegs[] = { Tile::R49, Tile::FP, Tile::TP,
-                                              Tile::SP, Tile::LR, Tile::ZERO };
+                                              Tile::SP, Tile::LR,
+                                              Tile::IDN0, Tile::IDN1,
+                                              Tile::UDN0, Tile::UDN1,
+                                              Tile::UDN2, Tile::UDN3,
+					      Tile::ZERO };
 
   static const uint16_t ReservedCPU32Regs[] = { Tile::R49_32, Tile::FP_32,
                                                 Tile::TP_32, Tile::SP_32,
-                                                Tile::LR_32, Tile::ZERO_32 };
+                                                Tile::LR_32,
+                                                Tile::IDN0_32, Tile::IDN1_32,
+                                                Tile::UDN0_32, Tile::UDN1_32,
+                                                Tile::UDN2_32, Tile::UDN3_32,
+						Tile::ZERO_32 };
 
   BitVector Reserved(getNumRegs());
   typedef TargetRegisterClass::iterator RegIter;

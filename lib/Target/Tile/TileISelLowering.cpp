@@ -328,6 +328,9 @@ TileTargetLowering::TileTargetLowering(TileTargetMachine &TM)
   setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i16, Expand);
   setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i32, Expand);
 
+  // Some intrinsics related with network on chip needs customized lowering.
+  setOperationAction(ISD::INTRINSIC_WO_CHAIN, MVT::Other, Custom);
+
   // Alloca support.
   setOperationAction(ISD::DYNAMIC_STACKALLOC, MVT::i64, Custom);
   setStackPointerRegisterToSaveRestore(Tile::SP);

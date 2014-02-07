@@ -16,309 +16,337 @@
 let TargetPrefix = "tilegx" in {  // All intrinsics start with "llvm.tilegx.".
 
 // v1XXX
-def int_tilegx_v1add : GCCBuiltin<"__builtin_tilegx_v1add">,
+def int_tilegx_v1add : GCCBuiltin<"__insn_v1add">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], [Commutative]>;
 
-def int_tilegx_v1addi : GCCBuiltin<"__builtin_tilegx_v1addi">,
+def int_tilegx_v1addi : GCCBuiltin<"__insn_v1addi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1adduc : GCCBuiltin<"__builtin_tilegx_v1adduc">,
+def int_tilegx_v1adduc : GCCBuiltin<"__insn_v1adduc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1adiffu : GCCBuiltin<"__builtin_tilegx_v1adiffu">,
+def int_tilegx_v1adiffu : GCCBuiltin<"__insn_v1adiffu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1avgu : GCCBuiltin<"__builtin_tilegx_v1avgu">,
+def int_tilegx_v1avgu : GCCBuiltin<"__insn_v1avgu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpeq : GCCBuiltin<"__builtin_tilegx_v1cmpeq">,
+def int_tilegx_v1cmpeq : GCCBuiltin<"__insn_v1cmpeq">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpeqi : GCCBuiltin<"__builtin_tilegx_v1cmpeqi">,
+def int_tilegx_v1cmpeqi : GCCBuiltin<"__insn_v1cmpeqi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmples : GCCBuiltin<"__builtin_tilegx_v1cmples">,
+def int_tilegx_v1cmples : GCCBuiltin<"__insn_v1cmples">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpleu : GCCBuiltin<"__builtin_tilegx_v1cmpleu">,
+def int_tilegx_v1cmpleu : GCCBuiltin<"__insn_v1cmpleu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmplts : GCCBuiltin<"__builtin_tilegx_v1cmplts">,
+def int_tilegx_v1cmplts : GCCBuiltin<"__insn_v1cmplts">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpltsi : GCCBuiltin<"__builtin_tilegx_v1cmpltsi">,
+def int_tilegx_v1cmpltsi : GCCBuiltin<"__insn_v1cmpltsi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpltu : GCCBuiltin<"__builtin_tilegx_v1cmpltu">,
+def int_tilegx_v1cmpltu : GCCBuiltin<"__insn_v1cmpltu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpltui : GCCBuiltin<"__builtin_tilegx_v1cmpltui">,
+def int_tilegx_v1cmpltui : GCCBuiltin<"__insn_v1cmpltui">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1cmpne : GCCBuiltin<"__builtin_tilegx_v1cmpne">,
+def int_tilegx_v1cmpne : GCCBuiltin<"__insn_v1cmpne">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1ddotpu : GCCBuiltin<"__builtin_tilegx_v1ddotpu">,
+def int_tilegx_v1ddotpu : GCCBuiltin<"__insn_v1ddotpu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1ddotpua : GCCBuiltin<"__builtin_tilegx_v1ddotpua">,
+def int_tilegx_v1ddotpua : GCCBuiltin<"__insn_v1ddotpua">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1ddotpus : GCCBuiltin<"__builtin_tilegx_v1ddotpus">,
+def int_tilegx_v1ddotpus : GCCBuiltin<"__insn_v1ddotpus">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1ddotpusa : GCCBuiltin<"__builtin_tilegx_v1ddotpusa">,
+def int_tilegx_v1ddotpusa : GCCBuiltin<"__insn_v1ddotpusa">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1dotp : GCCBuiltin<"__builtin_tilegx_v1dotp">,
+def int_tilegx_v1dotp : GCCBuiltin<"__insn_v1dotp">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1dotpa : GCCBuiltin<"__builtin_tilegx_v1dotpa">,
+def int_tilegx_v1dotpa : GCCBuiltin<"__insn_v1dotpa">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1dotpu : GCCBuiltin<"__builtin_tilegx_v1dotpu">,
+def int_tilegx_v1dotpu : GCCBuiltin<"__insn_v1dotpu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1dotpua : GCCBuiltin<"__builtin_tilegx_v1dotpua">,
+def int_tilegx_v1dotpua : GCCBuiltin<"__insn_v1dotpua">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1dotpus : GCCBuiltin<"__builtin_tilegx_v1dotpus">,
+def int_tilegx_v1dotpus : GCCBuiltin<"__insn_v1dotpus">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1dotpusa : GCCBuiltin<"__builtin_tilegx_v1dotpusa">,
+def int_tilegx_v1dotpusa : GCCBuiltin<"__insn_v1dotpusa">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1int_h : GCCBuiltin<"__builtin_tilegx_v1int_h">,
+def int_tilegx_v1int_h : GCCBuiltin<"__insn_v1int_h">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1int_l : GCCBuiltin<"__builtin_tilegx_v1int_l">,
+def int_tilegx_v1int_l : GCCBuiltin<"__insn_v1int_l">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1maxu : GCCBuiltin<"__builtin_tilegx_v1maxu">,
+def int_tilegx_v1maxu : GCCBuiltin<"__insn_v1maxu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1maxui : GCCBuiltin<"__builtin_tilegx_v1maxui">,
+def int_tilegx_v1maxui : GCCBuiltin<"__insn_v1maxui">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1minu : GCCBuiltin<"__builtin_tilegx_v1minu">,
+def int_tilegx_v1minu : GCCBuiltin<"__insn_v1minu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1minui : GCCBuiltin<"__builtin_tilegx_v1minui">,
+def int_tilegx_v1minui : GCCBuiltin<"__insn_v1minui">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1mnz : GCCBuiltin<"__builtin_tilegx_v1mnz">,
+def int_tilegx_v1mnz : GCCBuiltin<"__insn_v1mnz">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1multu : GCCBuiltin<"__builtin_tilegx_v1multu">,
+def int_tilegx_v1multu : GCCBuiltin<"__insn_v1multu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1mulu : GCCBuiltin<"__builtin_tilegx_v1mulu">,
+def int_tilegx_v1mulu : GCCBuiltin<"__insn_v1mulu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1mulus : GCCBuiltin<"__builtin_tilegx_v1mulus">,
+def int_tilegx_v1mulus : GCCBuiltin<"__insn_v1mulus">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1mz : GCCBuiltin<"__builtin_tilegx_v1mz">,
+def int_tilegx_v1mz : GCCBuiltin<"__insn_v1mz">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1sadau : GCCBuiltin<"__builtin_tilegx_v1sadau">,
+def int_tilegx_v1sadau : GCCBuiltin<"__insn_v1sadau">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1sadu : GCCBuiltin<"__builtin_tilegx_v1sadu">,
+def int_tilegx_v1sadu : GCCBuiltin<"__insn_v1sadu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1shl : GCCBuiltin<"__builtin_tilegx_v1shl">,
+def int_tilegx_v1shl : GCCBuiltin<"__insn_v1shl">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1shli : GCCBuiltin<"__builtin_tilegx_v1shli">,
+def int_tilegx_v1shli : GCCBuiltin<"__insn_v1shli">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1shrs : GCCBuiltin<"__builtin_tilegx_v1shrs">,
+def int_tilegx_v1shrs : GCCBuiltin<"__insn_v1shrs">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1shrsi : GCCBuiltin<"__builtin_tilegx_v1shrsi">,
+def int_tilegx_v1shrsi : GCCBuiltin<"__insn_v1shrsi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1shru : GCCBuiltin<"__builtin_tilegx_v1shru">,
+def int_tilegx_v1shru : GCCBuiltin<"__insn_v1shru">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1shrui : GCCBuiltin<"__builtin_tilegx_v1shrui">,
+def int_tilegx_v1shrui : GCCBuiltin<"__insn_v1shrui">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1sub : GCCBuiltin<"__builtin_tilegx_v1sub">,
+def int_tilegx_v1sub : GCCBuiltin<"__insn_v1sub">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v1subuc : GCCBuiltin<"__builtin_tilegx_v1subuc">,
+def int_tilegx_v1subuc : GCCBuiltin<"__insn_v1subuc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
 // v2XXX
-def int_tilegx_v2add : GCCBuiltin<"__builtin_tilegx_v2add">,
+def int_tilegx_v2add : GCCBuiltin<"__insn_v2add">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], [Commutative]>;
 
-def int_tilegx_v2addi : GCCBuiltin<"__builtin_tilegx_v2addi">,
+def int_tilegx_v2addi : GCCBuiltin<"__insn_v2addi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2addsc : GCCBuiltin<"__builtin_tilegx_v2addsc">,
+def int_tilegx_v2addsc : GCCBuiltin<"__insn_v2addsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2adiffs : GCCBuiltin<"__builtin_tilegx_v2adiffs">,
+def int_tilegx_v2adiffs : GCCBuiltin<"__insn_v2adiffs">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2avgs : GCCBuiltin<"__builtin_tilegx_v2avgs">,
+def int_tilegx_v2avgs : GCCBuiltin<"__insn_v2avgs">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpeq : GCCBuiltin<"__builtin_tilegx_v2cmpeq">,
+def int_tilegx_v2cmpeq : GCCBuiltin<"__insn_v2cmpeq">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpeqi : GCCBuiltin<"__builtin_tilegx_v2cmpeqi">,
+def int_tilegx_v2cmpeqi : GCCBuiltin<"__insn_v2cmpeqi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmples : GCCBuiltin<"__builtin_tilegx_v2cmples">,
+def int_tilegx_v2cmples : GCCBuiltin<"__insn_v2cmples">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpleu : GCCBuiltin<"__builtin_tilegx_v2cmpleu">,
+def int_tilegx_v2cmpleu : GCCBuiltin<"__insn_v2cmpleu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmplts : GCCBuiltin<"__builtin_tilegx_v2cmplts">,
+def int_tilegx_v2cmplts : GCCBuiltin<"__insn_v2cmplts">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpltsi : GCCBuiltin<"__builtin_tilegx_v2cmpltsi">,
+def int_tilegx_v2cmpltsi : GCCBuiltin<"__insn_v2cmpltsi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpltu : GCCBuiltin<"__builtin_tilegx_v2cmpltu">,
+def int_tilegx_v2cmpltu : GCCBuiltin<"__insn_v2cmpltu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpltui : GCCBuiltin<"__builtin_tilegx_v2cmpltui">,
+def int_tilegx_v2cmpltui : GCCBuiltin<"__insn_v2cmpltui">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2cmpne : GCCBuiltin<"__builtin_tilegx_v2cmpne">,
+def int_tilegx_v2cmpne : GCCBuiltin<"__insn_v2cmpne">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2dotp : GCCBuiltin<"__builtin_tilegx_v2dotp">,
+def int_tilegx_v2dotp : GCCBuiltin<"__insn_v2dotp">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2dotpa : GCCBuiltin<"__builtin_tilegx_v2dotpa">,
+def int_tilegx_v2dotpa : GCCBuiltin<"__insn_v2dotpa">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2int_h : GCCBuiltin<"__builtin_tilegx_v2int_h">,
+def int_tilegx_v2int_h : GCCBuiltin<"__insn_v2int_h">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2int_l : GCCBuiltin<"__builtin_tilegx_v2int_l">,
+def int_tilegx_v2int_l : GCCBuiltin<"__insn_v2int_l">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2maxs : GCCBuiltin<"__builtin_tilegx_v2maxs">,
+def int_tilegx_v2maxs : GCCBuiltin<"__insn_v2maxs">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2maxsi : GCCBuiltin<"__builtin_tilegx_v2maxsi">,
+def int_tilegx_v2maxsi : GCCBuiltin<"__insn_v2maxsi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2mins : GCCBuiltin<"__builtin_tilegx_v2mins">,
+def int_tilegx_v2mins : GCCBuiltin<"__insn_v2mins">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2minsi : GCCBuiltin<"__builtin_tilegx_v2minsi">,
+def int_tilegx_v2minsi : GCCBuiltin<"__insn_v2minsi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2mnz : GCCBuiltin<"__builtin_tilegx_v2mnz">,
+def int_tilegx_v2mnz : GCCBuiltin<"__insn_v2mnz">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2mulfsc : GCCBuiltin<"__builtin_tilegx_v2mulfsc">,
+def int_tilegx_v2mulfsc : GCCBuiltin<"__insn_v2mulfsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2muls : GCCBuiltin<"__builtin_tilegx_v2muls">,
+def int_tilegx_v2muls : GCCBuiltin<"__insn_v2muls">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2mults : GCCBuiltin<"__builtin_tilegx_v2mults">,
+def int_tilegx_v2mults : GCCBuiltin<"__insn_v2mults">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2mz : GCCBuiltin<"__builtin_tilegx_v2mz">,
+def int_tilegx_v2mz : GCCBuiltin<"__insn_v2mz">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2packh : GCCBuiltin<"__builtin_tilegx_v2packh">,
+def int_tilegx_v2packh : GCCBuiltin<"__insn_v2packh">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2packl : GCCBuiltin<"__builtin_tilegx_v2packl">,
+def int_tilegx_v2packl : GCCBuiltin<"__insn_v2packl">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2packuc : GCCBuiltin<"__builtin_tilegx_v2packuc">,
+def int_tilegx_v2packuc : GCCBuiltin<"__insn_v2packuc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2sadas : GCCBuiltin<"__builtin_tilegx_v2sadas">,
+def int_tilegx_v2sadas : GCCBuiltin<"__insn_v2sadas">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2sadau : GCCBuiltin<"__builtin_tilegx_v2sadau">,
+def int_tilegx_v2sadau : GCCBuiltin<"__insn_v2sadau">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2sads : GCCBuiltin<"__builtin_tilegx_v2sads">,
+def int_tilegx_v2sads : GCCBuiltin<"__insn_v2sads">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2sadu : GCCBuiltin<"__builtin_tilegx_v2sadu">,
+def int_tilegx_v2sadu : GCCBuiltin<"__insn_v2sadu">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shl : GCCBuiltin<"__builtin_tilegx_v2shl">,
+def int_tilegx_v2shl : GCCBuiltin<"__insn_v2shl">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shli : GCCBuiltin<"__builtin_tilegx_v2shli">,
+def int_tilegx_v2shli : GCCBuiltin<"__insn_v2shli">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shlsc : GCCBuiltin<"__builtin_tilegx_v2shlsc">,
+def int_tilegx_v2shlsc : GCCBuiltin<"__insn_v2shlsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shrs : GCCBuiltin<"__builtin_tilegx_v2shrs">,
+def int_tilegx_v2shrs : GCCBuiltin<"__insn_v2shrs">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shrsi : GCCBuiltin<"__builtin_tilegx_v2shrsi">,
+def int_tilegx_v2shrsi : GCCBuiltin<"__insn_v2shrsi">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shru : GCCBuiltin<"__builtin_tilegx_v2shru">,
+def int_tilegx_v2shru : GCCBuiltin<"__insn_v2shru">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2shrui : GCCBuiltin<"__builtin_tilegx_v2shrui">,
+def int_tilegx_v2shrui : GCCBuiltin<"__insn_v2shrui">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2sub : GCCBuiltin<"__builtin_tilegx_v2sub">,
+def int_tilegx_v2sub : GCCBuiltin<"__insn_v2sub">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v2subsc : GCCBuiltin<"__builtin_tilegx_v2subsc">,
+def int_tilegx_v2subsc : GCCBuiltin<"__insn_v2subsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
 // v4XXX
-def int_tilegx_v4add : GCCBuiltin<"__builtin_tilegx_v4add">,
+def int_tilegx_v4add : GCCBuiltin<"__insn_v4add">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], [Commutative]>;
 
-def int_tilegx_v4addsc : GCCBuiltin<"__builtin_tilegx_v4addsc">,
+def int_tilegx_v4addsc : GCCBuiltin<"__insn_v4addsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4int_h : GCCBuiltin<"__builtin_tilegx_v4int_h">,
+def int_tilegx_v4int_h : GCCBuiltin<"__insn_v4int_h">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4int_l : GCCBuiltin<"__builtin_tilegx_v4int_l">,
+def int_tilegx_v4int_l : GCCBuiltin<"__insn_v4int_l">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4packsc : GCCBuiltin<"__builtin_tilegx_v4packsc">,
+def int_tilegx_v4packsc : GCCBuiltin<"__insn_v4packsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4shl : GCCBuiltin<"__builtin_tilegx_v4shl">,
+def int_tilegx_v4shl : GCCBuiltin<"__insn_v4shl">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4shlsc : GCCBuiltin<"__builtin_tilegx_v4shlsc">,
+def int_tilegx_v4shlsc : GCCBuiltin<"__insn_v4shlsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4shrs : GCCBuiltin<"__builtin_tilegx_v4shrs">,
+def int_tilegx_v4shrs : GCCBuiltin<"__insn_v4shrs">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4shru : GCCBuiltin<"__builtin_tilegx_v4shru">,
+def int_tilegx_v4shru : GCCBuiltin<"__insn_v4shru">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4sub : GCCBuiltin<"__builtin_tilegx_v4sub">,
+def int_tilegx_v4sub : GCCBuiltin<"__insn_v4sub">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
 
-def int_tilegx_v4subsc : GCCBuiltin<"__builtin_tilegx_v4subsc">,
+def int_tilegx_v4subsc : GCCBuiltin<"__insn_v4subsc">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty], []>;
+
+// Network
+def int_tilegx_idn0r : GCCBuiltin<"__tile_idn0_receive">,
+  Intrinsic<[llvm_i64_ty], [], []>;
+
+def int_tilegx_idn1r : GCCBuiltin<"__tile_idn1_receive">,
+  Intrinsic<[llvm_i64_ty], [], []>;
+
+def int_tilegx_udn0r : GCCBuiltin<"__tile_udn0_receive">,
+  Intrinsic<[llvm_i64_ty], [], []>;
+
+def int_tilegx_udn1r : GCCBuiltin<"__tile_udn1_receive">,
+  Intrinsic<[llvm_i64_ty], [], []>;
+
+def int_tilegx_udn2r : GCCBuiltin<"__tile_udn2_receive">,
+  Intrinsic<[llvm_i64_ty], [], []>;
+
+def int_tilegx_udn3r : GCCBuiltin<"__tile_udn3_receive">,
+  Intrinsic<[llvm_i64_ty], [], []>;
+
+def int_tilegx_netbarrier : GCCBuiltin<"__tile_network_barrier">,
+  Intrinsic<[], [], []>;
+
+def int_tilegx_usend : GCCBuiltin<"__tile_udn_send">,
+  Intrinsic<[], [llvm_i64_ty], []>;
+
+def int_tilegx_isend : GCCBuiltin<"__tile_idn_send">,
+  Intrinsic<[], [llvm_i64_ty], []>;
 
 // Others
-def int_tilegx_mfspr : GCCBuiltin<"__builtin_tilegx_mfspr">,
+def int_tilegx_mfspr : GCCBuiltin<"__insn_mfspr">,
   Intrinsic<[llvm_i64_ty], [llvm_i64_ty], []>;
 
-def int_tilegx_mtspr : GCCBuiltin<"__builtin_tilegx_mtspr">,
+def int_tilegx_mtspr : GCCBuiltin<"__insn_mtspr">,
   Intrinsic<[], [llvm_i64_ty, llvm_i64_ty], []>;
 } // end TargetPrefix
